@@ -199,6 +199,11 @@ namespace bry
 			m_data.Add(key, v);
 		}
 		// ****************************************************
+		public void SetValue(string key, double v)
+		{
+			m_data.Add(key, v);
+		}
+		// ****************************************************
 		public int GetValueInt(string key, out bool ok)
 		{
 			int ret = 0;
@@ -209,6 +214,28 @@ namespace bry
 				if (m_data.ContainsKey(key))
 				{
 					ret = m_data[key].GetValue<int>();
+					ok = true;
+				}
+			}
+			catch
+			{
+				ret = 0;
+				ok = false;
+			}
+			return ret;
+
+		}
+		// ****************************************************
+		public double GetValueDouble(string key, out bool ok)
+		{
+			double ret = 0;
+			ok = false;
+			if (key == "") return ret;
+			try
+			{
+				if (m_data.ContainsKey(key))
+				{
+					ret = m_data[key].GetValue<double>();
 					ok = true;
 				}
 			}

@@ -37,6 +37,12 @@
 			this.refList.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.refList.FormattingEnabled = true;
 			this.refList.ItemHeight = 12;
+			this.refList.Items.AddRange(new object[] {
+            "cls()",
+            "write(s)",
+            "writeln(s)",
+            "toHex(value,4,false)",
+            "alert(s)"});
 			this.refList.Location = new System.Drawing.Point(3, 37);
 			this.refList.Name = "refList";
 			this.refList.Size = new System.Drawing.Size(189, 256);

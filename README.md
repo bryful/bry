@@ -1,7 +1,9 @@
 ﻿# bry
  とりあえず試行錯誤用のソリューションです。<br>
 アプリとしてはClearScriptを使ったJavascript実行コンソールっぽい何かです<br>
-その他のアプリで使うための細かい物をここで作ってます。永遠に改正しない予定です。
+その他のアプリで使うための細かい物をここで作ってます。永遠に改正しない予定です。<br>
+<br>
+以下のサンプルというかパーツが入っています。
 
 ## AEdit.cs (WinForm用のAvalonEditorラッパー)
 WPF用のAvalonEditorをWinFormで使うためのコントロールです。<br>
@@ -23,7 +25,9 @@ dockPanel1.Theme = new WeifenLuo.WinFormsUI.Docking.VS2015DarkTheme();
 ```
 
 ## PrefFile
-System.Text.Jsomを使った簡単な設定ファイルクラス。よく使うのでここでバージョン管理。
+System.Text.Jsonを使った簡単な設定ファイルクラス。よく使うのでここでバージョン管理。
+
+## インストラーのサンプル
 
 
 ## Dependency
@@ -34,7 +38,7 @@ This software is released under the MIT License, see LICENSE
 
 ## Authors
 
-bry-ful(Hiroshi Furuhashi)
-twitter:[bryful](https://twitter.com/bryful)
-Mail: bryful@gmail.com
+bry-ful(Hiroshi Furuhashi)<br>
+twitter:[bryful](https://twitter.com/bryful)<br>
+Mail: bryful@gmail.com<br>
 
