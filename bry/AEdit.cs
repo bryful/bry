@@ -175,10 +175,14 @@ namespace bry
 			this.Controls.Add(host);
 
 		}
+		private void ChkSize()
+		{
+			host.SetBounds(0, 0, this.Width, this.Height);
+		}
 		protected override void OnResize(EventArgs e)
 		{
 			base.OnResize(e);
-			host.SetBounds(0,0,this.Width,this.Height);
+			ChkSize();
 		}
 
 	}

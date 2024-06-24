@@ -33,12 +33,14 @@
 			ICSharpCode.AvalonEdit.Document.UndoStack undoStack1 = new ICSharpCode.AvalonEdit.Document.UndoStack();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditorForm));
 			this.aEdit1 = new bry.AEdit();
+			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// aEdit1
 			// 
 			this.aEdit1.ColumnRulerPosition = 80;
-			this.aEdit1.Dock = System.Windows.Forms.DockStyle.Fill;
 			textDocument1.FileName = null;
 			textDocument1.ServiceProvider = serviceContainer1;
 			textDocument1.Text = "aEdit1";
@@ -48,7 +50,7 @@
 			this.aEdit1.HighlightCurrentLine = false;
 			this.aEdit1.HorizontalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Visible;
 			this.aEdit1.IndentationSize = 4;
-			this.aEdit1.Location = new System.Drawing.Point(0, 0);
+			this.aEdit1.Location = new System.Drawing.Point(0, 59);
 			this.aEdit1.Name = "aEdit1";
 			this.aEdit1.Options = ((ICSharpCode.AvalonEdit.TextEditorOptions)(resources.GetObject("aEdit1.Options")));
 			this.aEdit1.ShowBoxForControlCharacters = true;
@@ -57,21 +59,44 @@
 			this.aEdit1.ShowLineNumbers = true;
 			this.aEdit1.ShowSpaces = false;
 			this.aEdit1.ShowTabs = true;
-			this.aEdit1.Size = new System.Drawing.Size(688, 291);
+			this.aEdit1.Size = new System.Drawing.Size(907, 406);
 			this.aEdit1.TabIndex = 0;
-			this.aEdit1.VerticalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Visible;
+			this.aEdit1.VerticalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Auto;
+			// 
+			// menuStrip1
+			// 
+			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+			this.menuStrip1.Name = "menuStrip1";
+			this.menuStrip1.Size = new System.Drawing.Size(907, 24);
+			this.menuStrip1.TabIndex = 1;
+			this.menuStrip1.Text = "menuStrip1";
+			// 
+			// fileToolStripMenuItem
+			// 
+			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+			this.fileToolStripMenuItem.Text = "File";
 			// 
 			// EditorForm
 			// 
-			this.ClientSize = new System.Drawing.Size(688, 291);
+			this.ClientSize = new System.Drawing.Size(907, 491);
 			this.Controls.Add(this.aEdit1);
+			this.Controls.Add(this.menuStrip1);
+			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "EditorForm";
+			this.menuStrip1.ResumeLayout(false);
+			this.menuStrip1.PerformLayout();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
 		#endregion
 
 		private AEdit aEdit1;
+		private System.Windows.Forms.MenuStrip menuStrip1;
+		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
 	}
 }

@@ -27,6 +27,18 @@ namespace bry
 		public EditorForm()
 		{
 			InitializeComponent();
+			ChkSize();
+		}
+		private void ChkSize()
+		{
+			int h = menuStrip1.Bottom;
+			aEdit1.Location = new Point(0,h);
+			aEdit1.Size = new Size(this.ClientSize.Width, this.ClientSize.Height -h);
+		}
+		protected override void OnResize(EventArgs e)
+		{
+			base.OnResize(e);
+			ChkSize();
 		}
 	}
 }

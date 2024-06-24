@@ -134,9 +134,9 @@ namespace bry
 			}
 			catch (Exception ee)
 			{
-				editorForm.Show(dockPanel1);
-				outputForm.Show(dockPanel1);
-				refForm.Show(dockPanel1);
+				editorForm.Show(dockPanel1,DockState.Document);
+				outputForm.Show(dockPanel1,DockState.DockBottom);
+				refForm.Show(dockPanel1,DockState.DockRight);
 				ret = false;
 			}
 			return ret;
