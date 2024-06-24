@@ -34,31 +34,31 @@
 			// 
 			// refList
 			// 
-			this.refList.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.refList.Font = new System.Drawing.Font("源ノ角ゴシック Code JP R", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
 			this.refList.FormattingEnabled = true;
-			this.refList.ItemHeight = 12;
+			this.refList.ItemHeight = 23;
 			this.refList.Items.AddRange(new object[] {
             "cls()",
             "write(s)",
             "writeln(s)",
             "toHex(value,4,false)",
             "alert(s)"});
-			this.refList.Location = new System.Drawing.Point(3, 37);
+			this.refList.Location = new System.Drawing.Point(9, 39);
 			this.refList.Name = "refList";
-			this.refList.Size = new System.Drawing.Size(189, 256);
+			this.refList.Size = new System.Drawing.Size(234, 234);
 			this.refList.TabIndex = 0;
 			// 
 			// findBox
 			// 
-			this.findBox.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.findBox.Location = new System.Drawing.Point(3, 12);
+			this.findBox.Font = new System.Drawing.Font("源ノ角ゴシック Code JP R", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.findBox.Location = new System.Drawing.Point(9, 2);
 			this.findBox.Name = "findBox";
-			this.findBox.Size = new System.Drawing.Size(189, 19);
+			this.findBox.Size = new System.Drawing.Size(234, 31);
 			this.findBox.TabIndex = 1;
 			// 
 			// RefForm
 			// 
-			this.ClientSize = new System.Drawing.Size(416, 489);
+			this.ClientSize = new System.Drawing.Size(269, 299);
 			this.Controls.Add(this.findBox);
 			this.Controls.Add(this.refList);
 			this.Name = "RefForm";

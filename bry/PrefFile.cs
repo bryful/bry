@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
 using System.Drawing;
-
+using System.Runtime.CompilerServices;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 namespace bry
 {
@@ -202,6 +204,57 @@ namespace bry
 		public void SetValue(string key, double v)
 		{
 			m_data.Add(key, v);
+		}
+		// ****************************************************
+		public void SetValue(string key, Font f)
+		{
+			JsonObject obj = new JsonObject();
+			obj.Add("Name", f.Name);
+			obj.Add("Size", f.Size);
+			obj.Add("Style", (double)f.Style);
+
+			m_data.Add(key, obj);
+		}
+		// ****************************************************
+		public void GetValue(string key, Font f)
+		{
+			JsonObject obj = new JsonObject();
+			obj.Add("Name", f.Name);
+			obj.Add("Size", f.Size);
+			obj.Add("Style", (double)f.Style);
+
+			m_data.Add(key, obj);
+		}
+		public Font GetValueFont(string key, out bool ok)
+		{
+			Font ret = new Font("System",9);
+			ok = false;
+			if (key == "") return ret;
+			try
+			{
+				if (m_data.ContainsKey(key))
+				{
+					JsonObject jo = m_data[key].GetValue<JsonObject>();
+					if (jo != null)
+					{
+						string nm = "System";
+						float sz = 9;
+						FontStyle st = FontStyle.Regular;
+						if (jo.ContainsKey("Name")) { nm = jo["Name"].GetValue<string>(); }
+						if (jo.ContainsKey("Size")) { sz = jo["Size"].GetValue<float>(); }
+						if (jo.ContainsKey("Style")) { st = (FontStyle)jo["Style"].GetValue<int>(); }
+						ret = new Font(nm, sz,st);
+						ok = true;
+					}
+				}
+			}
+			catch
+			{
+				ret = new Font("System", 9);
+				ok = false;
+			}
+			return ret;
+
 		}
 		// ****************************************************
 		public int GetValueInt(string key, out bool ok)
@@ -402,8 +455,14 @@ namespace bry
 		// ****************************************************
 		public string ToJson()
 		{
-			return m_data.ToJsonString();
+			//return m_data.ToJsonString();
 			//return JsonSerializer.Serialize(m_data);
+			var options = new JsonSerializerOptions
+			{
+				Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+				WriteIndented = true
+			};
+			return JsonSerializer.Serialize(m_data, options);
 		}
 		// ****************************************************
 		public void FromJson(string js)

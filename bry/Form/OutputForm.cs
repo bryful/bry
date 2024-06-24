@@ -10,16 +10,19 @@ namespace bry
 {
 	public partial class OutputForm : WeifenLuo.WinFormsUI.Docking.DockContent
 	{
+		protected override string GetPersistString()
+		{
+			return "OutputForm";
+		}
 		public TextBox Output
 		{
 			get { return textBox1; }
 		}
-		public new Font Font
+		public Font OutputFont
 		{
-			get { return base.Font; }
+			get { return textBox1.Font; }
 			set
 			{
-				base.Font = value;
 				textBox1.Font = value;
 			}
 		}

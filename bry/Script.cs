@@ -26,6 +26,8 @@ namespace bry
 				m_outputBox = value;
 			}
 		}
+		public ScriptFile m_scriptFile = new ScriptFile();
+		public ScriptFolder m_scriptFolder = new ScriptFolder();
 		// **************************************************
 		public Script()
 		{
@@ -67,6 +69,19 @@ namespace bry
 		public void Cls()
 		{
 			cls();
+		}
+		public void toClip(string s)
+		{
+			Clipboard.SetText(s);
+		}
+		public string fromClip()
+		{
+			string ret = "";
+			if (Clipboard.ContainsText())
+			{
+				ret = Clipboard.GetText();
+			}
+			return ret;
 		}
 		// **************************************************
 		public string toHex2(byte ub)
@@ -128,7 +143,7 @@ namespace bry
 		}
 		// **************************************************
 		[ScriptUsage(ScriptAccess.None)]
-		public string ScriptObjectStr(Object so)
+		static public string ScriptObjectStr(Object so)
 		{
 			string ret = "";
 			if (so == null) return "null";
@@ -172,7 +187,7 @@ namespace bry
 			return ret;
 		}
 		// ************************************************************************
-		public string objectToString(object obj)
+		static public string objectToString(object obj)
 		{
 			string ret = "";
 
@@ -262,7 +277,9 @@ namespace bry
 				typeof(CSForm)
 			});
 			*/
-			engine.AddHostObject("App", HostItemFlags.GlobalMembers, this);
+			engine.AddHostObject("app", HostItemFlags.GlobalMembers, this);
+			engine.AddHostObject("File", HostItemFlags.DirectAccess, m_scriptFile);
+			engine.AddHostObject("Folder", HostItemFlags.DirectAccess, m_scriptFolder);
 		}
 
 	}

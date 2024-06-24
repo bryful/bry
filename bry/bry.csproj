@@ -212,7 +212,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AEdit.cs">
+    <Compile Include="Avalon\AEdit.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Form\EditorForm.cs">
@@ -249,6 +249,8 @@
       <DependentUpon>RefForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Script.cs" />
+    <Compile Include="ScriptFile.cs" />
+    <Compile Include="ScriptFolder.cs" />
     <EmbeddedResource Include="Form\EditorForm.resx">
       <DependentUpon>EditorForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -272,7 +274,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="JavaScript-Mode.xshd" />
+    <EmbeddedResource Include="Avalon\JavaScript-Mode.xshd" />
     <EmbeddedResource Include="Form\RefForm.resx">
       <DependentUpon>RefForm.cs</DependentUpon>
     </EmbeddedResource>

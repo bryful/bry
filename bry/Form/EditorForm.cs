@@ -11,34 +11,63 @@ namespace bry
 {
 	public partial class EditorForm : WeifenLuo.WinFormsUI.Docking.DockContent
 	{
+		public Script Script = new Script();
+		public TextBox OutputBox
+		{
+			get { return Script.OutputBox; }
+			set { Script.OutputBox = value; }
+		}
+
+		public int Index { get; set; } = 0;
+		protected override string GetPersistString()
+		{
+			return $"EditorFrom_{Index}";
+		}
 		public TextEditor editor
 		{
 			get { return aEdit1.editor; }
 		}
-		public new Font Font
+		public string FontFamily
 		{
-			get { return base.Font; }
+			get 
+			{
+				//System.Windows.Media.FontFamily
+				return aEdit1.editor.FontFamily.Source; 
+			}
 			set 
-			{ 
-				base.Font = value; 
-				aEdit1.Font = value;
+			{
+				aEdit1.editor.FontFamily = new System.Windows.Media.FontFamily(value);
+			}
+		}
+		public double FontSize
+		{
+			get { return aEdit1.editor.FontSize; }
+			set
+			{
+				aEdit1.editor.FontSize = value;
 			}
 		}
 		public EditorForm()
 		{
 			InitializeComponent();
-			ChkSize();
+			//ChkSize();
 		}
-		private void ChkSize()
+		
+		
+		// ************************************************************************
+		public void Exec()
 		{
-			int h = menuStrip1.Bottom;
-			aEdit1.Location = new Point(0,h);
-			aEdit1.Size = new Size(this.ClientSize.Width, this.ClientSize.Height -h);
+			Script.ExecuteCode(aEdit1.Text);
 		}
-		protected override void OnResize(EventArgs e)
+		// ************************************************************************
+		public void InitEngine()
 		{
-			base.OnResize(e);
-			ChkSize();
+			Script.Init();
+		}
+
+		private void EditorForm_DockStateChanged(object sender, EventArgs e)
+		{
+			//this.editor.Text = DockAreas.ToString();
 		}
 	}
 }

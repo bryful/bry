@@ -145,13 +145,13 @@ namespace bry
 				m_editor.Text = value;
 			}	
 		}
+		private Font m_font = new Font("System",9);
 		public new Font Font
 		{
-			get { return base.Font; }
+			get { return m_font; }
 			set 
-			{ 
-				base.Font = value;
-				host.Font = value;
+			{
+				m_font = value;
 				m_editor.FontFamily = new  System.Windows.Media.FontFamily( value.FontFamily.Name);
 				m_editor.FontSize = value.Size;
 
@@ -160,7 +160,7 @@ namespace bry
 		public AEdit()
 		{
 			Assembly thisAssembly = Assembly.GetExecutingAssembly();
-			using (Stream resourceStream = thisAssembly.GetManifestResourceStream("bry.JavaScript-Mode.xshd"))
+			using (Stream resourceStream = thisAssembly.GetManifestResourceStream("bry.Avalon.JavaScript-Mode.xshd"))
 			{
 				var reader = new System.Xml.XmlTextReader(resourceStream);
 				var definition = HighlightingLoader.Load(reader, HighlightingManager.Instance);

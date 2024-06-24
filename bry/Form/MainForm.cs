@@ -17,49 +17,38 @@ namespace bry
 {
 	public partial class MainForm : Form
 	{
-		Script Script = new Script();
-		private EditorForm editorForm = null;
+		//Script Script = new Script();
+
+		private List<EditorForm> editors = new List<EditorForm>();
+
+		private EditorForm ActiveEditor = null;
 		private OutputForm outputForm = null;
 		private RefForm refForm = null;
-
-		// ************************************************************************
+		private ToolStripMenuItem outputMenu = new ToolStripMenuItem();
+		private ToolStripMenuItem refMenu = new ToolStripMenuItem();
 		// ************************************************************************
 		[ScriptUsage(ScriptAccess.None)]
 		public MainForm()
 		{
 			InitializeComponent();
 			dockPanel1.Theme = new WeifenLuo.WinFormsUI.Docking.VS2015DarkTheme();
-			editorForm = new EditorForm();
-			editorForm.Text = "Editor";
-			editorForm.HideOnClose = true;
-			//editorForm.Show(dockPanel1);
+			outputMenu.Text = "Output";
+			refMenu.Text = "Reference";
+			//editorForm = new EditorForm();
+			//editorForm.Text = "Editor";
+			//editorForm.HideOnClose = true;
 
 			outputForm = new OutputForm();
 			outputForm.Text = "Output";
 			outputForm.HideOnClose = true;
-			//outputForm.Show(dockPanel1);
-			//outputForm.Hide();
 
 			refForm = new RefForm();
 			refForm.Text = "Reference";
 			refForm.HideOnClose = true;
-			//refForm.Show(dockPanel1);
-			//refForm.Hide();
 
-			Script.OutputBox = outputForm.Output;
-			executeMenu.Click += (sender, e) => { Exec(); };
-			initEngineMenu.Click += (sender, e) => { InitEngine(); };
-
-			editorMenu.Click += (sender, e) =>
+			windowMenu.Click += (sender, e) =>
 			{
-				if (editorForm.IsHidden)
-				{
-					editorForm.Show();
-				}
-				else
-				{
-					editorForm.Hide();
-				}
+				MakeWindowMenu();
 			};
 			outputMenu.Click += (sender, e) =>
 			{
@@ -83,14 +72,161 @@ namespace bry
 					refForm.Hide();
 				}
 			};
-			fontMenu.Click += (sender, e) =>
-			{
-				FontSettingDialog();
-			};
+			editorFontMenu.Click += (sender, e) =>{EditorFontDialog();};
+			outputFontMenu.Click += (sender, e) => { OutputFontDialog(); };
+			referenceFontMenu.Click += (sender, e) => { RefFontDialog(); };
 			quitMenu.Click += (sender, e) =>
 			{
 				Application.Exit();
 			};
+			newMenu.Click += (sender, e) =>
+			{
+				NewEditor();
+			};
+			executeMenu.Click += (sender, e) =>
+			{
+				Exec();
+			};
+			initEngeineMenu.Click += (sender, e) =>
+			{
+				InitEngine();
+			};
+		}
+		// ************************************************************************
+		private string m_EditorFontFamily = "源ノ角ゴシック Code JP R";
+		public string EditorFontFamily
+		{
+			get
+			{
+				return m_EditorFontFamily;
+			}
+			set
+			{
+				m_EditorFontFamily = value;
+				if(editors.Count>0)
+				{
+					for (int i = 0;i<editors.Count; i++)
+					{
+						
+						editors[i].FontFamily = value;
+					}
+				}
+			}
+		}
+		private double m_EditorFontSize = 12;
+		public double EditorFontSize
+		{
+			get
+			{
+				return m_EditorFontSize;
+			}
+			set
+			{
+				m_EditorFontSize = value;
+				if (editors.Count > 0)
+				{
+					for (int i = 0; i < editors.Count; i++)
+					{
+
+						editors[i].FontSize = value;
+					}
+				}
+			}
+		}
+		// ************************************************************************
+		private string[] editorTexts()
+		{
+			List<string> ret = new List<string>();
+			if(editors.Count > 0 )
+			{
+				foreach( var editor in editors )
+				{
+					ret.Add( editor.editor.Text );
+				}
+			}
+			return ret.ToArray();
+		}
+		// ************************************************************************
+		private void SetEditorTexts(string[] sa)
+		{
+			DisposeEditors();
+			if ( sa.Length > 0 )
+			{
+				for (int i = 0; i < sa.Length; i++)
+				{
+					EditorForm ef = NewEditor();
+					ef.editor.Text = sa[i];
+				}
+
+			}
+		}
+		// ************************************************************************
+		public void DisposeEditors()
+		{
+			if (editors.Count > 0)
+			{
+				for (int i = 0; i < editors.Count; i++)
+				{
+					editors[i].Dispose();
+				}
+				editors.Clear();
+			}
+		}
+		// ************************************************************************
+		public EditorForm NewEditor()
+		{
+			EditorForm ef = new EditorForm();
+			ef.HideOnClose = true;
+			ef.OutputBox = outputForm.Output;
+			ef.FontFamily = m_EditorFontFamily;
+			ef.FontSize = m_EditorFontSize;
+			ef.Text = $"Editor{editors.Count + 1}";
+			editors.Add( ef );
+			
+			ef.Enter += (sender, e) =>
+			{
+				ActiveEditor = (EditorForm)sender;
+			};
+			for (int i = 0; i < editors.Count; i++)
+			{
+				editors[i].Index = i;
+			}
+			ef.Show(dockPanel1,DockState.Document);
+			ActiveEditor = editors[editors.Count - 1];
+
+			return ef;
+		}
+		// ************************************************************************
+		private void MakeWindowMenu()
+		{
+			windowMenu.DropDownItems.Clear();
+			if (editors.Count > 0)
+			{
+				for(int i = 0;i < editors.Count;i++)
+				{
+					editors[i].Index = i;
+					ToolStripMenuItem mi = new ToolStripMenuItem(editors[i].Text);
+					mi.Checked = ! editors[i].IsHidden;
+					mi.Tag = editors[i];
+					mi.Click += (sender, e) =>
+					{
+						EditorForm ef = (EditorForm)((ToolStripMenuItem)sender).Tag;
+						if (ef.IsHidden)
+						{
+							ef.Show();
+						}
+						else
+						{
+							ef.Hide();
+						}
+					};
+					windowMenu.DropDownItems.Add( mi );
+				}
+			}
+			outputMenu.Checked = ! outputForm.IsHidden;
+			refMenu.Checked = !refForm.IsHidden;
+			windowMenu.DropDownItems.Add(outputMenu);
+			windowMenu.DropDownItems.Add(refMenu);
 		}
 		// ************************************************************************
 		protected override void OnLoad(EventArgs e)
@@ -98,29 +234,45 @@ namespace bry
 			base.OnLoad(e);
 			PrefFile pf = new PrefFile(this);
 			pf.Load();
-			pf.RestoreForm();
 
 			bool ok = false;
 			object v;
-			v = pf.GetValueString("Code", out ok);
-			if (ok) { editorForm.editor.Text = (string)v; }
+			v = pf.GetValueStringArray("Codes", out ok);
+			if (ok) 
+			{
+				SetEditorTexts((string[])v);
+			}
+			else
+			{
+				NewEditor();
+			}
 
-			string nf = pf.GetValueString("FontFamily", out ok);
-			if (ok == false)
+			Font of = pf.GetValueFont("OutputFont", out ok);
+			if (ok)
 			{
-				nf = this.Font.Name;
+				outputForm.OutputFont = of;
 			}
-			double sf = pf.GetValueDouble("FontSize", out ok);
-			if (ok == false)
+			Font rf = pf.GetValueFont("RefFont", out ok);
+			if (ok)
 			{
-				sf = 12;
+				refForm.RefFont = of;
 			}
-			editorForm.Font = new Font(nf, (float)sf);
-			outputForm.Font = editorForm.Font;
-			refForm.Font = editorForm.Font;
+			
+
+
 			string p = Path.Combine( pf.FileDirectory ,pf.AppName+".xml");
 			LayoutLoad(p);
-
+			v = pf.GetValueString("EditorFont", out ok);
+			if (ok)
+			{
+				EditorFontFamily = (string)v;
+			}
+			v = pf.GetValueDouble("EditorFontSize", out ok);
+			if (ok)
+			{
+				EditorFontSize = (double)v;
+			}
+			pf.RestoreForm();
 		}
 		private bool LayoutLoad(string p)
 		{
@@ -134,7 +286,14 @@ namespace bry
 			}
 			catch (Exception ee)
 			{
-				editorForm.Show(dockPanel1,DockState.Document);
+				if(editors.Count==0) NewEditor();
+				if (editors.Count>0) 
+				{
+					for(int i=0; i<editors.Count; i++)
+					{
+						editors[i].Show(dockPanel1);
+					}
+				}
 				outputForm.Show(dockPanel1,DockState.DockBottom);
 				refForm.Show(dockPanel1,DockState.DockRight);
 				ret = false;
@@ -144,15 +303,20 @@ namespace bry
 		private IDockContent GetDockContent(string persistString)
 		{
 			// フォームのクラス名で保存されているのでそれから判定してあげる
-			if (persistString.Equals(typeof(EditorForm).ToString()))
+			if (persistString.IndexOf("EditorFrom_")==0)
 			{
-				return editorForm;
+				string[] sa = persistString.Split('_');
+				int idx = -1;
+				if (int.TryParse(sa[1],out idx))
+				{
+					return editors[idx];
+				}
 			}
-			else if (persistString.Equals(typeof(OutputForm).ToString()))
+			else if (persistString.Equals("OutputForm"))
 			{
 				return outputForm;
 			}
-			else if (persistString.Equals(typeof(RefForm).ToString()))
+			else if (persistString.Equals("RefForm"))
 			{
 				return refForm;
 			}
@@ -162,21 +326,21 @@ namespace bry
 		{
 			base.OnFormClosed(e);
 			PrefFile pf = new PrefFile(this);
-			pf.SetValue("Code", editorForm.editor.Text);
-			pf.SetValue("FontFamily", editorForm.Font.Name);
-			pf.SetValue("FontSize", (double)editorForm.Font.Size);
+
+			pf.SetValue("Codes", editorTexts());
+			pf.SetValue("OutputFont", outputForm.OutputFont);
+			pf.SetValue("RefFont", refForm.RefFont);
+			pf.SetValue("EditorFont", m_EditorFontFamily);
+			pf.SetValue("EditorFontSize", m_EditorFontSize);
 			pf.StoreForm();
-			//pf.SetValue("Border", splitContainer1.SplitterDistance);
 			pf.Save();
 
 			string p = Path.Combine(pf.FileDirectory, pf.AppName + ".xml");
 			dockPanel1.SaveAsXml(p);
 
-			if (editorForm != null)
-			{
-				editorForm.Dispose();
-			}
-			if(outputForm != null)
+
+			DisposeEditors();
+			if (outputForm != null)
 			{
 				outputForm.Dispose();
 			}
@@ -188,24 +352,51 @@ namespace bry
 		// ************************************************************************
 		public void Exec()
 		{
-			Script.ExecuteCode(editorForm.editor.Text);
+			if(ActiveEditor != null)
+			{
+				ActiveEditor.Exec();
+			}
 		}
 		// ************************************************************************
 		public void InitEngine()
 		{
-			Script.Init();
+			if (ActiveEditor != null)
+			{
+				ActiveEditor.InitEngine();
+			}
 		}
 		// ************************************************************************
-		public void FontSettingDialog()
+		public void EditorFontDialog()
 		{
 			using(FontDialog dlg = new FontDialog())
 			{
-				dlg.Font = editorForm.Font;
+				dlg.Font = new Font(m_EditorFontFamily,(float)m_EditorFontSize);
 				if (dlg.ShowDialog()== DialogResult.OK)
 				{
-					editorForm.Font = dlg.Font;
-					outputForm.Font = dlg.Font;
-					refForm.Font = dlg.Font;
+					EditorFontFamily = dlg.Font.Name;
+					EditorFontSize = (double)dlg.Font.Size;
+				}
+			}
+		}
+		public void OutputFontDialog()
+		{
+			using (FontDialog dlg = new FontDialog())
+			{
+				dlg.Font = outputForm.OutputFont;
+				if (dlg.ShowDialog() == DialogResult.OK)
+				{
+					outputForm.OutputFont = dlg.Font;
+				}
+			}
+		}
+		public void RefFontDialog()
+		{
+			using (FontDialog dlg = new FontDialog())
+			{
+				dlg.Font = refForm.RefFont;
+				if (dlg.ShowDialog() == DialogResult.OK)
+				{
+					refForm.RefFont = dlg.Font;
 				}
 			}
 		}

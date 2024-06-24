@@ -30,17 +30,18 @@
 		{
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.newMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.quitMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.editMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.editorFontMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.windowMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.scriptMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.executeMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.initEngineMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.windowMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.editorMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.outputMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.refMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.initEngeineMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
-			this.fontMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.quitMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.outputFontMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.referenceFontMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -49,36 +50,73 @@
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileMenu,
             this.editMenu,
-            this.scriptMenu,
-            this.windowMenu});
+            this.windowMenu,
+            this.scriptMenu});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(910, 24);
+			this.menuStrip1.Size = new System.Drawing.Size(658, 24);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
 			// 
 			// fileMenu
 			// 
 			this.fileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newMenu,
+            this.openToolStripMenuItem,
             this.quitMenu});
 			this.fileMenu.Name = "fileMenu";
 			this.fileMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
 			this.fileMenu.Size = new System.Drawing.Size(37, 20);
 			this.fileMenu.Text = "File";
 			// 
+			// newMenu
+			// 
+			this.newMenu.Name = "newMenu";
+			this.newMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+			this.newMenu.Size = new System.Drawing.Size(145, 22);
+			this.newMenu.Text = "New";
+			// 
+			// openToolStripMenuItem
+			// 
+			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+			this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+			this.openToolStripMenuItem.Text = "Open";
+			// 
+			// quitMenu
+			// 
+			this.quitMenu.Name = "quitMenu";
+			this.quitMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
+			this.quitMenu.Size = new System.Drawing.Size(145, 22);
+			this.quitMenu.Text = "Quit";
+			// 
 			// editMenu
 			// 
 			this.editMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fontMenu});
+            this.editorFontMenu,
+            this.outputFontMenu,
+            this.referenceFontMenu});
 			this.editMenu.Name = "editMenu";
 			this.editMenu.Size = new System.Drawing.Size(39, 20);
 			this.editMenu.Text = "Edit";
+			// 
+			// editorFontMenu
+			// 
+			this.editorFontMenu.Name = "editorFontMenu";
+			this.editorFontMenu.Size = new System.Drawing.Size(180, 22);
+			this.editorFontMenu.Text = "EditorFont";
+			// 
+			// windowMenu
+			// 
+			this.windowMenu.Name = "windowMenu";
+			this.windowMenu.Size = new System.Drawing.Size(63, 20);
+			this.windowMenu.Text = "Window";
 			// 
 			// scriptMenu
 			// 
 			this.scriptMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.executeMenu,
-            this.initEngineMenu});
+            this.initEngeineMenu});
 			this.scriptMenu.Name = "scriptMenu";
 			this.scriptMenu.Size = new System.Drawing.Size(49, 20);
 			this.scriptMenu.Text = "Script";
@@ -87,69 +125,39 @@
 			// 
 			this.executeMenu.Name = "executeMenu";
 			this.executeMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-			this.executeMenu.Size = new System.Drawing.Size(154, 22);
+			this.executeMenu.Size = new System.Drawing.Size(180, 22);
 			this.executeMenu.Text = "Execute";
 			// 
-			// initEngineMenu
+			// initEngeineMenu
 			// 
-			this.initEngineMenu.Name = "initEngineMenu";
-			this.initEngineMenu.Size = new System.Drawing.Size(154, 22);
-			this.initEngineMenu.Text = "InitEngine";
-			// 
-			// windowMenu
-			// 
-			this.windowMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.editorMenu,
-            this.outputMenu,
-            this.refMenu});
-			this.windowMenu.Name = "windowMenu";
-			this.windowMenu.Size = new System.Drawing.Size(63, 20);
-			this.windowMenu.Text = "Window";
-			// 
-			// editorMenu
-			// 
-			this.editorMenu.Name = "editorMenu";
-			this.editorMenu.Size = new System.Drawing.Size(126, 22);
-			this.editorMenu.Text = "Editor";
-			// 
-			// outputMenu
-			// 
-			this.outputMenu.Name = "outputMenu";
-			this.outputMenu.Size = new System.Drawing.Size(126, 22);
-			this.outputMenu.Text = "Output";
-			// 
-			// refMenu
-			// 
-			this.refMenu.Name = "refMenu";
-			this.refMenu.Size = new System.Drawing.Size(126, 22);
-			this.refMenu.Text = "Reference";
+			this.initEngeineMenu.Name = "initEngeineMenu";
+			this.initEngeineMenu.Size = new System.Drawing.Size(180, 22);
+			this.initEngeineMenu.Text = "InitEngeine";
 			// 
 			// dockPanel1
 			// 
 			this.dockPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.dockPanel1.Location = new System.Drawing.Point(0, 24);
 			this.dockPanel1.Name = "dockPanel1";
-			this.dockPanel1.Size = new System.Drawing.Size(910, 537);
+			this.dockPanel1.Size = new System.Drawing.Size(658, 327);
 			this.dockPanel1.TabIndex = 1;
 			// 
-			// fontMenu
+			// outputFontMenu
 			// 
-			this.fontMenu.Name = "fontMenu";
-			this.fontMenu.Size = new System.Drawing.Size(180, 22);
-			this.fontMenu.Text = "Font";
+			this.outputFontMenu.Name = "outputFontMenu";
+			this.outputFontMenu.Size = new System.Drawing.Size(180, 22);
+			this.outputFontMenu.Text = "OutputFont";
 			// 
-			// quitMenu
+			// referenceFontMenu
 			// 
-			this.quitMenu.Name = "quitMenu";
-			this.quitMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-			this.quitMenu.Size = new System.Drawing.Size(180, 22);
-			this.quitMenu.Text = "Quit";
+			this.referenceFontMenu.Name = "referenceFontMenu";
+			this.referenceFontMenu.Size = new System.Drawing.Size(180, 22);
+			this.referenceFontMenu.Text = "ReferenceFont";
 			// 
 			// MainForm
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(910, 561);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+			this.ClientSize = new System.Drawing.Size(658, 351);
 			this.Controls.Add(this.dockPanel1);
 			this.Controls.Add(this.menuStrip1);
 			this.MainMenuStrip = this.menuStrip1;
@@ -167,16 +175,17 @@
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem fileMenu;
 		private System.Windows.Forms.ToolStripMenuItem editMenu;
-		private System.Windows.Forms.ToolStripMenuItem scriptMenu;
-		private System.Windows.Forms.ToolStripMenuItem executeMenu;
-		private System.Windows.Forms.ToolStripMenuItem initEngineMenu;
 		private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel1;
 		private System.Windows.Forms.ToolStripMenuItem windowMenu;
-		private System.Windows.Forms.ToolStripMenuItem editorMenu;
-		private System.Windows.Forms.ToolStripMenuItem outputMenu;
-		private System.Windows.Forms.ToolStripMenuItem refMenu;
-		private System.Windows.Forms.ToolStripMenuItem fontMenu;
+		private System.Windows.Forms.ToolStripMenuItem editorFontMenu;
 		private System.Windows.Forms.ToolStripMenuItem quitMenu;
+		private System.Windows.Forms.ToolStripMenuItem newMenu;
+		private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem scriptMenu;
+		private System.Windows.Forms.ToolStripMenuItem executeMenu;
+		private System.Windows.Forms.ToolStripMenuItem initEngeineMenu;
+		private System.Windows.Forms.ToolStripMenuItem outputFontMenu;
+		private System.Windows.Forms.ToolStripMenuItem referenceFontMenu;
 	}
 }
 
