@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace bry
 {
-	public class ScriptFolder
+	public class UiStretch : UiControl
 	{
-		public bool Exists(string path)
+		public UiStretch() 
 		{
-			return Directory.Exists(path);
 		}
 	}
 }

@@ -113,6 +113,7 @@
     <Reference Include="Microsoft.Build.Utilities.Core, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Build.Utilities.Core.15.9.20\lib\net46\Microsoft.Build.Utilities.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualStudio.Setup.Configuration.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.VisualStudio.Setup.Configuration.Interop.1.16.30\lib\net35\Microsoft.VisualStudio.Setup.Configuration.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -248,9 +249,35 @@
     <Compile Include="Form\RefForm.Designer.cs">
       <DependentUpon>RefForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Script.cs" />
-    <Compile Include="ScriptFile.cs" />
-    <Compile Include="ScriptFolder.cs" />
+    <Compile Include="UI\UiLayout.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\UiSpace.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\UiStretch.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\UiBtn.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\UiFormProp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\UiControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\UiForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\UiForm.Designer.cs">
+      <DependentUpon>UiForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WIN.cs" />
+    <Compile Include="Script\ScriptFastCopy.cs" />
+    <Compile Include="Script\Script.cs" />
+    <Compile Include="Script\ScriptFile.cs" />
+    <Compile Include="Script\ScriptFolder.cs" />
     <EmbeddedResource Include="Form\EditorForm.resx">
       <DependentUpon>EditorForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -277,6 +304,9 @@
     <EmbeddedResource Include="Avalon\JavaScript-Mode.xshd" />
     <EmbeddedResource Include="Form\RefForm.resx">
       <DependentUpon>RefForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UiForm.resx">
+      <DependentUpon>UiForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

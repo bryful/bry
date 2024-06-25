@@ -13,19 +13,48 @@ using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
 using WeifenLuo.WinFormsUI.Docking;
 using System.Diagnostics;
+using System.Reflection;
+
 namespace bry
 {
 	public partial class MainForm : Form
 	{
-		//Script Script = new Script();
+		// ************************************************************************
+		public static string GetProps(Type ct)
+		{
+			// DateTimeのプロパティ一覧を取得する
+			PropertyInfo[] p = ct.GetProperties();
 
+			string s = "";
+			foreach (var a in p)
+			{
+				if (a.CanWrite == true)
+				{
+					s += "// **************************************************************\r\n";
+					s += $"[Browsable(false)]\r\n";
+					s += $"public new {a.PropertyType.ToString()} {a.Name}\r\n";
+					s += $"{{\r\n";
+					s += $"	get {{ return base.{a.Name}; }}\r\n";
+					s += $"	set {{ base.{a.Name} = value; }}\r\n";
+					s += "}\r\n";
+				}
+			}
+			return s;
+		}
+
+		// ************************************************************************
+		Script Script = new Script();
+
+		// ************************************************************************
 		private List<EditorForm> editors = new List<EditorForm>();
-
 		private EditorForm ActiveEditor = null;
 		private OutputForm outputForm = null;
 		private RefForm refForm = null;
+		private UiForm uiForm = null;
+		// ************************************************************************
 		private ToolStripMenuItem outputMenu = new ToolStripMenuItem();
 		private ToolStripMenuItem refMenu = new ToolStripMenuItem();
+		private ToolStripMenuItem uiMenu = new ToolStripMenuItem();
 		// ************************************************************************
 		[ScriptUsage(ScriptAccess.None)]
 		public MainForm()
@@ -34,17 +63,19 @@ namespace bry
 			dockPanel1.Theme = new WeifenLuo.WinFormsUI.Docking.VS2015DarkTheme();
 			outputMenu.Text = "Output";
 			refMenu.Text = "Reference";
-			//editorForm = new EditorForm();
-			//editorForm.Text = "Editor";
-			//editorForm.HideOnClose = true;
+			uiMenu.Text = "UI";
 
 			outputForm = new OutputForm();
 			outputForm.Text = "Output";
 			outputForm.HideOnClose = true;
-
+			Script.OutputBox = outputForm.Output;
 			refForm = new RefForm();
 			refForm.Text = "Reference";
 			refForm.HideOnClose = true;
+			
+			uiForm = new UiForm();
+			uiForm.Text = "UI";
+			uiForm.HideOnClose = true;
 
 			windowMenu.Click += (sender, e) =>
 			{
@@ -72,6 +103,17 @@ namespace bry
 					refForm.Hide();
 				}
 			};
+			uiMenu.Click += (sender, e) =>
+			{
+				if (uiForm.IsHidden)
+				{
+					uiForm.Show();
+				}
+				else
+				{
+					uiForm.Hide();
+				}
+			};
 			editorFontMenu.Click += (sender, e) =>{EditorFontDialog();};
 			outputFontMenu.Click += (sender, e) => { OutputFontDialog(); };
 			referenceFontMenu.Click += (sender, e) => { RefFontDialog(); };
@@ -83,6 +125,10 @@ namespace bry
 			{
 				NewEditor();
 			};
+			closeMenu.Click += (sender, e) =>
+			{
+				CloseEditor();
+			};
 			executeMenu.Click += (sender, e) =>
 			{
 				Exec();
@@ -91,6 +137,10 @@ namespace bry
 			{
 				InitEngine();
 			};
+			InitEngine();
+
+
+			Clipboard.SetText(GetProps(typeof(UiBtn)));
 		}
 		// ************************************************************************
 		private string m_EditorFontFamily = "源ノ角ゴシック Code JP R";
@@ -177,7 +227,7 @@ namespace bry
 		{
 			EditorForm ef = new EditorForm();
 			ef.HideOnClose = true;
-			ef.OutputBox = outputForm.Output;
+			
 			ef.FontFamily = m_EditorFontFamily;
 			ef.FontSize = m_EditorFontSize;
 			ef.Text = $"Editor{editors.Count + 1}";
@@ -195,6 +245,30 @@ namespace bry
 			ActiveEditor = editors[editors.Count - 1];
 
 			return ef;
+		}
+		public void CloseEditor()
+		{
+			if (ActiveEditor == null) return;
+
+			int idx = ActiveEditor.Index;
+			editors[idx].Dispose();
+			editors.RemoveAt(idx);
+			if (editors.Count > 0)
+			{
+				for (int i = 0; i < editors.Count; i++)
+				{
+					editors[i].Index = i;
+				}
+				if (idx>=editors.Count) idx = editors.Count - 1;
+
+				editors[idx].Activate();
+				ActiveEditor = editors[idx];
+			}
+			else
+			{
+				ActiveEditor = null;
+			}
+
 		}
 		// ************************************************************************
 		private void MakeWindowMenu()
@@ -225,6 +299,9 @@ namespace bry
 			}
 			outputMenu.Checked = ! outputForm.IsHidden;
 			refMenu.Checked = !refForm.IsHidden;
+			uiMenu.Checked = !uiForm.IsHidden;
+
+			windowMenu.DropDownItems.Add(uiMenu);
 			windowMenu.DropDownItems.Add(outputMenu);
 			windowMenu.DropDownItems.Add(refMenu);
 		}
@@ -286,7 +363,8 @@ namespace bry
 			}
 			catch (Exception ee)
 			{
-				if(editors.Count==0) NewEditor();
+				uiForm.Show(dockPanel1, DockState.Document);
+				if (editors.Count==0) NewEditor();
 				if (editors.Count>0) 
 				{
 					for(int i=0; i<editors.Count; i++)
@@ -296,6 +374,7 @@ namespace bry
 				}
 				outputForm.Show(dockPanel1,DockState.DockBottom);
 				refForm.Show(dockPanel1,DockState.DockRight);
+				uiForm.Hide();
 				ret = false;
 			}
 			return ret;
@@ -319,6 +398,10 @@ namespace bry
 			else if (persistString.Equals("RefForm"))
 			{
 				return refForm;
+			}
+			else if (persistString.Equals("UiForm"))
+			{
+				return uiForm;
 			}
 			return null;
 		}
@@ -354,16 +437,13 @@ namespace bry
 		{
 			if(ActiveEditor != null)
 			{
-				ActiveEditor.Exec();
+				Script.ExecuteCode(ActiveEditor.editor.Text);
 			}
 		}
 		// ************************************************************************
 		public void InitEngine()
 		{
-			if (ActiveEditor != null)
-			{
-				ActiveEditor.InitEngine();
-			}
+			Script.Init();
 		}
 		// ************************************************************************
 		public void EditorFontDialog()

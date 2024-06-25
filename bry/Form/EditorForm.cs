@@ -11,12 +11,7 @@ namespace bry
 {
 	public partial class EditorForm : WeifenLuo.WinFormsUI.Docking.DockContent
 	{
-		public Script Script = new Script();
-		public TextBox OutputBox
-		{
-			get { return Script.OutputBox; }
-			set { Script.OutputBox = value; }
-		}
+		
 
 		public int Index { get; set; } = 0;
 		protected override string GetPersistString()
@@ -54,16 +49,7 @@ namespace bry
 		}
 		
 		
-		// ************************************************************************
-		public void Exec()
-		{
-			Script.ExecuteCode(aEdit1.Text);
-		}
-		// ************************************************************************
-		public void InitEngine()
-		{
-			Script.Init();
-		}
+		
 
 		private void EditorForm_DockStateChanged(object sender, EventArgs e)
 		{

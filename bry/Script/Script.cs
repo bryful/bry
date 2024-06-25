@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
+using System.IO;
+using System.Diagnostics;
 
 namespace bry
 {
@@ -26,8 +30,9 @@ namespace bry
 				m_outputBox = value;
 			}
 		}
-		public ScriptFile m_scriptFile = new ScriptFile();
-		public ScriptFolder m_scriptFolder = new ScriptFolder();
+		private ScriptFile m_File = new ScriptFile();
+		private ScriptFolder m_Folder = new ScriptFolder();
+		private ScriptFastCopy m_FastCopy = new ScriptFastCopy();
 		// **************************************************
 		public Script()
 		{
@@ -83,6 +88,17 @@ namespace bry
 			}
 			return ret;
 		}
+		public int length(object o)
+		{
+			int ret = -1;
+			if ((o != null)&& (o is Array))
+			{
+				ret = ((Array)o).Length;
+			}
+			return ret;
+		}
+
+		
 		// **************************************************
 		public string toHex2(byte ub)
 		{
@@ -126,6 +142,22 @@ namespace bry
 		{
 			MessageBox.Show(objectToString(o));
 		}
+		// **************************************************
+		public bool child(string cmd, string arg)
+		{
+			return WIN.ProcessStart(cmd, arg);
+			//Process.Start("EXPLORER.EXE", m_FullName);
+		}
+		// **************************************************
+		public bool childWait(string cmd, string arg)
+		{
+			return WIN.ProcessStartWait(cmd, arg);
+		}
+		public void executeFile(string p)
+		{
+			Process.Start("EXPLORER.EXE", p);
+		}
+		// **************************************************
 		// **************************************************
 		[ScriptUsage(ScriptAccess.None)]
 		public void ExecuteCode(string s)
@@ -244,7 +276,7 @@ namespace bry
 		{
 			if (engine != null) engine.Dispose();
 			engine = new V8ScriptEngine();
-			//engine.AddHostObject("dotnet", new HostTypeCollection("mscorlib", "System.Core"));
+			engine.AddHostObject("dotnet", new HostTypeCollection("mscorlib", "System.Core"));
 
 			/*
 			var typeCollection = new HostTypeCollection(
@@ -258,28 +290,26 @@ namespace bry
 				"System.Windows.Forms");
 
 			engine.AddHostObject("dotnet", typeCollection);
+			*/
 			engine.AddHostTypes(new Type[]
 			{
 				typeof(Enumerable),
 				typeof(int),
 				typeof(Int32),
+				typeof(double),
+				typeof(float),
 				typeof(String),
 				typeof(String[]),
 				typeof(Array),
 				typeof(Boolean),
 				typeof(bool),
-				typeof(Point),
-				typeof(Size),
-				typeof(Padding),
-				typeof(Rectangle),
-				typeof(Color),
-				typeof(DateTime),
-				typeof(CSForm)
+				typeof(bool[]),
+				typeof(DateTime)
 			});
-			*/
-			engine.AddHostObject("app", HostItemFlags.GlobalMembers, this);
-			engine.AddHostObject("File", HostItemFlags.DirectAccess, m_scriptFile);
-			engine.AddHostObject("Folder", HostItemFlags.DirectAccess, m_scriptFolder);
+			engine.AddHostObject("App", HostItemFlags.GlobalMembers, this);
+			engine.AddHostObject("F", HostItemFlags.PrivateAccess, m_File);
+			engine.AddHostObject("D", HostItemFlags.PrivateAccess, m_Folder);
+			engine.AddHostObject("FastCopy", HostItemFlags.PrivateAccess, m_FastCopy);
 		}
 
 	}

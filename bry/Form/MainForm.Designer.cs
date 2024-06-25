@@ -35,13 +35,14 @@
 			this.quitMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.editMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.editorFontMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.outputFontMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.referenceFontMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.windowMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.scriptMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.executeMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.initEngeineMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
-			this.outputFontMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.referenceFontMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.closeMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -63,7 +64,8 @@
 			this.fileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newMenu,
             this.openToolStripMenuItem,
-            this.quitMenu});
+            this.quitMenu,
+            this.closeMenu});
 			this.fileMenu.Name = "fileMenu";
 			this.fileMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
 			this.fileMenu.Size = new System.Drawing.Size(37, 20);
@@ -73,21 +75,21 @@
 			// 
 			this.newMenu.Name = "newMenu";
 			this.newMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-			this.newMenu.Size = new System.Drawing.Size(145, 22);
+			this.newMenu.Size = new System.Drawing.Size(180, 22);
 			this.newMenu.Text = "New";
 			// 
 			// openToolStripMenuItem
 			// 
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
 			this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.openToolStripMenuItem.Text = "Open";
 			// 
 			// quitMenu
 			// 
 			this.quitMenu.Name = "quitMenu";
 			this.quitMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-			this.quitMenu.Size = new System.Drawing.Size(145, 22);
+			this.quitMenu.Size = new System.Drawing.Size(180, 22);
 			this.quitMenu.Text = "Quit";
 			// 
 			// editMenu
@@ -103,8 +105,20 @@
 			// editorFontMenu
 			// 
 			this.editorFontMenu.Name = "editorFontMenu";
-			this.editorFontMenu.Size = new System.Drawing.Size(180, 22);
+			this.editorFontMenu.Size = new System.Drawing.Size(150, 22);
 			this.editorFontMenu.Text = "EditorFont";
+			// 
+			// outputFontMenu
+			// 
+			this.outputFontMenu.Name = "outputFontMenu";
+			this.outputFontMenu.Size = new System.Drawing.Size(150, 22);
+			this.outputFontMenu.Text = "OutputFont";
+			// 
+			// referenceFontMenu
+			// 
+			this.referenceFontMenu.Name = "referenceFontMenu";
+			this.referenceFontMenu.Size = new System.Drawing.Size(150, 22);
+			this.referenceFontMenu.Text = "ReferenceFont";
 			// 
 			// windowMenu
 			// 
@@ -125,13 +139,13 @@
 			// 
 			this.executeMenu.Name = "executeMenu";
 			this.executeMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-			this.executeMenu.Size = new System.Drawing.Size(180, 22);
+			this.executeMenu.Size = new System.Drawing.Size(154, 22);
 			this.executeMenu.Text = "Execute";
 			// 
 			// initEngeineMenu
 			// 
 			this.initEngeineMenu.Name = "initEngeineMenu";
-			this.initEngeineMenu.Size = new System.Drawing.Size(180, 22);
+			this.initEngeineMenu.Size = new System.Drawing.Size(154, 22);
 			this.initEngeineMenu.Text = "InitEngeine";
 			// 
 			// dockPanel1
@@ -142,17 +156,12 @@
 			this.dockPanel1.Size = new System.Drawing.Size(658, 327);
 			this.dockPanel1.TabIndex = 1;
 			// 
-			// outputFontMenu
+			// closeMenu
 			// 
-			this.outputFontMenu.Name = "outputFontMenu";
-			this.outputFontMenu.Size = new System.Drawing.Size(180, 22);
-			this.outputFontMenu.Text = "OutputFont";
-			// 
-			// referenceFontMenu
-			// 
-			this.referenceFontMenu.Name = "referenceFontMenu";
-			this.referenceFontMenu.Size = new System.Drawing.Size(180, 22);
-			this.referenceFontMenu.Text = "ReferenceFont";
+			this.closeMenu.Name = "closeMenu";
+			this.closeMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+			this.closeMenu.Size = new System.Drawing.Size(180, 22);
+			this.closeMenu.Text = "Close";
 			// 
 			// MainForm
 			// 
@@ -186,6 +195,7 @@
 		private System.Windows.Forms.ToolStripMenuItem initEngeineMenu;
 		private System.Windows.Forms.ToolStripMenuItem outputFontMenu;
 		private System.Windows.Forms.ToolStripMenuItem referenceFontMenu;
+		private System.Windows.Forms.ToolStripMenuItem closeMenu;
 	}
 }
 
