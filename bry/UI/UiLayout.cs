@@ -59,6 +59,38 @@ namespace bry
 			return ctrl;
 		}
 		// ***********************************************
+		public UiTextBox addLabel(string name,
+			int w = 150,
+			int h = 21,
+			SizePolicy hp = SizePolicy.Expanding,
+			SizePolicy vp = SizePolicy.Fixed)
+		{
+			UiTextBox ctrl = new UiTextBox();
+			ctrl.Name = name;
+			ctrl.Text = name;
+			ctrl.Size = new Size(w, h);
+			ctrl.SizePolicyHor = hp;
+			ctrl.SizePolicyVer = vp;
+			this.Controls.Add(ctrl);
+			return ctrl;
+		}       
+		// ***********************************************
+		public UiTextBox addTextBox(string name,
+			int w = 150,
+			int h = 31,
+			SizePolicy hp = SizePolicy.Expanding,
+			SizePolicy vp = SizePolicy.Fixed)
+		{
+			UiTextBox ctrl = new UiTextBox();
+			ctrl.Name = name;
+			ctrl.Text = name;
+			ctrl.Size = new Size(w, h);
+			ctrl.SizePolicyHor = hp;
+			ctrl.SizePolicyVer = SizePolicy.Fixed;
+			this.Controls.Add(ctrl);
+			return ctrl;
+		}
+		// ***********************************************
 		public UiSpace addSpace(string name,
 			int w = 150,
 			int h = 24,
@@ -71,6 +103,36 @@ namespace bry
 			ctrl.Size = new Size(w, h);
 			ctrl.SizePolicyHor = hp;
 			ctrl.SizePolicyVer = vp;
+			this.Controls.Add(ctrl);
+			return ctrl;
+		}
+		public UiSpace addHSpace(int h = 8,string cap="UiSpace")
+		{
+			UiSpace ctrl = new UiSpace();
+			ctrl.Name = cap;
+			ctrl.Size = new Size(100, h);
+			ctrl.SizePolicyHor = SizePolicy.Expanding;
+			ctrl.SizePolicyVer = SizePolicy.Fixed;
+			this.Controls.Add(ctrl);
+			return ctrl;
+		}
+		public UiSpace addVSpace(int h = 8, string cap = "UiSpace")
+		{
+			UiSpace ctrl = new UiSpace();
+			ctrl.Name = cap;
+			ctrl.Size = new Size(h, 100);
+			ctrl.SizePolicyHor = SizePolicy.Fixed;
+			ctrl.SizePolicyVer = SizePolicy.Expanding;
+			this.Controls.Add(ctrl);
+			return ctrl;
+		}
+		public UiSpace addStretch(string cap = "UiStretch")
+		{
+			UiSpace ctrl = new UiSpace();
+			ctrl.Name = cap;
+			ctrl.Size = new Size(100, 100);
+			ctrl.SizePolicyHor = SizePolicy.Expanding;
+			ctrl.SizePolicyVer = SizePolicy.Expanding;
 			this.Controls.Add(ctrl);
 			return ctrl;
 		}

@@ -33,6 +33,7 @@
 			this.newMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.quitMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.closeMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.editMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.editorFontMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.outputFontMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,7 +43,6 @@
 			this.executeMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.initEngeineMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
-			this.closeMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -64,8 +64,8 @@
 			this.fileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newMenu,
             this.openToolStripMenuItem,
-            this.quitMenu,
-            this.closeMenu});
+            this.closeMenu,
+            this.quitMenu});
 			this.fileMenu.Name = "fileMenu";
 			this.fileMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
 			this.fileMenu.Size = new System.Drawing.Size(37, 20);
@@ -91,6 +91,13 @@
 			this.quitMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
 			this.quitMenu.Size = new System.Drawing.Size(180, 22);
 			this.quitMenu.Text = "Quit";
+			// 
+			// closeMenu
+			// 
+			this.closeMenu.Name = "closeMenu";
+			this.closeMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
+			this.closeMenu.Size = new System.Drawing.Size(180, 22);
+			this.closeMenu.Text = "Close";
 			// 
 			// editMenu
 			// 
@@ -155,13 +162,6 @@
 			this.dockPanel1.Name = "dockPanel1";
 			this.dockPanel1.Size = new System.Drawing.Size(658, 327);
 			this.dockPanel1.TabIndex = 1;
-			// 
-			// closeMenu
-			// 
-			this.closeMenu.Name = "closeMenu";
-			this.closeMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-			this.closeMenu.Size = new System.Drawing.Size(180, 22);
-			this.closeMenu.Text = "Close";
 			// 
 			// MainForm
 			// 

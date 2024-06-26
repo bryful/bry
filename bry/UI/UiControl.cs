@@ -61,17 +61,7 @@ namespace bry
 				this.Invalidate();
 			}
 		}
-		private System.Drawing.Color m_FocusColor = Color.Red;
-		[Category("Color"), Browsable(true)]
-		public System.Drawing.Color FocusColor
-		{
-			get { return m_FocusColor; }
-			set
-			{
-				m_FocusColor = value;
-				this.Invalidate();
-			}
-		}
+
 		// **************************************************************
 		public Color ColorMul(Color c,float per)
 		{
@@ -122,12 +112,11 @@ namespace bry
 		[ScriptUsage(ScriptAccess.None)]
 		public UiControl() 
 		{
+			base.Font = new Font("源ノ角ゴシック Code JP R" , 9);
 			this.Size = new System.Drawing.Size(100,100);
 			m_StringFormat.Alignment = StringAlignment.Center;
 			m_StringFormat.LineAlignment = StringAlignment.Center;
 			this.SetStyle(
-ControlStyles.Selectable |
-ControlStyles.UserMouse |
 ControlStyles.DoubleBuffer |
 ControlStyles.UserPaint |
 ControlStyles.AllPaintingInWmPaint |
@@ -168,24 +157,15 @@ true);
 		}
 		public UiVLayout AddVLayout()
 		{
+			this.SuspendLayout();
+			this.ResumeLayout();
 			//this.Controls.Count
 			UiVLayout ly = new UiVLayout();
 			this.Controls.Add(ly);
 			return ly;
-		}       
-		// **************************************************************
-		[ScriptUsage(ScriptAccess.None)]
-		protected override void OnControlAdded(ControlEventArgs e)
-		{
-			if (e.Control is UiControl)
-			{
-
-			}
-			else
-			{
-				this.Controls.Remove(e.Control);
-			}
 		}
+		// **************************************************************
+		// **************************************************************
 
 		protected bool NowChkLayout = false;
 		[ScriptUsage(ScriptAccess.None)]
@@ -211,14 +191,9 @@ true);
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			using(SolidBrush sb = new SolidBrush(Color.Transparent))
-			using (Pen p = new Pen(m_FocusColor,1))
 			{
 				Graphics g = e.Graphics;
 				g.FillRectangle(sb, new Rectangle(0, 0, Width, Height));
-				if (this.Focused)
-				{
-					g.DrawRectangle(p, new Rectangle(0, 0, Width - 1, Height - 1));
-				}
 			}
 		}
 		#region Prop1

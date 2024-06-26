@@ -319,6 +319,7 @@ namespace bry
 				typeof(Padding),
 				typeof(UiForm),
 				typeof(UiControl),
+				typeof(UiControl []),
 				typeof(UiHLayout),
 				typeof(UiVLayout),
 				typeof(UiSpace),

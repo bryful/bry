@@ -57,14 +57,14 @@ namespace bry
 			}
 		}
 		
-		public UiHLayout addHLayout(string cap)
+		public UiHLayout addHLayout(string cap="HLayout")
 		{
 			UiHLayout ly = new UiHLayout();
 			ly.Text = cap;
 			this.Controls.Add(ly);
 			return ly;
 		}
-		public UiVLayout addVLayout(string cap)
+		public UiVLayout addVLayout(string cap = "VLayout")
 		{
 			UiVLayout ly = new UiVLayout();
 			ly.Text = cap;
@@ -84,7 +84,64 @@ namespace bry
 				this.Controls.Remove(e.Control);
 			}
 		}
+		protected override void OnResize(EventArgs e)
+		{
+			base.OnResize(e);
+			this.Invalidate();
+		}
 		// ********************************************************
-		
+		public List<UiControl> uiControlList
+		{
+			get
+			{
+				return listupControl();
+			}
+		}
+
+		public List<UiControl> listupControl()
+		{
+			List<UiControl> uiControls = new List<UiControl>();
+
+			ListupControlSub(this.Controls);
+
+			return uiControls;
+		}
+		private List<UiControl> ListupControlSub(Control.ControlCollection cc)
+		{
+			List<UiControl> uiControls = new List<UiControl>();
+
+			if(cc.Count > 0)
+			{
+				for (int i = 0;i< cc.Count; i++)
+				{
+					if (cc[i] is UiControl)
+					{
+						UiControl ccc = (UiControl)cc[i];
+						uiControls.Add(ccc);
+						if (ccc is UiLayout)
+						{
+							List<UiControl> ls = ListupControlSub(ccc.Controls);
+							uiControls.AddRange(ls);
+
+						}
+					}
+				}
+			}
+			return uiControls;
+		}
+		public string[] listToStrings(List<UiControl> a)
+		{
+			List<string> list = new List<string>();
+			foreach(UiControl cc in a)
+			{
+				list.Add(cc.Name);
+			}
+			return list.ToArray();	
+		}
+		public string[] listToStrings()
+		{
+			return listToStrings(listupControl());
+		}
+
 	}
 }

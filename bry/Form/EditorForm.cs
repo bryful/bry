@@ -45,15 +45,27 @@ namespace bry
 		public EditorForm()
 		{
 			InitializeComponent();
-			//ChkSize();
+			ChkSize();
 		}
-		
-		
-		
-
-		private void EditorForm_DockStateChanged(object sender, EventArgs e)
+		public void ChkSize()
 		{
-			//this.editor.Text = DockAreas.ToString();
+			aEdit1.Location = new Point(
+				menuStrip1.Left+2,
+				menuStrip1.Height + menuStrip1.Top+1
+				);
+			aEdit1.Size = new Size(
+				this.ClientRectangle.Width-4,
+				this.ClientRectangle.Height - 
+				(menuStrip1.Top + menuStrip1.Height+2)
+				);
 		}
+		protected override void OnResize(EventArgs e)
+		{
+			ChkSize();
+			base.OnResize(e);
+		}
+
+
+
 	}
 }
