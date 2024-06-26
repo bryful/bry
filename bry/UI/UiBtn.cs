@@ -8,16 +8,90 @@ using System.Windows.Forms;
 using WeifenLuo;
 using WeifenLuo.WinFormsUI;
 using WeifenLuo.WinFormsUI.Docking;
+using Microsoft.ClearScript;
+using Microsoft.ClearScript.JavaScript;
+using Microsoft.ClearScript.V8;
+using System.Windows;
 
 namespace bry
 {
 	public class UiBtn : UiControl
 	{
+		
+		private bool m_IsPushed = false;
+		[ScriptUsage(ScriptAccess.None)]
 		public UiBtn()
 		{
+			m_IsPushed = false;
 			base.Size = new System.Drawing.Size(75, 20);
 		}
 		// ****************************************************
+		[ScriptUsage(ScriptAccess.None)]
+		protected override void OnPaint(PaintEventArgs e)
+		{
+			base.OnPaint(e);
+			Graphics g = e.Graphics;
+			using(SolidBrush sb  = new SolidBrush(BackColor))
+			using (Pen p = new Pen(ForeColor, 1))
+			{
+				Rectangle rct = new Rectangle(
+					Margin.Left,
+					Margin.Top,
+					this.Width - (Margin.Left + Margin.Right)-1,
+					this.Height - (Margin.Top + Margin.Bottom)-1
+					);
+				if (m_IsPushed==true)
+				{
+					sb.Color = ColorMul(MainColor,50);
+				}
+				else
+				{
+					sb.Color = MainColor;
+				}
+				g.FillRectangle(sb, rct);
+
+				if (m_IsPushed == true)
+				{
+					sb.Color = ColorMul(ForeColor, 250);
+				}
+				else
+				{
+					sb.Color = ForeColor;
+				}
+				g.DrawString(this.Text, this.Font, sb, rct, m_StringFormat);
+				
+				p.Color = ForeColor;
+				g.DrawRectangle(p,rct);
+
+
+			}
+		}
+		// **************************************************************
+		protected override void OnMouseDown(MouseEventArgs e)
+		{
+			base.OnMouseDown(e);
+			m_IsPushed = true;
+			this.Invalidate();
+		}
+		// **************************************************************
+		protected override void OnMouseLeave(EventArgs e)
+		{
+			base.OnMouseLeave(e);
+			if (m_IsPushed==true)
+			{
+				m_IsPushed = false;
+				this.Invalidate();
+			}
+		}
+		protected override void OnMouseUp(MouseEventArgs e)
+		{
+			if (m_IsPushed == true)
+			{
+				m_IsPushed = false;
+				this.Invalidate();
+			}
+			base.OnMouseUp(e);
+		}
 		// **************************************************************
 		#region Prop1
 		[Browsable(false)]
@@ -80,7 +154,11 @@ namespace bry
 		public new System.Drawing.Color BackColor
 		{
 			get { return base.BackColor; }
-			set { base.BackColor = value; }
+			set 
+			{ 
+				base.BackColor = value; 
+				this.Invalidate();
+			}
 		}
 		// **************************************************************
 		[Browsable(false)]
@@ -178,7 +256,11 @@ namespace bry
 		public new System.Drawing.Color ForeColor
 		{
 			get { return base.ForeColor; }
-			set { base.ForeColor = value; }
+			set 
+			{ 
+				base.ForeColor = value; 
+				this.Invalidate();
+			}
 		}
 		// **************************************************************
 		[Browsable(false)]

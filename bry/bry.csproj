@@ -249,13 +249,16 @@
     <Compile Include="Form\RefForm.Designer.cs">
       <DependentUpon>RefForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\UiLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\UiHLayout.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\UiLayout.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\UiSpace.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\UiStretch.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\UiBtn.cs">
@@ -272,6 +275,9 @@
     </Compile>
     <Compile Include="UI\UiForm.Designer.cs">
       <DependentUpon>UiForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UiVLayout.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="WIN.cs" />
     <Compile Include="Script\ScriptFastCopy.cs" />

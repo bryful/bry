@@ -8,19 +8,17 @@ using System.Windows.Forms;
 using WeifenLuo;
 using WeifenLuo.WinFormsUI;
 using WeifenLuo.WinFormsUI.Docking;
-
+using Microsoft.ClearScript;
+using Microsoft.ClearScript.JavaScript;
+using Microsoft.ClearScript.V8;
 namespace bry
 {
 	public class UiControl :Control
 	{
-		// ***************************************************
-		public event EventHandler SizePolicyChanged;
-		protected virtual void OnSizePolicyChanged(EventArgs e)
-		{
-			SizePolicyChanged?.Invoke(this, e);
-		}
+		
 		// ***************************************************
 		private SizePolicy m_SizePolicyHor = SizePolicy.Fixed;
+		[Category("UI"), Browsable(true)]
 		public SizePolicy SizePolicyHor
 		{
 			get { return m_SizePolicyHor; }
@@ -28,10 +26,15 @@ namespace bry
 			{
 				bool b = m_SizePolicyHor != value;
 				m_SizePolicyHor = value;
-				if(b) OnSizePolicyChanged(new EventArgs());
+				if (b)
+				{
+					//OnSizePolicyChanged(new EventArgs());
+					ChkParentLayout();
+				}
 			}
 		}
 		private SizePolicy m_SizePolicyVer = SizePolicy.Fixed;
+		[Category("UI"), Browsable(true)]
 		public SizePolicy SizePolicyVer
 		{
 			get { return m_SizePolicyVer; }
@@ -39,13 +42,101 @@ namespace bry
 			{
 				bool b = m_SizePolicyVer != value;
 				m_SizePolicyVer = value;
-				if (b) OnSizePolicyChanged(new EventArgs());
+				if (b)
+				{
+					//OnSizePolicyChanged(new EventArgs());
+					ChkParentLayout();
+				}
 			}
 		}
+		// **************************************************************
+		private System.Drawing.Color m_MainColor = Color.LightGray;
+		[Category("Color"), Browsable(true)]
+		public System.Drawing.Color MainColor
+		{
+			get { return m_MainColor; }
+			set
+			{
+				m_MainColor = value;
+				this.Invalidate();
+			}
+		}
+		private System.Drawing.Color m_FocusColor = Color.Red;
+		[Category("Color"), Browsable(true)]
+		public System.Drawing.Color FocusColor
+		{
+			get { return m_FocusColor; }
+			set
+			{
+				m_FocusColor = value;
+				this.Invalidate();
+			}
+		}
+		// **************************************************************
+		public Color ColorMul(Color c,float per)
+		{
+			float r = (float)c.R * per/100;
+			if (r < 0) r = 0; else if (r > 255) r = 255;
+			float g = (float)c.G * per/100;
+			if (g < 0) g = 0; else if (g > 255) g = 255;
+			float b = (float)c.B * per/100;
+			if (b < 0) b = 0; else if (b > 255) b = 255;
+
+			return Color.FromArgb((int)r,(int)g,(int)b);
+		}
+		// **************************************************************
+		[Category("UI"), Browsable(true)]
+		public float FontSize
+		{
+			get { return base.Font.Size; }
+			set
+			{
+				base.Font = 
+					new Font(base.Font.Name,value,base.Font.Style);
+				this.Invalidate();
+			}
+		}
+		// **************************************************************
+		protected StringFormat m_StringFormat = new StringFormat();
+		[Category("UI"), Browsable(true)]
+		public StringAlignment Alignment
+		{
+			get { return m_StringFormat.Alignment; }
+			set 
+			{ 
+				m_StringFormat.Alignment =value; 
+				this.Invalidate();
+			}
+		}
+		[Category("UI"), Browsable(true)]
+		public StringAlignment LineAlignment
+		{
+			get { return m_StringFormat.LineAlignment; }
+			set
+			{
+				m_StringFormat.LineAlignment = value;
+				this.Invalidate();
+			}
+		}
+		// **************************************************************
+		[ScriptUsage(ScriptAccess.None)]
 		public UiControl() 
 		{
 			this.Size = new System.Drawing.Size(100,100);
+			m_StringFormat.Alignment = StringAlignment.Center;
+			m_StringFormat.LineAlignment = StringAlignment.Center;
+			this.SetStyle(
+ControlStyles.Selectable |
+ControlStyles.UserMouse |
+ControlStyles.DoubleBuffer |
+ControlStyles.UserPaint |
+ControlStyles.AllPaintingInWmPaint |
+ControlStyles.SupportsTransparentBackColor,
+true);
+			this.UpdateStyles();
+			base.BackColor = Color.Transparent;
 		}
+		// **************************************************************
 		public void ClearControls()
 		{
 			ClearSub(this.Controls);
@@ -58,7 +149,7 @@ namespace bry
 				for (int i = c.Count - 1; i >= 0; i--)
 				{
 					Control cc = c[i];
-					if ((cc is Panel) || (cc is GroupBox) || (cc is UiLayout))
+					if ((cc is Panel) || (cc is GroupBox) || (cc is UiHLayout))
 					{
 						ClearSub(cc.Controls);
 					}
@@ -69,6 +160,67 @@ namespace bry
 			}
 		}
 		// **************************************************************
+		public UiHLayout AddHLayout()
+		{
+			UiHLayout ly = new UiHLayout();
+			this.Controls.Add(ly);
+			return ly;
+		}
+		public UiVLayout AddVLayout()
+		{
+			//this.Controls.Count
+			UiVLayout ly = new UiVLayout();
+			this.Controls.Add(ly);
+			return ly;
+		}       
+		// **************************************************************
+		[ScriptUsage(ScriptAccess.None)]
+		protected override void OnControlAdded(ControlEventArgs e)
+		{
+			if (e.Control is UiControl)
+			{
+
+			}
+			else
+			{
+				this.Controls.Remove(e.Control);
+			}
+		}
+
+		protected bool NowChkLayout = false;
+		[ScriptUsage(ScriptAccess.None)]
+		protected virtual void ChkLayout()
+		{
+		}
+		public void layouter()
+		{
+			ChkLayout();
+		}
+		protected override void OnResize(EventArgs e)
+		{
+			base.OnResize(e);
+			ChkParentLayout();
+		}
+		public void ChkParentLayout()
+		{
+			if ((this.Parent != null) && (this.Parent is UiControl))
+			{
+				((UiControl)this.Parent).ChkLayout();
+			}
+		}
+		protected override void OnPaint(PaintEventArgs e)
+		{
+			using(SolidBrush sb = new SolidBrush(Color.Transparent))
+			using (Pen p = new Pen(m_FocusColor,1))
+			{
+				Graphics g = e.Graphics;
+				g.FillRectangle(sb, new Rectangle(0, 0, Width, Height));
+				if (this.Focused)
+				{
+					g.DrawRectangle(p, new Rectangle(0, 0, Width - 1, Height - 1));
+				}
+			}
+		}
 		#region Prop1
 		[Browsable(false)]
 		public new System.String AccessibleDefaultActionDescription
@@ -263,7 +415,7 @@ namespace bry
 		public new System.Windows.Forms.Padding Margin
 		{
 			get { return base.Margin; }
-			set { base.Margin = value; }
+			set { base.Margin = value; this.Invalidate(); }
 		}
 		// **************************************************************
 		[Browsable(true)]
@@ -389,7 +541,7 @@ namespace bry
 		public new System.Windows.Forms.Padding Padding
 		{
 			get { return base.Padding; }
-			set { base.Padding = value; }
+			set { base.Padding = value;this.Invalidate(); }
 		}
 		// **************************************************************
 		[Browsable(false)]
@@ -400,18 +552,12 @@ namespace bry
 		}
 
 		#endregion
+
 	}
 	public enum SizePolicy
 	{
-		Fixed,
-		Expanding,
+		Fixed = 0,
+		Expanding = 1,
 	}
-	public enum LayoutOrient
-	{
-		Horizontal,
-		Vertical,
-		Grid
-	}
-
-
+	
 }

@@ -14,6 +14,7 @@ using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
 using System.IO;
 using System.Diagnostics;
+using System.Drawing.Printing;
 
 namespace bry
 {
@@ -33,9 +34,12 @@ namespace bry
 		private ScriptFile m_File = new ScriptFile();
 		private ScriptFolder m_Folder = new ScriptFolder();
 		private ScriptFastCopy m_FastCopy = new ScriptFastCopy();
+		private UiForm m_UiForm = null;
 		// **************************************************
-		public Script()
+		[ScriptUsage(ScriptAccess.None)]
+		public Script(UiForm uiForm=null)
 		{
+			m_UiForm = uiForm;
 		}
 		// **************************************************
 		public void write(object s)
@@ -174,7 +178,6 @@ namespace bry
 			}
 		}
 		// **************************************************
-		[ScriptUsage(ScriptAccess.None)]
 		static public string ScriptObjectStr(Object so)
 		{
 			string ret = "";
@@ -272,9 +275,13 @@ namespace bry
 		}
 		// ************************************************************************
 		[ScriptUsage(ScriptAccess.None)]
-		public void Init()
+		public void Init(UiForm uif = null)
 		{
-			if (engine != null) engine.Dispose();
+            if (uif!=null)
+            {
+				m_UiForm = uif;
+            }
+            if (engine != null) engine.Dispose();
 			engine = new V8ScriptEngine();
 			engine.AddHostObject("dotnet", new HostTypeCollection("mscorlib", "System.Core"));
 
@@ -304,12 +311,32 @@ namespace bry
 				typeof(Boolean),
 				typeof(bool),
 				typeof(bool[]),
-				typeof(DateTime)
+				typeof(DateTime),
+				typeof(Point),
+				typeof(Color),
+				typeof(Size),
+				typeof(Rectangle),
+				typeof(Padding),
+				typeof(UiForm),
+				typeof(UiControl),
+				typeof(UiHLayout),
+				typeof(UiVLayout),
+				typeof(UiSpace),
+				typeof(UiBtn),
+				typeof(UiLabel),
+				typeof(SizePolicy),
+				typeof(StringAlignment),
+
 			});
 			engine.AddHostObject("App", HostItemFlags.GlobalMembers, this);
 			engine.AddHostObject("F", HostItemFlags.PrivateAccess, m_File);
 			engine.AddHostObject("D", HostItemFlags.PrivateAccess, m_Folder);
 			engine.AddHostObject("FastCopy", HostItemFlags.PrivateAccess, m_FastCopy);
+
+			if(m_UiForm != null)
+			{
+				engine.AddHostObject("UI", HostItemFlags.PrivateAccess, m_UiForm);
+			}
 		}
 
 	}

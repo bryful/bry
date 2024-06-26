@@ -443,7 +443,7 @@ namespace bry
 		// ************************************************************************
 		public void InitEngine()
 		{
-			Script.Init();
+			Script.Init(uiForm);
 		}
 		// ************************************************************************
 		public void EditorFontDialog()

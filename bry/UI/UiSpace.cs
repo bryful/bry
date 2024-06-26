@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
+using WeifenLuo;
+using WeifenLuo.WinFormsUI;
+using WeifenLuo.WinFormsUI.Docking;
+using Microsoft.ClearScript;
+using Microsoft.ClearScript.JavaScript;
+using Microsoft.ClearScript.V8;
+using System.Windows;
+
 
 namespace bry
 {
 	public class UiSpace : UiControl
 	{
-		private int m_Space = 8;
-		public int Space
-		{
-			get { return m_Space; }
-			set 
-			{
-				if(m_Space!=value)
-				{
-					m_Space = value;
-					OnSizePolicyChanged(new EventArgs());
-				}
-			}
-		}
+		[ScriptUsage(ScriptAccess.None)]
 		public UiSpace() 
 		{
+			SizePolicyHor = SizePolicy.Expanding;
+			SizePolicyVer = SizePolicy.Expanding;
 		}
 	}
 }
