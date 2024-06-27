@@ -57,19 +57,174 @@ namespace bry
 			}
 		}
 		
-		public UiHLayout addHLayout(string cap="HLayout")
+		public UiHLayout addHLayout()
 		{
-			UiHLayout ly = new UiHLayout();
-			ly.Text = cap;
+			UiHLayout ly = newHLayout();
 			this.Controls.Add(ly);
 			return ly;
 		}
-		public UiVLayout addVLayout(string cap = "VLayout")
+		public UiVLayout addVLayout()
 		{
-			UiVLayout ly = new UiVLayout();
-			ly.Text = cap;
+			UiVLayout ly = newVLayout();
 			this.Controls.Add(ly);
 			return ly;
+		}
+		public void initLayout()
+		{
+			if (this.Controls.Count > 0)
+			{
+				for(int i = 0; i < this.Controls.Count; i++)
+				{
+					if (this.Controls[i] is UiLayout)
+					{
+						UiLayout yi = (UiLayout)this.Controls[i];
+						yi.Dock = DockStyle.Fill;
+						yi.layouter();
+					}
+				}
+			}
+		}
+		// ********************************************************
+		public UiBtn newBtn(
+			string tx = "",
+			int w = 150,
+			int h = 24,
+			SizePolicy hp = SizePolicy.Fixed,
+			SizePolicy vp = SizePolicy.Fixed)
+		{
+			UiBtn ctrl = new UiBtn();
+			ctrl.Name = CanUseName("btn");
+			if (tx == "") tx = ctrl.Name;
+			ctrl.Text = tx;
+			ctrl.Size = new Size(w, h);
+			ctrl.SizePolicyHor = hp;
+			ctrl.SizePolicyVer = vp;
+			return ctrl;
+		}
+		public UiLabel newLabel(
+			string tx = "",
+			int w = 150,
+			int h = 24,
+			SizePolicy hp = SizePolicy.Fixed,
+			SizePolicy vp = SizePolicy.Fixed)
+		{
+			UiLabel ctrl = new UiLabel();
+			ctrl.Name = CanUseName("label");
+			if (tx == "") tx = ctrl.Name;
+			ctrl.Text = tx;
+			ctrl.Size = new Size(w, h);
+			ctrl.SizePolicyHor = hp;
+			ctrl.SizePolicyVer = vp;
+			return ctrl;
+		}
+		public UiHLayout newHLayout(
+			string tx = "",
+			int w = 8,
+			int h = 8,
+			SizePolicy hp = SizePolicy.Expanding,
+			SizePolicy vp = SizePolicy.Expanding)
+		{
+			UiHLayout ctrl = new UiHLayout();
+			ctrl.Name = CanUseName("hlayout");
+			ctrl.Text = tx;
+			ctrl.Size = new Size(w, h);
+			ctrl.SizePolicyHor = hp;
+			ctrl.SizePolicyVer = vp;
+			return ctrl;
+		}
+		public UiVLayout newVLayout(
+			string tx = "",
+			int w = 8,
+			int h = 8,
+			SizePolicy hp = SizePolicy.Expanding,
+			SizePolicy vp = SizePolicy.Expanding)
+		{
+			UiVLayout ctrl = new UiVLayout();
+			ctrl.Name = CanUseName("vlayout");
+			ctrl.Text = tx;
+			ctrl.Size = new Size(w, h);
+			ctrl.SizePolicyHor = hp;
+			ctrl.SizePolicyVer = vp;
+			return ctrl;
+		}
+		public UiSpace newSpace(
+			string tx = "",
+			int w = 8,
+			int h = 8,
+			SizePolicy hp = SizePolicy.Expanding,
+			SizePolicy vp = SizePolicy.Expanding)
+		{
+			UiSpace ctrl = new UiSpace();
+			ctrl.Name = CanUseName("space");
+			ctrl.Text = tx;
+			ctrl.Size = new Size(w, h);
+			ctrl.SizePolicyHor = hp;
+			ctrl.SizePolicyVer = vp;
+			return ctrl;
+		}
+		public UiTextBox newTextBox(
+			string tx = "",
+			int w = 8,
+			int h = 8,
+			SizePolicy hp = SizePolicy.Expanding,
+			SizePolicy vp = SizePolicy.Expanding)
+		{
+			UiTextBox ctrl = new UiTextBox();
+			ctrl.Name = CanUseName("textbox");
+			if (tx == "") tx = ctrl.Name;
+			ctrl.Text = tx;
+			ctrl.Size = new Size(w, h);
+			ctrl.SizePolicyHor = hp;
+			ctrl.SizePolicyVer = vp;
+			return ctrl;
+		}
+		// ********************************************************
+		public string CanUseName(string key)
+		{
+			List<string> mkeys = FindKeyFromControls(this.Controls,key);
+			if (mkeys.Count==0)
+			{
+				return key + "1";
+			}
+			int idx = 0;
+			for(int i = 0;i<mkeys.Count;i++)
+			{
+				string n = mkeys[i].Substring(key.Length).Trim();
+				int v = 0;
+				if (int.TryParse(n,out v))
+				{
+					if (idx<v) idx= v;
+				}
+			}
+			return $"{key}{idx+1}";
+		}
+		private List<string> FindKeyFromControls(Control.ControlCollection cc,string key)
+		{
+			List<string> ret = new List<string>();
+
+			key = key.ToLower();
+			if (cc.Count > 0)
+			{
+				foreach(Control c in cc)
+				{
+					if (c is UiControl)
+					{
+						if (c.Name.ToLower().IndexOf(key)==0)
+						{
+							ret.Add(c.Name);
+						}
+					}
+					if (c is UiLayout)
+					{
+						List<string> ret2 = FindKeyFromControls(c.Controls, key);
+						if (ret2.Count > 0)
+						{
+							ret.AddRange(ret2);
+						}
+					}
+				}
+			}
+			return ret;
 		}
 		// ********************************************************
 		[ScriptUsage(ScriptAccess.None)]

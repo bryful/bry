@@ -18,6 +18,7 @@ namespace bry
 	{
 		public UiLabel() 
 		{
+			
 			LineAlignment = StringAlignment.Center;
 			Alignment = StringAlignment.Near;
 			this.SetStyle(

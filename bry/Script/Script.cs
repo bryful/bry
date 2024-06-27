@@ -284,7 +284,7 @@ namespace bry
             if (engine != null) engine.Dispose();
 			engine = new V8ScriptEngine();
 			engine.AddHostObject("dotnet", new HostTypeCollection("mscorlib", "System.Core"));
-
+			engine.AddHostObject("host", new HostFunctions());
 			/*
 			var typeCollection = new HostTypeCollection(
 				"mscorlib",
@@ -319,7 +319,7 @@ namespace bry
 				typeof(Padding),
 				typeof(UiForm),
 				typeof(UiControl),
-				typeof(UiControl []),
+				typeof(UiControl[]),
 				typeof(UiHLayout),
 				typeof(UiVLayout),
 				typeof(UiSpace),

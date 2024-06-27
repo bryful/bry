@@ -43,11 +43,13 @@ namespace bry
 
 		}
 		// ***********************************************
-		public UiBtn addBtn(string name,
-			int w = 150,
-			int h = 24,
-			SizePolicy hp = SizePolicy.Expanding, 
-			SizePolicy vp = SizePolicy.Expanding) 
+		public void add(UiControl control)
+		{
+			this.Controls.Add(control);
+			ChkLayout();
+		}
+		/*
+		public UiBtn addBtn() 
 		{
 			UiBtn ctrl = new UiBtn();
 			ctrl.Name = name;
@@ -136,6 +138,7 @@ namespace bry
 			this.Controls.Add(ctrl);
 			return ctrl;
 		}
+		*/
 		// ****************************************************
 		protected override void OnControlAdded(ControlEventArgs e)
 		{

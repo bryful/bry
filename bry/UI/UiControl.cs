@@ -148,22 +148,7 @@ true);
 				c.Clear();
 			}
 		}
-		// **************************************************************
-		public UiHLayout AddHLayout()
-		{
-			UiHLayout ly = new UiHLayout();
-			this.Controls.Add(ly);
-			return ly;
-		}
-		public UiVLayout AddVLayout()
-		{
-			this.SuspendLayout();
-			this.ResumeLayout();
-			//this.Controls.Count
-			UiVLayout ly = new UiVLayout();
-			this.Controls.Add(ly);
-			return ly;
-		}
+
 		// **************************************************************
 		// **************************************************************
 
@@ -175,6 +160,17 @@ true);
 		public void layouter()
 		{
 			ChkLayout();
+			if(this.Controls.Count > 0)
+			{
+				for(int i = 0; i < this.Controls.Count; i++)
+				{
+					if (this.Controls[i] is UiLayout)
+					{
+						UiLayout c = (UiLayout)this.Controls[i];
+						c.layouter();
+					}
+				}
+			}
 		}
 		protected override void OnResize(EventArgs e)
 		{
