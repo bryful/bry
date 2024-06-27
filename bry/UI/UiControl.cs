@@ -50,6 +50,29 @@ namespace bry
 			}
 		}
 		// **************************************************************
+		private Rectangle m_TrueClientRect = new Rectangle();
+		public Rectangle TrueClientRect
+		{
+			get { return m_TrueClientRect; }
+		}
+		private void ChkTrueClientRect()
+		{
+			int w = this.ClientRectangle.Width;
+			int h = this.ClientRectangle.Height;
+			int l = this.ClientRectangle.Left;
+			int t = this.ClientRectangle.Top;
+			// Margin補正
+			w -= (this.Margin.Left + this.Margin.Right);
+			h -= (this.Margin.Top + this.Margin.Bottom);
+			l += (this.Margin.Left);
+			t += (this.Margin.Top);
+			w -= (this.Padding.Left + this.Padding.Right);
+			h -= (this.Padding.Top + this.Padding.Bottom);
+			l += (this.Padding.Left);
+			t += (this.Padding.Top);
+			m_TrueClientRect = new Rectangle(l, t, w, h);
+		}
+		// **************************************************************
 		private System.Drawing.Color m_MainColor = Color.LightGray;
 		[Category("Color"), Browsable(true)]
 		public System.Drawing.Color MainColor
@@ -124,42 +147,20 @@ ControlStyles.SupportsTransparentBackColor,
 true);
 			this.UpdateStyles();
 			base.BackColor = Color.Transparent;
+			ChkTrueClientRect();
 		}
 		// **************************************************************
-		public void ClearControls()
-		{
-			ClearSub(this.Controls);
-			this.Controls.Clear();
-		}
-		private void ClearSub(Control.ControlCollection c)
-		{
-			if (c.Count > 0)
-			{
-				for (int i = c.Count - 1; i >= 0; i--)
-				{
-					Control cc = c[i];
-					if ((cc is Panel) || (cc is GroupBox) || (cc is UiHLayout))
-					{
-						ClearSub(cc.Controls);
-					}
-					cc.Dispose();
-					c.RemoveAt(i);
-				}
-				c.Clear();
-			}
-		}
-
-		// **************************************************************
-		// **************************************************************
+		
 
 		protected bool NowChkLayout = false;
 		[ScriptUsage(ScriptAccess.None)]
 		protected virtual void ChkLayout()
 		{
 		}
-		public void layouter()
+		public void callChkLayout()
 		{
 			ChkLayout();
+			/*
 			if(this.Controls.Count > 0)
 			{
 				for(int i = 0; i < this.Controls.Count; i++)
@@ -167,23 +168,26 @@ true);
 					if (this.Controls[i] is UiLayout)
 					{
 						UiLayout c = (UiLayout)this.Controls[i];
-						c.layouter();
+						c.callChkLayout();
 					}
 				}
 			}
+			*/
 		}
 		protected override void OnResize(EventArgs e)
 		{
 			base.OnResize(e);
-			ChkParentLayout();
+			ChkTrueClientRect();
+			
 		}
 		public void ChkParentLayout()
 		{
-			if ((this.Parent != null) && (this.Parent is UiControl))
+			if ((this.Parent != null) && (this.Parent is UiLayout))
 			{
-				((UiControl)this.Parent).ChkLayout();
+				((UiLayout)this.Parent).ChkLayout();
 			}
 		}
+		// ****************************************************************
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			using(SolidBrush sb = new SolidBrush(Color.Transparent))
@@ -192,6 +196,64 @@ true);
 				g.FillRectangle(sb, new Rectangle(0, 0, Width, Height));
 			}
 		}
+		// ****************************************************************
+		public void SetFillSize()
+		{
+			if(this.Parent == null) return;
+			if((this.Parent is UiControl) || (this.Parent is UiForm))
+			{
+				Rectangle r = ((UiControl)this.Parent).TrueClientRect;
+				this.Location = r.Location;
+				this.Size = r.Size;
+			}
+		
+		}
+		public void SetHorFill()
+		{
+			if (this.Parent == null) return;
+			if ((this.Parent is UiControl) || (this.Parent is UiForm))
+			{
+				Rectangle r = ((UiControl)this.Parent).TrueClientRect;
+				this.Left = r.Left;
+				this.Width = r.Width;
+			}
+
+		}
+		public void SetHorCenter()
+		{
+			if (this.Parent == null) return;
+			if ((this.Parent is UiControl) || (this.Parent is UiForm))
+			{
+				Rectangle r = ((UiControl)this.Parent).TrueClientRect;
+				if (this.Width > r.Width) this.Width = r.Width;
+				this.Left = (r.Width - this.Width) /2 + r.Left;
+			}
+
+		}
+		public void SetVerFill()
+		{
+			if (this.Parent == null) return;
+			if ((this.Parent is UiControl) || (this.Parent is UiForm))
+			{
+				Rectangle r = ((UiControl)this.Parent).TrueClientRect;
+				this.Top = r.Top;
+				this.Height = r.Height;
+			}
+
+		}
+		public void SetVerCenter()
+		{
+			if (this.Parent == null) return;
+			if ((this.Parent is UiControl) && (this.Parent is UiForm))
+			{
+				Rectangle r = ((UiControl)this.Parent).TrueClientRect;
+				if (this.Height>r.Height) this.Height = r.Height;
+				this.Top = (r.Height - this.Height)/2 + r.Top;
+			}
+
+		}
+
+		// ****************************************************************
 		#region Prop1
 		[Browsable(false)]
 		public new System.String AccessibleDefaultActionDescription
@@ -523,6 +585,7 @@ true);
 		}
 
 		#endregion
+		// ****************************************************************
 
 	}
 	public enum SizePolicy

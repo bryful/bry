@@ -53,6 +53,7 @@ namespace bry
 			set
 			{
 				base.FontSize = value;
+				m_TextBox.Font = base.Font;
 				ChkSize();
 				this.Invalidate();
 			}

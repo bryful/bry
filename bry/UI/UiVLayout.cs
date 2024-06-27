@@ -20,22 +20,13 @@ namespace bry
 		[ScriptUsage(ScriptAccess.None)]
 		public UiVLayout() 
 		{
-			this.Dock = System.Windows.Forms.DockStyle.Fill;
 		}
 		protected override void ChkLayout()
 		{
-
+			if (NowChkLayout) return;
 			if (this.Controls.Count <= 0) return;
-			if (NowChkLayout == true) return;
 			NowChkLayout = true;
-			//実際の範囲
-			Rectangle tr = new Rectangle(
-				Padding.Left + Margin.Left,
-				Padding.Top + Margin.Top,
-				this.Width - (Padding.Left + Padding.Right + Margin.Left + Margin.Right),
-				this.Height - (Padding.Top + Padding.Bottom + Margin.Top + Margin.Bottom)
-
-				);
+			Rectangle rct = TrueClientRect;
 
 
 			//固定幅の合計
@@ -62,58 +53,47 @@ namespace bry
 			}
 			//可変幅の計算
 			int hExpanding = 0;
+			int allFixed = 0;
 			if (ec > 0)
 			{
-				hExpanding = (tr.Height - hfix) / ec;
+				hExpanding = (rct.Height - hfix) / ec;
 				if (hExpanding < 0) hExpanding = 0;
 			}
-			//実際の大きさ変更
+			else
+			{
+				allFixed = (rct.Height - hfix)/(fc+1);
+			}
 
-			int top = Padding.Top+Margin.Top;
-
+			int y = rct.Top+ allFixed;
 			for (int i = 0; i < this.Controls.Count; i++)
 			{
 				if (this.Controls[i] is UiControl)
 				{
 					UiControl uc = (UiControl)this.Controls[i];
 					if (uc == null) continue;
-					int w = uc.Width;
-					if (w > tr.Width) w = tr.Width;
-					int h = uc.Height;
-					if (h > tr.Height) h = tr.Height;
-					//top
-					int x = 0;
+
 					if (uc.SizePolicyVer == SizePolicy.Fixed)
 					{
-						if (uc.SizePolicyHor == SizePolicy.Fixed)
-						{
-							x = (tr.Width - w)/2 + tr.Left;
-						}
-						else
-						{
-							x = tr.Left;
-							w = tr.Width;
-						}
+
 					}
 					else if (uc.SizePolicyVer == SizePolicy.Expanding)
 					{
-						h = hExpanding;
-						if (uc.SizePolicyHor == SizePolicy.Fixed)
-						{
-							x = (tr.Width - w)/2 + tr.Left;
-						}
-						else
-						{
-							x= tr.Left;
-							w = tr.Width;
-						}
+						uc.Height = hExpanding;
 					}
-					uc.Location = new Point(x, top);
-					uc.Size = new Size(w, h);
-					top += h;
+					if (uc.SizePolicyHor == SizePolicy.Fixed)
+					{
+						uc.SetHorCenter();
+					}
+					else
+					{
+						uc.SetHorFill();
+					}
+					uc.Top = y;
+					y += uc.Height+ allFixed;
 				}
 			}
 			NowChkLayout = false;
+
 		}
 	}
 }

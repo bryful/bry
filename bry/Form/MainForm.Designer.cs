@@ -32,8 +32,8 @@
 			this.fileMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.newMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.quitMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.closeMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.quitMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.editMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.editorFontMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.outputFontMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,6 +43,7 @@
 			this.executeMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.initEngeineMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -53,6 +54,7 @@
             this.editMenu,
             this.windowMenu,
             this.scriptMenu});
+			this.menuStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(658, 24);
@@ -75,29 +77,29 @@
 			// 
 			this.newMenu.Name = "newMenu";
 			this.newMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-			this.newMenu.Size = new System.Drawing.Size(180, 22);
+			this.newMenu.Size = new System.Drawing.Size(146, 22);
 			this.newMenu.Text = "New";
 			// 
 			// openToolStripMenuItem
 			// 
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
 			this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
 			this.openToolStripMenuItem.Text = "Open";
-			// 
-			// quitMenu
-			// 
-			this.quitMenu.Name = "quitMenu";
-			this.quitMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-			this.quitMenu.Size = new System.Drawing.Size(180, 22);
-			this.quitMenu.Text = "Quit";
 			// 
 			// closeMenu
 			// 
 			this.closeMenu.Name = "closeMenu";
 			this.closeMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.W)));
-			this.closeMenu.Size = new System.Drawing.Size(180, 22);
+			this.closeMenu.Size = new System.Drawing.Size(146, 22);
 			this.closeMenu.Text = "Close";
+			// 
+			// quitMenu
+			// 
+			this.quitMenu.Name = "quitMenu";
+			this.quitMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
+			this.quitMenu.Size = new System.Drawing.Size(146, 22);
+			this.quitMenu.Text = "Quit";
 			// 
 			// editMenu
 			// 
@@ -163,10 +165,19 @@
 			this.dockPanel1.Size = new System.Drawing.Size(658, 327);
 			this.dockPanel1.TabIndex = 1;
 			// 
+			// statusStrip1
+			// 
+			this.statusStrip1.Location = new System.Drawing.Point(0, 329);
+			this.statusStrip1.Name = "statusStrip1";
+			this.statusStrip1.Size = new System.Drawing.Size(658, 22);
+			this.statusStrip1.TabIndex = 2;
+			this.statusStrip1.Text = "statusStrip1";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
 			this.ClientSize = new System.Drawing.Size(658, 351);
+			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.dockPanel1);
 			this.Controls.Add(this.menuStrip1);
 			this.MainMenuStrip = this.menuStrip1;
@@ -196,6 +207,7 @@
 		private System.Windows.Forms.ToolStripMenuItem outputFontMenu;
 		private System.Windows.Forms.ToolStripMenuItem referenceFontMenu;
 		private System.Windows.Forms.ToolStripMenuItem closeMenu;
+		private System.Windows.Forms.StatusStrip statusStrip1;
 	}
 }
 

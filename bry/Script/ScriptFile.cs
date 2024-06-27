@@ -26,6 +26,55 @@ namespace bry
 			}
 			return ret;
 		}
+		private int NumStart(string s)
+		{
+			int ret = -1;
+			int cnt = s.Length;
+			if(cnt!=0)
+			{
+				for(int i = cnt-1; i>=0;i++)
+				{
+					char c = s[i];
+					if (c>='0' && c<='9')
+					{
+
+					}
+					else
+					{
+						if (i==cnt-1)
+						{
+							break;
+						}
+						else
+						{
+							ret = i + 1;
+							break;
+						}
+					}
+				}
+			}
+			return ret;
+		}
+		public string getFrame(string p)
+		{
+			string ret = "";
+			FileInfo fi = new FileInfo(p);
+			int idx = fi.Name.LastIndexOf('.');
+			if (idx > 0)
+			{
+				ret = fi.Name.Substring(0, idx);
+				idx = NumStart(ret);
+				if(idx>=0)
+				{
+					ret = ret.Substring(idx);
+				}
+				else
+				{
+					ret = "";
+				}
+			}
+			return ret;
+		}
 		public string getExt(string p)
 		{
 			string ret = "";

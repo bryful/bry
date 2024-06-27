@@ -22,64 +22,107 @@ namespace bry
 		{
 			return "UiForm";
 		}
+
+		private Rectangle m_TrueClientRect = new Rectangle();
+		public Rectangle TrueClientRect
+		{
+			get { return m_TrueClientRect; }
+		}
+		private void ChkTrueClientRect()
+		{
+			int w = this.ClientRectangle.Width;
+			int h = this.ClientRectangle.Height;
+			int l = this.ClientRectangle.Left;
+			int t = this.ClientRectangle.Top;
+
+			if (this.Controls.Count > 0)
+			{
+				foreach (Control c in this.Controls)
+				{
+					if ((c is MenuStrip) || (c is StatusStrip) || (c is ToolStrip))
+					{
+						switch (c.Dock)
+						{
+							case DockStyle.Top:
+								t += c.Height;
+								h -= c.Height;
+								break;
+							case DockStyle.Bottom:
+								h -= c.Height;
+								break;
+							case DockStyle.Left:
+								w -= c.Width;
+								l += c.Width;
+								break;
+							case DockStyle.Right:
+								w -= c.Width;
+								break;
+						}
+					}
+				}
+
+			}
+
+			// Margin補正
+			w -= (this.Margin.Left + this.Margin.Right);
+			h -= (this.Margin.Top + this.Margin.Bottom);
+			l += (this.Margin.Left);
+			t += (this.Margin.Top);
+			w -= (this.Padding.Left + this.Padding.Right);
+			h -= (this.Padding.Top + this.Padding.Bottom);
+			l += (this.Padding.Left);
+			t += (this.Padding.Top);
+			m_TrueClientRect = new Rectangle(l,t, w, h);
+		}
 		[ScriptUsage(ScriptAccess.None)]
 		public UiForm()
 		{
 			InitializeComponent();
+			ChkTrueClientRect();
 		}
 		[ScriptUsage(ScriptAccess.Full)]
 		public void clear()
 		{
+			m_UiLayout = null;
 			this.Controls.Clear();
 		}
-		[ScriptUsage(ScriptAccess.Full)]
-		public void clearControls()
-		{
-			this.SuspendLayout();
-			ClearSub(this.Controls);
-			this.ResumeLayout();
-		}
-		private void ClearSub(Control.ControlCollection  c)
-		{
-			if (c.Count > 0)
-			{
-				for(int i = c.Count-1; i >=0; i--) 
-				{
-					Control cc = c[i];
-					if ((cc is Panel)|| (cc is GroupBox)||(cc is UiHLayout))
-					{
-						ClearSub(cc.Controls);
-					}
-					cc.Dispose();
-					c.RemoveAt(i);
-				}
-				c.Clear();
-			}
-		}
-		
+		private UiLayout m_UiLayout = null;
 		public UiHLayout addHLayout()
 		{
 			UiHLayout ly = newHLayout();
+			ly.Location = TrueClientRect.Location;
+			ly.Size = TrueClientRect.Size;
 			this.Controls.Add(ly);
+			m_UiLayout = ly;
 			return ly;
 		}
 		public UiVLayout addVLayout()
 		{
 			UiVLayout ly = newVLayout();
+			ly.Location = TrueClientRect.Location;
+			ly.Size = TrueClientRect.Size;
 			this.Controls.Add(ly);
+			m_UiLayout = ly;
 			return ly;
 		}
 		public void initLayout()
 		{
-			if (this.Controls.Count > 0)
+			initLayoutSub(this);
+		}
+		public void initLayoutSub(Control c)
+		{
+			if (c is UiLayout)
 			{
-				for(int i = 0; i < this.Controls.Count; i++)
+				((UiLayout)c).callChkLayout();
+			}
+			if (c.Controls.Count > 0)
+			{
+				for (int i = 0; i < c.Controls.Count; i++)
 				{
-					if (this.Controls[i] is UiLayout)
+					if (c.Controls[i] is UiLayout)
 					{
-						UiLayout yi = (UiLayout)this.Controls[i];
-						yi.Dock = DockStyle.Fill;
-						yi.layouter();
+						UiLayout yi = (UiLayout)c.Controls[i];
+						initLayoutSub(yi);
 					}
 				}
 			}
@@ -87,8 +130,8 @@ namespace bry
 		// ********************************************************
 		public UiBtn newBtn(
 			string tx = "",
-			int w = 150,
-			int h = 24,
+			int w = 130,
+			int h = 31,
 			SizePolicy hp = SizePolicy.Fixed,
 			SizePolicy vp = SizePolicy.Fixed)
 		{
@@ -104,7 +147,7 @@ namespace bry
 		public UiLabel newLabel(
 			string tx = "",
 			int w = 150,
-			int h = 24,
+			int h = 31,
 			SizePolicy hp = SizePolicy.Fixed,
 			SizePolicy vp = SizePolicy.Fixed)
 		{
@@ -164,13 +207,29 @@ namespace bry
 		}
 		public UiTextBox newTextBox(
 			string tx = "",
-			int w = 8,
-			int h = 8,
+			int w = 150,
+			int h = 31,
 			SizePolicy hp = SizePolicy.Expanding,
-			SizePolicy vp = SizePolicy.Expanding)
+			SizePolicy vp = SizePolicy.Fixed)
 		{
 			UiTextBox ctrl = new UiTextBox();
 			ctrl.Name = CanUseName("textbox");
+			if (tx == "") tx = ctrl.Name;
+			ctrl.Text = tx;
+			ctrl.Size = new Size(w, h);
+			ctrl.SizePolicyHor = hp;
+			ctrl.SizePolicyVer = vp;
+			return ctrl;
+		}
+		public UiListBox newListBox(
+	string tx = "",
+	int w = 150,
+	int h = 200,
+	SizePolicy hp = SizePolicy.Expanding,
+	SizePolicy vp = SizePolicy.Expanding)
+		{
+			UiListBox ctrl = new UiListBox();
+			ctrl.Name = CanUseName("listbox");
 			if (tx == "") tx = ctrl.Name;
 			ctrl.Text = tx;
 			ctrl.Size = new Size(w, h);
@@ -230,18 +289,23 @@ namespace bry
 		[ScriptUsage(ScriptAccess.None)]
 		protected override void OnControlAdded(ControlEventArgs e)
 		{
-			if (e.Control is UiControl)
-			{
-
-			}
-			else
-			{
-				this.Controls.Remove(e.Control);
-			}
+			base.OnControlAdded(e);
+			ChkTrueClientRect();
+		}
+		protected override void OnControlRemoved(ControlEventArgs e)
+		{
+			base.OnControlRemoved(e);
+			ChkTrueClientRect();
 		}
 		protected override void OnResize(EventArgs e)
 		{
 			base.OnResize(e);
+			ChkTrueClientRect();
+			if(m_UiLayout != null)
+			{
+				m_UiLayout.Location = TrueClientRect.Location;
+				m_UiLayout.Size = TrueClientRect.Size;
+			}
 			this.Invalidate();
 		}
 		// ********************************************************

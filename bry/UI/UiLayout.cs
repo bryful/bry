@@ -30,7 +30,6 @@ namespace bry
 		[ScriptUsage(ScriptAccess.None)]
 		public UiLayout() 
 		{
-			this.Dock = System.Windows.Forms.DockStyle.Fill;
 		}
 		// ***********************************************
 		
@@ -40,7 +39,6 @@ namespace bry
 		{
 			base.OnResize(e);
 			ChkLayout();
-
 		}
 		// ***********************************************
 		public void add(UiControl control)
@@ -143,11 +141,13 @@ namespace bry
 		protected override void OnControlAdded(ControlEventArgs e)
 		{
 			base.OnControlAdded(e);
-			if (e.Control is UiControl) 
-			{
-				ChkLayout() ;
-			}
+			ChkLayout();
 
+		}
+		protected override void OnControlRemoved(ControlEventArgs e)
+		{
+			base.OnControlRemoved(e);
+			ChkLayout();
 		}
 		protected override void OnPaint(PaintEventArgs e)
 		{

@@ -374,7 +374,7 @@ namespace bry
 				}
 				outputForm.Show(dockPanel1,DockState.DockBottom);
 				refForm.Show(dockPanel1,DockState.DockRight);
-				uiForm.Hide();
+				//uiForm.Hide();
 				ret = false;
 			}
 			return ret;
@@ -407,6 +407,7 @@ namespace bry
 		}
 		protected override void OnFormClosed(FormClosedEventArgs e)
 		{
+			
 			base.OnFormClosed(e);
 			PrefFile pf = new PrefFile(this);
 

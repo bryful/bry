@@ -249,7 +249,10 @@
     <Compile Include="Form\RefForm.Designer.cs">
       <DependentUpon>RefForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UiTextBox.cs">
+    <Compile Include="UI\UiListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\UiTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\UiLabel.cs">
