@@ -28,31 +28,11 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.uiHLayout1 = new bry.UiHLayout();
 			this.SuspendLayout();
-			// 
-			// uiHLayout1
-			// 
-			this.uiHLayout1.Alignment = System.Drawing.StringAlignment.Near;
-			this.uiHLayout1.BackColor = System.Drawing.Color.Transparent;
-			this.uiHLayout1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.uiHLayout1.Font = new System.Drawing.Font("MS UI Gothic", 9F);
-			this.uiHLayout1.FontSize = 9F;
-			this.uiHLayout1.IsDrawLayout = false;
-			this.uiHLayout1.LineAlignment = System.Drawing.StringAlignment.Near;
-			this.uiHLayout1.Location = new System.Drawing.Point(0, 0);
-			this.uiHLayout1.MainColor = System.Drawing.Color.LightGray;
-			this.uiHLayout1.Name = "uiHLayout1";
-			this.uiHLayout1.Size = new System.Drawing.Size(596, 328);
-			this.uiHLayout1.SizePolicyHor = bry.SizePolicy.Fixed;
-			this.uiHLayout1.SizePolicyVer = bry.SizePolicy.Fixed;
-			this.uiHLayout1.TabIndex = 0;
-			this.uiHLayout1.Text = "uiHLayout1";
 			// 
 			// UiForm
 			// 
 			this.ClientSize = new System.Drawing.Size(596, 328);
-			this.Controls.Add(this.uiHLayout1);
 			this.Name = "UiForm";
 			this.ResumeLayout(false);
 
@@ -60,6 +40,5 @@
 
 		#endregion
 
-		private UiHLayout uiHLayout1;
 	}
 }

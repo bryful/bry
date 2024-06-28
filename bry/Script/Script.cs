@@ -307,12 +307,14 @@ namespace bry
 				typeof(Padding),
 				typeof(UiForm),
 				typeof(UiControl),
-				typeof(UiHLayout),
-				typeof(UiVLayout),
+				typeof(UiLayout),
 				typeof(UiSpace),
 				typeof(UiBtn),
 				typeof(UiLabel),
+				typeof(UiListBox),
+				typeof(UiTextBox),
 				typeof(SizePolicy),
+				typeof(LayoutOrientation),
 				typeof(StringAlignment),
 
 			});

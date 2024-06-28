@@ -204,7 +204,8 @@ namespace bry
 			{
 				for (int i = 0; i < sa.Length; i++)
 				{
-					EditorForm ef = NewEditor();
+					EditorForm ef = createEditor();
+					ef.Index = i;
 					ef.editor.Text = sa[i];
 				}
 
@@ -223,16 +224,16 @@ namespace bry
 			}
 		}
 		// ************************************************************************
-		public EditorForm NewEditor()
+		public EditorForm createEditor()
 		{
 			EditorForm ef = new EditorForm();
 			ef.HideOnClose = true;
-			
+
 			ef.FontFamily = m_EditorFontFamily;
 			ef.FontSize = m_EditorFontSize;
 			ef.Text = $"Editor{editors.Count + 1}";
-			editors.Add( ef );
-			
+			editors.Add(ef);
+
 			ef.Enter += (sender, e) =>
 			{
 				ActiveEditor = (EditorForm)sender;
@@ -241,6 +242,12 @@ namespace bry
 			{
 				editors[i].Index = i;
 			}
+			return ef;
+		}
+		public EditorForm NewEditor()
+		{
+			EditorForm ef = createEditor();
+
 			ef.Show(dockPanel1,DockState.Document);
 			ActiveEditor = editors[editors.Count - 1];
 
@@ -370,6 +377,7 @@ namespace bry
 					for(int i=0; i<editors.Count; i++)
 					{
 						editors[i].Show(dockPanel1);
+						editors[i].Index = i;
 					}
 				}
 				outputForm.Show(dockPanel1,DockState.DockBottom);

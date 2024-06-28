@@ -48,10 +48,10 @@ namespace bry
 		private static string GetFileSystemPath(Environment.SpecialFolder folder)
 		{
 			// パスを取得
-			string path = String.Format(@"{0}\{1}",//\{2}
+			string path = String.Format(@"{0}\{1}\{2}",//
 			  Environment.GetFolderPath(folder),  // ベース・パス
-			  Application.CompanyName            // 会社名
-			  //Application.ProductName
+			  Application.CompanyName ,           // 会社名
+			  Application.ProductName
 			  );           // 製品名
 
 			// パスのフォルダを作成

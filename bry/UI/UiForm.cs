@@ -72,7 +72,7 @@ namespace bry
 			h -= (this.Padding.Top + this.Padding.Bottom);
 			l += (this.Padding.Left);
 			t += (this.Padding.Top);
-			m_TrueClientRect = new Rectangle(l,t, w, h);
+			m_TrueClientRect = new Rectangle(l, t, w, h);
 		}
 		[ScriptUsage(ScriptAccess.None)]
 		public UiForm()
@@ -87,18 +87,16 @@ namespace bry
 			this.Controls.Clear();
 		}
 		private UiLayout m_UiLayout = null;
-		public UiHLayout addHLayout()
+
+		public UiLayout addLayout(LayoutOrientation lo = LayoutOrientation.Vertical)
 		{
-			UiHLayout ly = newHLayout();
-			ly.Location = TrueClientRect.Location;
-			ly.Size = TrueClientRect.Size;
-			this.Controls.Add(ly);
-			m_UiLayout = ly;
-			return ly;
-		}
-		public UiVLayout addVLayout()
-		{
-			UiVLayout ly = newVLayout();
+			UiLayout ly = newLayout(
+				lo, 
+				TrueClientRect.Width,
+				TrueClientRect.Height,
+				SizePolicy.Expanding,
+				SizePolicy.Expanding
+				);
 			ly.Location = TrueClientRect.Location;
 			ly.Size = TrueClientRect.Size;
 			this.Controls.Add(ly);
@@ -160,34 +158,35 @@ namespace bry
 			ctrl.SizePolicyVer = vp;
 			return ctrl;
 		}
-		public UiHLayout newHLayout(
-			string tx = "",
-			int w = 8,
-			int h = 8,
-			SizePolicy hp = SizePolicy.Expanding,
-			SizePolicy vp = SizePolicy.Expanding)
+		public UiLayout newFormLayout(
+			LayoutOrientation orientation = LayoutOrientation.Vertical
+			)
 		{
-			UiHLayout ctrl = new UiHLayout();
-			ctrl.Name = CanUseName("hlayout");
-			ctrl.Text = tx;
-			ctrl.Size = new Size(w, h);
-			ctrl.SizePolicyHor = hp;
-			ctrl.SizePolicyVer = vp;
+			UiLayout ctrl = new UiLayout();
+			ctrl.Name = CanUseName("formlayout");
+			ctrl.Text = "formlayout";
+			ctrl.Size = m_TrueClientRect.Size;
+			ctrl.Location = m_TrueClientRect.Location;
+			ctrl.SizePolicyHor = SizePolicy.Expanding;
+			ctrl.SizePolicyVer = SizePolicy.Expanding;
+			ctrl.LayoutOrientation = orientation;
 			return ctrl;
 		}
-		public UiVLayout newVLayout(
-			string tx = "",
-			int w = 8,
-			int h = 8,
+
+		public UiLayout newLayout(
+			LayoutOrientation lo = LayoutOrientation.Vertical,
+			int w = 200,
+			int h = 200,
 			SizePolicy hp = SizePolicy.Expanding,
 			SizePolicy vp = SizePolicy.Expanding)
 		{
-			UiVLayout ctrl = new UiVLayout();
-			ctrl.Name = CanUseName("vlayout");
-			ctrl.Text = tx;
+			UiLayout ctrl = new UiLayout();
+			ctrl.Name = CanUseName("layout");
+			ctrl.Text = ctrl.Name;
 			ctrl.Size = new Size(w, h);
 			ctrl.SizePolicyHor = hp;
 			ctrl.SizePolicyVer = vp;
+			ctrl.LayoutOrientation = lo;
 			return ctrl;
 		}
 		public UiSpace newSpace(

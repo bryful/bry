@@ -258,9 +258,6 @@
     <Compile Include="UI\UiLabel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <None Include="UI\UiHLayout.cs">
-      <SubType>Component</SubType>
-    </None>
     <Compile Include="UI\UiLayout.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -282,9 +279,6 @@
     <Compile Include="UI\UiForm.Designer.cs">
       <DependentUpon>UiForm.cs</DependentUpon>
     </Compile>
-    <None Include="UI\UiVLayout.cs">
-      <SubType>Component</SubType>
-    </None>
     <Compile Include="WIN.cs" />
     <Compile Include="Script\ScriptFastCopy.cs" />
     <Compile Include="Script\Script.cs" />
