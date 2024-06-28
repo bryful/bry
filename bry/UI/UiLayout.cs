@@ -27,12 +27,41 @@ namespace bry
 				this.Invalidate();
 			}
 		}
+		private LayoutOrientation m_LayoutOrientation = LayoutOrientation.Vertical;
+		public LayoutOrientation LayoutOrientation
+		{
+			get { return (m_LayoutOrientation); }
+			set
+			{
+				m_LayoutOrientation =value;
+				ChkLayout();
+				this.Invalidate();
+			}
+		}
 		[ScriptUsage(ScriptAccess.None)]
 		public UiLayout() 
 		{
+
 		}
 		// ***********************************************
-		
+		[ScriptUsage(ScriptAccess.None)]
+		protected override void ChkLayout()
+		{
+			if (this.Controls.Count <= 0) return;
+			if (NowChkLayout) return;
+			NowChkLayout = true;
+
+			if(m_LayoutOrientation== LayoutOrientation.Vertical)
+			{
+				ChkLayoutV();
+			}
+			else
+			{
+				ChkLayoutH();
+			}
+
+			NowChkLayout = false;
+		}
 		// ***********************************************
 		[ScriptUsage(ScriptAccess.None)]
 		protected override void OnResize(EventArgs e)
@@ -46,97 +75,7 @@ namespace bry
 			this.Controls.Add(control);
 			ChkLayout();
 		}
-		/*
-		public UiBtn addBtn() 
-		{
-			UiBtn ctrl = new UiBtn();
-			ctrl.Name = name;
-			ctrl.Text = name;
-			ctrl.Size = new Size(w, h);
-			ctrl.SizePolicyHor = hp;
-			ctrl.SizePolicyVer = vp;
-			this.Controls.Add(ctrl);
-			return ctrl;
-		}
-		// ***********************************************
-		public UiTextBox addLabel(string name,
-			int w = 150,
-			int h = 21,
-			SizePolicy hp = SizePolicy.Expanding,
-			SizePolicy vp = SizePolicy.Fixed)
-		{
-			UiTextBox ctrl = new UiTextBox();
-			ctrl.Name = name;
-			ctrl.Text = name;
-			ctrl.Size = new Size(w, h);
-			ctrl.SizePolicyHor = hp;
-			ctrl.SizePolicyVer = vp;
-			this.Controls.Add(ctrl);
-			return ctrl;
-		}       
-		// ***********************************************
-		public UiTextBox addTextBox(string name,
-			int w = 150,
-			int h = 31,
-			SizePolicy hp = SizePolicy.Expanding,
-			SizePolicy vp = SizePolicy.Fixed)
-		{
-			UiTextBox ctrl = new UiTextBox();
-			ctrl.Name = name;
-			ctrl.Text = name;
-			ctrl.Size = new Size(w, h);
-			ctrl.SizePolicyHor = hp;
-			ctrl.SizePolicyVer = SizePolicy.Fixed;
-			this.Controls.Add(ctrl);
-			return ctrl;
-		}
-		// ***********************************************
-		public UiSpace addSpace(string name,
-			int w = 150,
-			int h = 24,
-			SizePolicy hp = SizePolicy.Expanding,
-			SizePolicy vp = SizePolicy.Expanding)
-		{
-			UiSpace ctrl = new UiSpace();
-			ctrl.Name = name;
-			ctrl.Text = name;
-			ctrl.Size = new Size(w, h);
-			ctrl.SizePolicyHor = hp;
-			ctrl.SizePolicyVer = vp;
-			this.Controls.Add(ctrl);
-			return ctrl;
-		}
-		public UiSpace addHSpace(int h = 8,string cap="UiSpace")
-		{
-			UiSpace ctrl = new UiSpace();
-			ctrl.Name = cap;
-			ctrl.Size = new Size(100, h);
-			ctrl.SizePolicyHor = SizePolicy.Expanding;
-			ctrl.SizePolicyVer = SizePolicy.Fixed;
-			this.Controls.Add(ctrl);
-			return ctrl;
-		}
-		public UiSpace addVSpace(int h = 8, string cap = "UiSpace")
-		{
-			UiSpace ctrl = new UiSpace();
-			ctrl.Name = cap;
-			ctrl.Size = new Size(h, 100);
-			ctrl.SizePolicyHor = SizePolicy.Fixed;
-			ctrl.SizePolicyVer = SizePolicy.Expanding;
-			this.Controls.Add(ctrl);
-			return ctrl;
-		}
-		public UiSpace addStretch(string cap = "UiStretch")
-		{
-			UiSpace ctrl = new UiSpace();
-			ctrl.Name = cap;
-			ctrl.Size = new Size(100, 100);
-			ctrl.SizePolicyHor = SizePolicy.Expanding;
-			ctrl.SizePolicyVer = SizePolicy.Expanding;
-			this.Controls.Add(ctrl);
-			return ctrl;
-		}
-		*/
+		
 		// ****************************************************
 		protected override void OnControlAdded(ControlEventArgs e)
 		{
@@ -159,6 +98,147 @@ namespace bry
 					e.Graphics.DrawRectangle(p, new Rectangle(0, 0, Width - 1, Height - 1));
 				}
 			}
+		}
+		// ****************************************************************
+		private void ChkLayoutH()
+		{
+
+			Rectangle rct = TrueClientRect;
+
+
+			//固定幅の合計
+			int wfix = 0;
+			int fc = 0;
+			int ec = 0;
+
+			for (int i = 0; i < this.Controls.Count; i++)
+			{
+				if (this.Controls[i] is UiControl)
+				{
+					UiControl uc = (UiControl)this.Controls[i];
+					if (uc == null) continue;
+					if (uc.SizePolicyHor == SizePolicy.Fixed)
+					{
+						fc++;
+						wfix += uc.Width;
+					}
+					else if (uc.SizePolicyHor == SizePolicy.Expanding)
+					{
+						ec++;
+					}
+				}
+			}
+			//可変幅の計算
+			int wExpanding = 0;
+			int allFixed = 0;
+			if (ec > 0)
+			{
+				wExpanding = (rct.Width - wfix) / ec;
+				if (wExpanding < 0) wExpanding = 0;
+			}
+			else
+			{
+				allFixed = (rct.Width - wfix) / (fc + 1);
+			}
+
+			int x = rct.Left + allFixed;
+			for (int i = 0; i < this.Controls.Count; i++)
+			{
+				if (this.Controls[i] is UiControl)
+				{
+					UiControl uc = (UiControl)this.Controls[i];
+					if (uc == null) continue;
+					if (uc.SizePolicyHor == SizePolicy.Fixed)
+					{
+
+					}
+					else if (uc.SizePolicyHor == SizePolicy.Expanding)
+					{
+						uc.Width = wExpanding;
+					}
+					if (uc.SizePolicyVer == SizePolicy.Fixed)
+					{
+						uc.SetVerCenter();
+					}
+					else
+					{
+						uc.SetVerFill();
+					}
+					uc.Left = x;
+					x += uc.Width + allFixed;
+				}
+			}
+
+		}
+		private void ChkLayoutV()
+		{
+			Rectangle rct = TrueClientRect;
+
+
+			//固定幅の合計
+			int hfix = 0;
+			int fc = 0;
+			int ec = 0;
+
+			for (int i = 0; i < this.Controls.Count; i++)
+			{
+				if (this.Controls[i] is UiControl)
+				{
+					UiControl uc = (UiControl)this.Controls[i];
+					if (uc == null) continue;
+					if (uc.SizePolicyVer == SizePolicy.Fixed)
+					{
+						fc++;
+						hfix += uc.Height;
+					}
+					else if (uc.SizePolicyVer == SizePolicy.Expanding)
+					{
+						ec++;
+					}
+				}
+			}
+			//可変幅の計算
+			int hExpanding = 0;
+			int allFixed = 0;
+			if (ec > 0)
+			{
+				hExpanding = (rct.Height - hfix) / ec;
+				if (hExpanding < 0) hExpanding = 0;
+			}
+			else
+			{
+				allFixed = (rct.Height - hfix) / (fc + 1);
+			}
+
+			int y = rct.Top + allFixed;
+			for (int i = 0; i < this.Controls.Count; i++)
+			{
+				if (this.Controls[i] is UiControl)
+				{
+					UiControl uc = (UiControl)this.Controls[i];
+					if (uc == null) continue;
+
+					if (uc.SizePolicyVer == SizePolicy.Fixed)
+					{
+
+					}
+					else if (uc.SizePolicyVer == SizePolicy.Expanding)
+					{
+						uc.Height = hExpanding;
+					}
+					if (uc.SizePolicyHor == SizePolicy.Fixed)
+					{
+						uc.SetHorCenter();
+					}
+					else
+					{
+						uc.SetHorFill();
+					}
+					uc.Top = y;
+					y += uc.Height + allFixed;
+				}
+			}
+
 		}
 	}
 }

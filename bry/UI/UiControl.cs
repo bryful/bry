@@ -593,5 +593,9 @@ true);
 		Fixed = 0,
 		Expanding = 1,
 	}
-	
+	public enum LayoutOrientation
+	{
+		Vertical = 0,
+		Horizon = 1,
+	}
 }

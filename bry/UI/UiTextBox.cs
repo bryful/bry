@@ -16,6 +16,9 @@ namespace bry
 	public class UiTextBox :UiControl
 	{
 		private TextBox m_TextBox = new TextBox();
+		public TextBox TextBox
+		{  get { return m_TextBox; } }
+
 		public new string Text
 		{
 			get { return m_TextBox.Text; }
