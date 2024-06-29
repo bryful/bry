@@ -13,11 +13,13 @@ namespace bry
 {
 	public class ScriptFolder
 	{
+		[BryScript]
 		public string getName(string p)
 		{
 			FileInfo fi = new FileInfo(p);
 			return fi.Name;
 		}
+		[BryScript]
 		public string getNameWithoutExt(string p)
 		{
 			string ret = "";
@@ -58,6 +60,7 @@ namespace bry
 			}
 			return ret;
 		}
+		[BryScript]
 		public string getFrame(string p)
 		{
 			string ret = "";
@@ -78,6 +81,7 @@ namespace bry
 			}
 			return ret;
 		}
+		[BryScript]
 		public string getExt(string p)
 		{
 			string ret = "";
@@ -89,6 +93,7 @@ namespace bry
 			}
 			return ret;
 		}
+		[BryScript]
 		public string getDirectory(string p)
 		{
 			string ret = "";
@@ -105,6 +110,7 @@ namespace bry
 			}
 			return outputFilePath;
 		}
+		[BryScript]
 		public bool rename(string s, string d)
 		{
 			bool ret = false;
@@ -135,6 +141,7 @@ namespace bry
 			}
 			return ret;
 		}
+		[BryScript]
 		public bool delete(string s)
 		{
 			bool ret = false;
@@ -160,11 +167,13 @@ namespace bry
 			}
 			return ret;
 		}
+		[BryScript]
 		public string current()
 		{
 			return Directory.GetCurrentDirectory();
 
 		}
+		[BryScript]
 		public ItemsInfo getFiles(string p)
 		{
 			List<string> ret = new List<string>();
@@ -178,6 +187,20 @@ namespace bry
 			ItemsInfo result = new ItemsInfo(ret.ToArray());
 			return result;
 		}
+		[BryScript]
+		public string[] getFilesJ(string p)
+		{
+			List<string> ret = new List<string>();
+			if (p == "") p = ".\\";
+			var di = new DirectoryInfo(p);
+			var files = di.EnumerateFiles("*", System.IO.SearchOption.TopDirectoryOnly);
+			foreach (var file in files)
+			{
+				ret.Add((string)file.Name);
+			}
+			return ScriptEngine.Current.Script.Array.from(ret.ToArray());
+		}
+		[BryScript]
 		public ItemsInfo getDirectories(string p)
 		{
 			List<string> ret = new List<string>();
@@ -191,6 +214,7 @@ namespace bry
 			ItemsInfo result = new ItemsInfo(ret.ToArray());
 			return result;
 		}
+		[BryScript]
 		public bool exists(string path)
 		{
 			return Directory.Exists(path);

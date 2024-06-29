@@ -16,35 +16,19 @@ namespace bry
 		}
 		public  Font RefFont
 		{
-			get { return findBox.Font; }
+			get { return helpList1.Font; }
 			set
 			{
-				findBox.Font = value;
-				refList.Font = value;
-				ChkSize();
+				helpList1.Font = value;
 			}
+		}
+		public void SetSInfo(SInfo[] s)
+		{
+			helpList1.SetItems(s);
 		}
 		public RefForm()
 		{
 			InitializeComponent();
-			ChkSize();
-		}
-		public void ChkSize()
-		{
-			this.SuspendLayout();
-
-			findBox.Location= new Point(5,5);
-			findBox.Size = new Size(this.ClientSize.Width-10, findBox.Height);
-			refList.Location = new Point(5, findBox.Height + 10);
-			refList.Size = new Size(this.ClientSize.Width-10, this.Height - findBox.Height - 15);
-
-			this.ResumeLayout();
-		}
-		protected override void OnResize(EventArgs e)
-		{
-			ChkSize();
-			base.OnResize(e);
-			ChkSize();
 		}
 	}
 }

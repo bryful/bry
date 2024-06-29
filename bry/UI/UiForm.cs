@@ -80,6 +80,7 @@ namespace bry
 			InitializeComponent();
 			ChkTrueClientRect();
 		}
+		[BryScript]
 		[ScriptUsage(ScriptAccess.Full)]
 		public void clear()
 		{
@@ -87,7 +88,21 @@ namespace bry
 			this.Controls.Clear();
 		}
 		private UiLayout m_UiLayout = null;
-
+		[BryScript]
+		public UiLayout UiLayout
+		{
+			get { return m_UiLayout; }
+		}
+		[BryScript]
+		public void add(UiControl control)
+		{
+			if(m_UiLayout==null)
+			{
+				addLayout();
+			}
+			m_UiLayout.add(control);
+		}
+		[BryScript]
 		public UiLayout addLayout(LayoutOrientation lo = LayoutOrientation.Vertical)
 		{
 			UiLayout ly = newLayout(
@@ -126,6 +141,7 @@ namespace bry
 			}
 		}
 		// ********************************************************
+		[BryScript]
 		public UiBtn newBtn(
 			string tx = "",
 			int w = 130,
@@ -142,6 +158,7 @@ namespace bry
 			ctrl.SizePolicyVer = vp;
 			return ctrl;
 		}
+		[BryScript]
 		public UiLabel newLabel(
 			string tx = "",
 			int w = 150,
@@ -158,6 +175,7 @@ namespace bry
 			ctrl.SizePolicyVer = vp;
 			return ctrl;
 		}
+		[BryScript]
 		public UiLayout newFormLayout(
 			LayoutOrientation orientation = LayoutOrientation.Vertical
 			)
@@ -173,6 +191,7 @@ namespace bry
 			return ctrl;
 		}
 
+		[BryScript]
 		public UiLayout newLayout(
 			LayoutOrientation lo = LayoutOrientation.Vertical,
 			int w = 200,
@@ -189,6 +208,7 @@ namespace bry
 			ctrl.LayoutOrientation = lo;
 			return ctrl;
 		}
+		[BryScript]
 		public UiSpace newSpace(
 			string tx = "",
 			int w = 8,
@@ -204,6 +224,7 @@ namespace bry
 			ctrl.SizePolicyVer = vp;
 			return ctrl;
 		}
+		[BryScript]
 		public UiTextBox newTextBox(
 			string tx = "",
 			int w = 150,
@@ -220,6 +241,7 @@ namespace bry
 			ctrl.SizePolicyVer = vp;
 			return ctrl;
 		}
+		[BryScript]
 		public UiListBox newListBox(
 	string tx = "",
 	int w = 150,
@@ -308,25 +330,26 @@ namespace bry
 			this.Invalidate();
 		}
 		// ********************************************************
-		public List<UiControl> uiControlList
+
+		[BryScript]
+		public Object listupControl()
 		{
-			get
+			List<UiControl> list = new List<UiControl>();
+
+			list = ListupControlSub(list,this.Controls);
+
+			Object[] ret = new Object[list.Count];
+			if (list.Count > 0)
 			{
-				return listupControl();
+				for (int i = 0; i < list.Count; i++)
+				{
+					ret[i] = (Object)list[i];
+				}
 			}
+			return ScriptEngine.Current.Script.Array.from(ret);
 		}
-
-		public List<UiControl> listupControl()
+		private List<UiControl> ListupControlSub(List<UiControl> lst,Control.ControlCollection cc)
 		{
-			List<UiControl> uiControls = new List<UiControl>();
-
-			ListupControlSub(this.Controls);
-
-			return uiControls;
-		}
-		private List<UiControl> ListupControlSub(Control.ControlCollection cc)
-		{
-			List<UiControl> uiControls = new List<UiControl>();
 
 			if(cc.Count > 0)
 			{
@@ -335,30 +358,28 @@ namespace bry
 					if (cc[i] is UiControl)
 					{
 						UiControl ccc = (UiControl)cc[i];
-						uiControls.Add(ccc);
+						lst.Add(ccc);
 						if (ccc is UiLayout)
 						{
-							List<UiControl> ls = ListupControlSub(ccc.Controls);
-							uiControls.AddRange(ls);
+							lst = ListupControlSub(lst,ccc.Controls);
 
 						}
 					}
 				}
 			}
-			return uiControls;
+			return lst;
 		}
-		public string[] listToStrings(List<UiControl> a)
+		public object[] aryFrom(UiControl[] a)
 		{
-			List<string> list = new List<string>();
-			foreach(UiControl cc in a)
+			var ret = new Object[a.Length];
+			if (a.Length > 0)
 			{
-				list.Add(cc.Name);
+				for (int i = 0; i < a.Length; i++)
+				{
+					ret[i] = a[i];
+				}
 			}
-			return list.ToArray();	
-		}
-		public string[] listToStrings()
-		{
-			return listToStrings(listupControl());
+			return ret;
 		}
 
 	}

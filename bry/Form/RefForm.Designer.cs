@@ -28,94 +28,30 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.refList = new System.Windows.Forms.ListBox();
-			this.findBox = new System.Windows.Forms.TextBox();
+			this.helpList1 = new bry.HelpList();
 			this.SuspendLayout();
 			// 
-			// refList
+			// helpList1
 			// 
-			this.refList.Font = new System.Drawing.Font("源ノ角ゴシック Code JP R", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.refList.FormattingEnabled = true;
-			this.refList.ItemHeight = 23;
-			this.refList.Items.AddRange(new object[] {
-            "write(s)",
-            "writeln(s)",
-            "cls()",
-            "toClip(s)",
-            "fromClip()",
-            "length(ary)",
-            "alert(s)",
-            "child(c,a)",
-            "childWait(c,a)",
-            "executeFile(f)",
-            "F.getName(p)",
-            "F.getNameWithoutExt(p)",
-            "F.getExt(p)",
-            "F.getDirectory(p)",
-            "F.exists(p)",
-            "F.writeText(p)",
-            "F.readText(p)",
-            "F.rename(s,d)",
-            "F.delete(d)",
-            "D.getName(p)",
-            "D.getNameWithoutExt(p)",
-            "D.getExt(p)",
-            "D.getDirectory(p)",
-            "D.exists(p)",
-            "D.rename(s,d)",
-            "D.delete(d)",
-            "D.current()",
-            "D.getFiles(p)",
-            "D.getDirectories(p)",
-            "FastCopy.pathFastCopy()",
-            "FastCopy.setPathFastCopy()",
-            "FastCopy.targetFiles()",
-            "FastCopy.Clear()",
-            "FastCopy.addTarget(p)",
-            "FastCopy.addTarget(ary)",
-            "FastCopy.dest_dir()",
-            "FastCopy.setDest_dir(p)",
-            "FastCopy.cmdList()",
-            "FastCopy.optionList()",
-            "FastCopy.cmd()",
-            "FastCopy.setCmd(s)",
-            "FastCopy.option()",
-            "FastCopy.setOption(s)",
-            "FastCopy.exec()",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            ""});
-			this.refList.Location = new System.Drawing.Point(9, 39);
-			this.refList.Name = "refList";
-			this.refList.Size = new System.Drawing.Size(234, 234);
-			this.refList.TabIndex = 0;
-			// 
-			// findBox
-			// 
-			this.findBox.Font = new System.Drawing.Font("源ノ角ゴシック Code JP R", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-			this.findBox.Location = new System.Drawing.Point(9, 2);
-			this.findBox.Name = "findBox";
-			this.findBox.Size = new System.Drawing.Size(234, 31);
-			this.findBox.TabIndex = 1;
+			this.helpList1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.helpList1.Font = new System.Drawing.Font("源ノ角ゴシック Code JP R", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+			this.helpList1.Location = new System.Drawing.Point(0, 0);
+			this.helpList1.Name = "helpList1";
+			this.helpList1.Size = new System.Drawing.Size(428, 411);
+			this.helpList1.TabIndex = 0;
+			this.helpList1.Text = "helpList1";
 			// 
 			// RefForm
 			// 
-			this.ClientSize = new System.Drawing.Size(269, 299);
-			this.Controls.Add(this.findBox);
-			this.Controls.Add(this.refList);
+			this.ClientSize = new System.Drawing.Size(428, 411);
+			this.Controls.Add(this.helpList1);
 			this.Name = "RefForm";
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.ListBox refList;
-		private System.Windows.Forms.TextBox findBox;
+		private HelpList helpList1;
 	}
 }

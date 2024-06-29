@@ -10,11 +10,13 @@ namespace bry
 {
 	public class ScriptFile
 	{
+		[BryScript]
 		public string getName(string p)
 		{
 			FileInfo fi = new FileInfo(p);
 			return fi.Name;
 		}
+		[BryScript]
 		public string getNameWithoutExt(string p)
 		{
 			string ret = "";
@@ -55,6 +57,7 @@ namespace bry
 			}
 			return ret;
 		}
+		[BryScript]
 		public string getFrame(string p)
 		{
 			string ret = "";
@@ -75,6 +78,7 @@ namespace bry
 			}
 			return ret;
 		}
+		[BryScript]
 		public string getExt(string p)
 		{
 			string ret = "";
@@ -86,6 +90,7 @@ namespace bry
 			}
 			return ret;
 		}
+		[BryScript]
 		public string getDirectory(string p)
 		{
 			string ret = "";
@@ -93,11 +98,13 @@ namespace bry
 			ret = fi.Directory.FullName;
 			return ret;
 		}
+		[BryScript]
 		public bool exists(string path)
 		{
 			FileInfo fi =  new FileInfo(path);
 			return fi.Exists;
 		}
+		[BryScript]
 		public bool writeText(string p,string s)
 		{
 			bool ret = false;
@@ -116,6 +123,7 @@ namespace bry
 			return ret;
 
 		}
+		[BryScript]
 		public string readText(string p)
 		{
 			string ret = null;
@@ -132,6 +140,7 @@ namespace bry
 			}
 			return ret;
 		}
+		[BryScript]
 		public bool rename(string s,string d)
 		{
 			bool ret = false;
@@ -153,6 +162,7 @@ namespace bry
 			}
 			return ret;
 		}
+		[BryScript]
 		public bool delete(string s)
 		{
 			bool ret = false;

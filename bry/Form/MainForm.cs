@@ -41,6 +41,19 @@ namespace bry
 			}
 			return s;
 		}
+		public static string GetProps2(Type ct)
+		{
+			// DateTimeのプロパティ一覧を取得する
+			PropertyInfo[] p = ct.GetProperties();
+
+			string s = "";
+			foreach (var a in p)
+			{
+				s += $"{a.PropertyType.ToString()}:{a.Name}\r\n";
+
+			}
+			return s;
+		}
 
 		// ************************************************************************
 		Script Script = new Script();
@@ -139,8 +152,8 @@ namespace bry
 			};
 			InitEngine();
 
-
-			Clipboard.SetText(GetProps(typeof(UiBtn)));
+			refForm.SetSInfo(Script.GetSInfo());
+			//Clipboard.SetText(GetProps2(typeof(UiForm)));
 		}
 		// ************************************************************************
 		private string m_EditorFontFamily = "源ノ角ゴシック Code JP R";

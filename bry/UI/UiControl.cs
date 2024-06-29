@@ -18,6 +18,7 @@ namespace bry
 		
 		// ***************************************************
 		private SizePolicy m_SizePolicyHor = SizePolicy.Fixed;
+		[BryScript]
 		[Category("UI"), Browsable(true)]
 		public SizePolicy SizePolicyHor
 		{
@@ -34,6 +35,7 @@ namespace bry
 			}
 		}
 		private SizePolicy m_SizePolicyVer = SizePolicy.Fixed;
+		[BryScript]
 		[Category("UI"), Browsable(true)]
 		public SizePolicy SizePolicyVer
 		{
@@ -66,10 +68,12 @@ namespace bry
 			h -= (this.Margin.Top + this.Margin.Bottom);
 			l += (this.Margin.Left);
 			t += (this.Margin.Top);
+			/*
 			w -= (this.Padding.Left + this.Padding.Right);
 			h -= (this.Padding.Top + this.Padding.Bottom);
 			l += (this.Padding.Left);
 			t += (this.Padding.Top);
+			*/
 			m_TrueClientRect = new Rectangle(l, t, w, h);
 		}
 		// **************************************************************
@@ -98,6 +102,7 @@ namespace bry
 			return Color.FromArgb((int)r,(int)g,(int)b);
 		}
 		// **************************************************************
+		[BryScript]
 		[Category("UI"), Browsable(true)]
 		public float FontSize
 		{
@@ -111,6 +116,7 @@ namespace bry
 		}
 		// **************************************************************
 		protected StringFormat m_StringFormat = new StringFormat();
+		[BryScript]
 		[Category("UI"), Browsable(true)]
 		public StringAlignment Alignment
 		{
@@ -121,6 +127,7 @@ namespace bry
 				this.Invalidate();
 			}
 		}
+		[BryScript]
 		[Category("UI"), Browsable(true)]
 		public StringAlignment LineAlignment
 		{

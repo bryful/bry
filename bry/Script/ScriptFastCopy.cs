@@ -11,10 +11,12 @@ namespace bry
 	{
 		private string m_FastCopy = "C:\\Bin\\FastCopy\\FastCopy.exe";
 
+		[BryScript]
 		public string pathFastCopy()
 		{
 			return m_FastCopy;
 		}
+		[BryScript]
 		public bool setPathFastCopy(string p)
 		{
 			if (File.Exists(p) == true)
@@ -41,6 +43,7 @@ namespace bry
 			}
 			return p;
 		}
+		[BryScript]
 		public string targetFiles()
 		{
 			string ret = "";
@@ -55,6 +58,7 @@ namespace bry
 			return ret;
 		}
 		// *************************************************************
+		[BryScript]
 		public void Clear()
 		{
 			m_Files.Clear();
@@ -77,6 +81,7 @@ namespace bry
 			return ret;
 		}
 		// *************************************************************
+		[BryScript]
 		public void addTarget(string p)
 		{
 			string n = "";
@@ -101,6 +106,7 @@ namespace bry
 				m_Files.Add(n);
 			}
 		}
+		[BryScript]
 		public void addTarget(string [] ps)
 		{
 
@@ -114,10 +120,12 @@ namespace bry
 		}
 		// *************************************************************
 		private string m_dest_dir = "";
+		[BryScript]
 		public string dest_dir()
 		{
 			return m_dest_dir;
 		}
+		[BryScript]
 		public void setDest_dir(string value)
 		{
 			if (value.Length<=1) return;
@@ -148,6 +156,7 @@ namespace bry
 			"verify_read",
 			"verify_check"
 		};
+		[BryScript]
 		public string cmdList()
 		{
 			return string.Join(",\r\n", m_cmdlist) + "\r\n";
@@ -178,17 +187,22 @@ namespace bry
 			"/stream",
 			"/stream=FALSE"
 		};
+		[BryScript]
 		public string optionList()
 		{
 			return string.Join(",\r\n", m_cmdlist) + "\r\n";
 		}
 		// *************************************************************
 		private string m_cmd = "/cmd=diff";
+		[BryScript]
 		public string cmd() {  return m_cmd; }
+		[BryScript]
 		public void setCmd(string s) {  m_cmd = s; }
 		private string m_option = "/open_window /auto_close /estimate";
 		//"C:\Bin\FastCopy\FastCopy.exe" /open_window /estimate /auto_close /logfile="$O\copy.log" $MF /to="$O\"
+		[BryScript]
 		public string option() { return m_option; }
+		[BryScript]
 		public void setOption(string s) { m_option = s; }
 
 		// *************************************************************
@@ -196,6 +210,7 @@ namespace bry
 		{
 
 		}
+		[BryScript]
 		public bool exec()
 		{
 			bool ret = false;

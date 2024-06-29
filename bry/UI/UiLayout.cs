@@ -67,6 +67,7 @@ namespace bry
 		protected override void OnResize(EventArgs e)
 		{
 			base.OnResize(e);
+			ScanMinSize();
 			ChkLayout();
 		}
 		// ***********************************************
@@ -80,12 +81,14 @@ namespace bry
 		protected override void OnControlAdded(ControlEventArgs e)
 		{
 			base.OnControlAdded(e);
+			ScanMinSize();
 			ChkLayout();
 
 		}
 		protected override void OnControlRemoved(ControlEventArgs e)
 		{
 			base.OnControlRemoved(e);
+			ScanMinSize();
 			ChkLayout();
 		}
 		protected override void OnPaint(PaintEventArgs e)
@@ -239,6 +242,25 @@ namespace bry
 				}
 			}
 
+		}
+	
+		public void ScanMinSize()
+		{
+			if (this.Controls.Count == 0)
+			{
+				base.MinimumSize = new Size(0, 0);
+				return;
+			}
+			int w = 0; int h=0;
+			for (int i = 0;i < this.Controls.Count;i++)
+			{
+				Control c = this.Controls[i];
+				if (w < c.MinimumSize.Width) w = c.MinimumSize.Width;
+				if (h < c.MinimumSize.Height) w = c.MinimumSize.Height;
+			}
+			if (w != 0) w += Margin.Left + Margin.Right;
+			if (h != 0) h += Margin.Top + Margin.Bottom;
+			base.MinimumSize = new Size(w, h);
 		}
 	}
 }
