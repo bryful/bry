@@ -188,15 +188,15 @@ namespace bry
 			return result;
 		}
 		[BryScript]
-		public string[] getFilesJ(string p)
+		public object getFilesJ(string p)
 		{
-			List<string> ret = new List<string>();
+			List<object> ret = new List<object>();
 			if (p == "") p = ".\\";
 			var di = new DirectoryInfo(p);
 			var files = di.EnumerateFiles("*", System.IO.SearchOption.TopDirectoryOnly);
 			foreach (var file in files)
 			{
-				ret.Add((string)file.Name);
+				ret.Add((object)file.Name);
 			}
 			return ScriptEngine.Current.Script.Array.from(ret.ToArray());
 		}
