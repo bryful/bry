@@ -114,19 +114,19 @@
 			// editorFontMenu
 			// 
 			this.editorFontMenu.Name = "editorFontMenu";
-			this.editorFontMenu.Size = new System.Drawing.Size(150, 22);
+			this.editorFontMenu.Size = new System.Drawing.Size(180, 22);
 			this.editorFontMenu.Text = "EditorFont";
 			// 
 			// outputFontMenu
 			// 
 			this.outputFontMenu.Name = "outputFontMenu";
-			this.outputFontMenu.Size = new System.Drawing.Size(150, 22);
+			this.outputFontMenu.Size = new System.Drawing.Size(180, 22);
 			this.outputFontMenu.Text = "OutputFont";
 			// 
 			// referenceFontMenu
 			// 
 			this.referenceFontMenu.Name = "referenceFontMenu";
-			this.referenceFontMenu.Size = new System.Drawing.Size(150, 22);
+			this.referenceFontMenu.Size = new System.Drawing.Size(180, 22);
 			this.referenceFontMenu.Text = "ReferenceFont";
 			// 
 			// windowMenu

@@ -11,11 +11,17 @@ using System.Windows.Controls;
 
 using System.Windows.Forms.Integration;
 using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.Utils;
+
 using ICSharpCode.AvalonEdit.Highlighting; // ← 名前空間
 using ICSharpCode.AvalonEdit.Highlighting.Xshd; // ← 名前空間
 using System.IO;
 using System.Reflection;
 using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.AvalonEdit.Editing;
+using System.Windows.Input;
+using ICSharpCode.AvalonEdit.CodeCompletion;
+
 
 namespace bry
 {
@@ -157,6 +163,7 @@ namespace bry
 
 			}
 		}
+		private CompletionWindow completionWindow;
 		public AEdit()
 		{
 			Assembly thisAssembly = Assembly.GetExecutingAssembly();
@@ -174,6 +181,55 @@ namespace bry
 			host.Child = m_editor;
 			this.Controls.Add(host);
 
+			m_editor.TextArea.TextEntering += textEditor_TextArea_TextEntering;
+			m_editor.TextArea.TextEntered += textEditor_TextArea_TextEntered;
+
+		}
+		private void textEditor_TextArea_TextEntered(object sender, TextCompositionEventArgs e)
+		{
+			MyCompletionData[] Items = FindChar(e.Text);
+			if(Items.Length>0)
+			{
+				completionWindow = new CompletionWindow(m_editor.TextArea);
+				IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
+                foreach (var item in Items)
+                {
+					data.Add(item);
+				}
+				completionWindow.Show();
+
+				// ウインドウを閉じたときの処理
+				completionWindow.Closed += delegate { completionWindow = null; };
+			}
+			/*
+			if (e.Text == ".") // ピリオドを入力したとき
+			{
+				// CodeCompletion 用ウインドウを開く
+				completionWindow = new CompletionWindow(m_editor.TextArea);
+				IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
+				data.Add(new MyCompletionData("aaB"));
+				data.Add(new MyCompletionData("aBB"));
+				data.Add(new MyCompletionData("aaaB"));
+				completionWindow.Show();
+
+				// ウインドウを閉じたときの処理
+				completionWindow.Closed += delegate { completionWindow = null; };
+			*/
+		}
+
+		//---------------------------------------------------------------------------------------
+		private void textEditor_TextArea_TextEntering(object sender, TextCompositionEventArgs e)
+		{
+			if (e.Text.Length > 0 && completionWindow != null)
+			{
+				if (!char.IsLetterOrDigit(e.Text[0]))
+				{
+					// CompletionWindow を開いているときに、英数字以外を入力しても文字を入力する
+					completionWindow.CompletionList.RequestInsertion(e);
+				}
+			}
+
+			// e.Handled = true; を設定してはならない
 		}
 		private void ChkSize()
 		{
@@ -184,6 +240,69 @@ namespace bry
 			base.OnResize(e);
 			ChkSize();
 		}
+		public void SetText(string s)
+		{
+			if (s == "") return;
+			if (m_editor.SelectionLength==0)
+			{
+				m_editor.Document.Insert(m_editor.SelectionStart, s);
+			}
+			else
+			{
+				m_editor.TextArea.Selection.ReplaceSelectionWithText(s);
+			}
+		}
+		private MyCompletionData[] myCompletionDatas = new MyCompletionData[0];
 
+		public void SetSInfo(SInfo[] a)
+		{
+			myCompletionDatas = new MyCompletionData[0];
+			List<MyCompletionData> ds = new List<MyCompletionData> ();
+
+			if(a.Length > 0)
+			{
+				string[] sa = ScriptInfo.SInfoToList(a);
+				foreach (string s in sa)
+				{
+					ds.Add(new MyCompletionData(s));
+				}
+			}
+			myCompletionDatas = ds.ToArray();
+		}
+		private MyCompletionData[] FindChar(string s)
+		{
+			List<MyCompletionData> ret = new List<MyCompletionData>();
+			if (myCompletionDatas.Length == 0) return ret.ToArray();
+			if (s=="") return ret.ToArray();
+			foreach(var dat in myCompletionDatas)
+			{
+				if (String.Compare(dat.Text.Substring(0,1),s,true)==0)
+				{
+					ret.Add(dat);
+				}
+			}
+			return ret.ToArray();
+		}
+	}
+	public class MyCompletionData : ICompletionData
+	{
+		public MyCompletionData(string text)
+		{
+			Text = text;
+		}
+
+		public System.Windows.Media.ImageSource Image { get { return null; } }
+		public string Text { get; }
+
+		// Use this property if you want to show a fancy UIElement in the list.
+		public object Content => Text;
+
+		public object Description => "Description for " + Text;
+		public double Priority { get; set; } = 0;
+		public void Complete(TextArea textArea, ISegment completionSegment,
+			EventArgs insertionRequestEventArgs)
+		{
+			textArea.Document.Replace(completionSegment, Text);
+		}
 	}
 }

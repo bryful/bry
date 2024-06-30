@@ -9,6 +9,15 @@ namespace bry
 {
 	public class HelpList : Control
 	{
+		private MainForm mform = null;
+		public MainForm MainForm
+		{
+			get { return mform; }
+			set
+			{
+				mform = value;
+			}
+		}
 		private string[] defItems = new string[]
 		{
 			"write(s)",
@@ -86,7 +95,24 @@ namespace bry
 			this.Controls.Add(m_TextBox);
 			this.Controls.Add(m_Button);
 			this.Controls.Add(m_ListBox);
+			m_ListBox.DoubleClick += M_ListBox_DoubleClick;
 		}
+
+		private void M_ListBox_DoubleClick(object sender, EventArgs e)
+		{
+			if(mform !=null)
+			{
+				if(mform.ActiveEditor!=null)
+				{
+					if (m_ListBox.SelectedItem!=null)
+					{
+						SInfo si = (SInfo)m_ListBox.SelectedItem;
+						mform.ActiveEditor.SetText(si.Code);
+					}
+				}
+			}
+		}
+
 		public void ChkSize()
 		{
 			int x = Margin.Left;
@@ -124,7 +150,8 @@ namespace bry
 			m_ListBox.SuspendLayout();
 			foreach(SInfo s2 in m_Items)
 			{
-				if (s2.Name.IndexOf(s, StringComparison.OrdinalIgnoreCase)>=0)
+
+				if (s2.Code.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0)
 				{
 					m_ListBox.Items.Add(s2.ToString());
 				}
@@ -142,7 +169,7 @@ namespace bry
 			m_ListBox.SuspendLayout();
 			foreach(var s in m_Items)
 			{
-				m_ListBox.Items.Add(s.ToString());
+				m_ListBox.Items.Add(s);
 			}
 			m_ListBox.ResumeLayout();
 		}

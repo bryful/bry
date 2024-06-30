@@ -60,7 +60,8 @@ namespace bry
 
 		// ************************************************************************
 		private List<EditorForm> editors = new List<EditorForm>();
-		private EditorForm ActiveEditor = null;
+		private EditorForm m_ActiveEditor = null;
+		public EditorForm ActiveEditor { get { return m_ActiveEditor; } }
 		private OutputForm outputForm = null;
 		private RefForm refForm = null;
 		private UiForm uiForm = null;
@@ -85,7 +86,7 @@ namespace bry
 			refForm = new RefForm();
 			refForm.Text = "Reference";
 			refForm.HideOnClose = true;
-			
+			refForm.MainForm = this;
 			uiForm = new UiForm();
 			uiForm.Text = "UI";
 			uiForm.HideOnClose = true;
@@ -150,9 +151,12 @@ namespace bry
 			{
 				InitEngine();
 			};
+			
 			InitEngine();
 
-			refForm.SetSInfo(Script.GetSInfo());
+			SInfo[] data = Script.GetSInfo();
+			refForm.SetSInfo(data);
+
 			//Clipboard.SetText(GetProps2(typeof(UiForm)));
 		}
 		// ************************************************************************
@@ -245,11 +249,13 @@ namespace bry
 			ef.FontFamily = m_EditorFontFamily;
 			ef.FontSize = m_EditorFontSize;
 			ef.Text = $"Editor{editors.Count + 1}";
+			SInfo[] data = Script.GetSInfo();
+			ef.SetSInfo(data);
 			editors.Add(ef);
 
 			ef.Enter += (sender, e) =>
 			{
-				ActiveEditor = (EditorForm)sender;
+				m_ActiveEditor = (EditorForm)sender;
 			};
 			for (int i = 0; i < editors.Count; i++)
 			{
@@ -262,15 +268,15 @@ namespace bry
 			EditorForm ef = createEditor();
 
 			ef.Show(dockPanel1,DockState.Document);
-			ActiveEditor = editors[editors.Count - 1];
+			m_ActiveEditor = editors[editors.Count - 1];
 
 			return ef;
 		}
 		public void CloseEditor()
 		{
-			if (ActiveEditor == null) return;
+			if (m_ActiveEditor == null) return;
 
-			int idx = ActiveEditor.Index;
+			int idx = m_ActiveEditor.Index;
 			editors[idx].Dispose();
 			editors.RemoveAt(idx);
 			if (editors.Count > 0)
@@ -282,11 +288,11 @@ namespace bry
 				if (idx>=editors.Count) idx = editors.Count - 1;
 
 				editors[idx].Activate();
-				ActiveEditor = editors[idx];
+				m_ActiveEditor = editors[idx];
 			}
 			else
 			{
-				ActiveEditor = null;
+				m_ActiveEditor = null;
 			}
 
 		}
@@ -457,9 +463,9 @@ namespace bry
 		// ************************************************************************
 		public void Exec()
 		{
-			if(ActiveEditor != null)
+			if(m_ActiveEditor != null)
 			{
-				Script.ExecuteCode(ActiveEditor.editor.Text);
+				Script.ExecuteCode(m_ActiveEditor.editor.Text);
 			}
 		}
 		// ************************************************************************

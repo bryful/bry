@@ -26,6 +26,11 @@ namespace bry
 		{
 			helpList1.SetItems(s);
 		}
+		public MainForm MainForm
+		{
+			get { return helpList1.MainForm; }
+			set { helpList1.MainForm = value; }
+		}
 		public RefForm()
 		{
 			InitializeComponent();

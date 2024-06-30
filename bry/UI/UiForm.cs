@@ -11,7 +11,6 @@ using WeifenLuo.WinFormsUI.Docking;
 using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
-using System.Windows;
 
 namespace bry
 {
@@ -153,7 +152,7 @@ namespace bry
 			ctrl.Name = CanUseName("btn");
 			if (tx == "") tx = ctrl.Name;
 			ctrl.Text = tx;
-			ctrl.Size = new Size(w, h);
+			ctrl.Size = new System.Drawing.Size(w, h);
 			ctrl.SizePolicyHor = hp;
 			ctrl.SizePolicyVer = vp;
 			return ctrl;

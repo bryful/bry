@@ -45,6 +45,40 @@ namespace bry
 			}
 			return ret.ToArray();
 		}
+		static public SInfo[] GetsEnum(Type ct)
+		{
+			string[] sa = Enum.GetNames(ct);
+			SInfo[] ret = new SInfo[sa.Length];
+			for(var i=0; i<sa.Length;i++)
+			{
+				ret[i] = new SInfo(sa[i],SInfoKind.Enum,ct.Name);
+			}
+			return ret;
+		}
+		static public String[] SInfoToList(SInfo[] sis)
+		{
+			List<string> ret = new List<string>();
+			for (int i=0; i< sis.Length; i++)
+			{
+				string s = sis[i].Category;
+				if (s !="")
+				{
+					ret.Add(sis[i].Name);
+					s += ".";
+				}
+				s += sis[i].Name;
+				ret.Add(s);
+			}
+			ret.Sort();
+			for(int i=ret.Count-1; i>=1; i--)
+			{
+				if (ret[i - 1] == ret[i])
+				{
+					ret.RemoveAt(i);
+				}
+			}
+			return ret.ToArray();
+		}
 	}
 
 	public class SInfo
@@ -53,7 +87,7 @@ namespace bry
 		public string Name = "";
 		public SInfoKind Kind = SInfoKind.None;
 		public bool isAtr = false;
-		public new string ToString()
+		public override string ToString()
 		{
 			string ret = "";
 
@@ -62,6 +96,20 @@ namespace bry
 			if(Category!="") ca = Category+".";
 			ret = $"{r[(int)Kind]} {ca}{Name}";
 			return ret;
+		}
+		public string Code
+		{
+			get
+			{
+				string s = Category;
+				if (s != "") s = s + ".";
+				s += Name;
+				if (Kind==SInfoKind.Method)
+				{
+					s += "()";
+				}
+				return s;
+			}
 		}
 		public SInfo(string name, SInfoKind kind, string cat = "")
 		{
@@ -105,7 +153,8 @@ namespace bry
 		Property, 
 		Method, 
 		Event,
-		Field
+		Field,
+		Enum
 	}
 	[AttributeUsage(AttributeTargets.All)]
 	public class BryScriptAttribute : Attribute

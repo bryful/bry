@@ -20,6 +20,33 @@ namespace bry
 {
 	public class Script
 	{
+		[ScriptUsage(ScriptAccess.None)]
+		public InstallType[] InstallTypes = new InstallType[]
+		{
+			new InstallType(typeof(Int32),"int"),
+			new InstallType(typeof(Single)),
+			new InstallType(typeof(Double)),
+			new InstallType(typeof(Array),"ArrayCS"),
+			new InstallType(typeof(String),"StringCS"),
+			new InstallType(typeof(Boolean),"BooleanCS"),
+			new InstallType(typeof(DateTime)),
+			new InstallType(typeof(Color)),
+			new InstallType(typeof(Point)),
+			new InstallType(typeof(Size)),
+			new InstallType(typeof(Rectangle)),
+			new InstallType(typeof(Padding)),
+			new InstallType(typeof(UiForm)),
+			new InstallType(typeof(UiControl)),
+			new InstallType(typeof(UiLayout)),
+			new InstallType(typeof(UiSpace)),
+			new InstallType(typeof(UiBtn)),
+			new InstallType(typeof(UiLabel)),
+			new InstallType(typeof(UiListBox)),
+			new InstallType(typeof(UiTextBox)),
+			new InstallType(typeof(SizePolicy)),
+			new InstallType(typeof(LayoutOrientation)),
+		};
+		
 		public V8ScriptEngine engine = null;
 		private TextBox m_outputBox = null;
 		[ScriptUsage(ScriptAccess.None)]
@@ -28,6 +55,7 @@ namespace bry
 			get { return m_outputBox; }
 			set
 			{
+				//System.Drawing.Point
 				m_outputBox = value;
 			}
 		}
@@ -35,6 +63,9 @@ namespace bry
 		private ScriptFolder m_Folder = new ScriptFolder();
 		private ScriptFastCopy m_FastCopy = new ScriptFastCopy();
 		private UiForm m_UiForm = null;
+
+		[BryScript]
+		public object theResult = null;
 		// **************************************************
 		[ScriptUsage(ScriptAccess.None)]
 		public Script(UiForm uiForm=null)
@@ -300,47 +331,31 @@ namespace bry
             }
             if (engine != null) engine.Dispose();
 			engine = new V8ScriptEngine();
-			engine.AddHostObject("dotnet", new HostTypeCollection("mscorlib", "System.Core"));
+			engine.AddHostObject("dotnet", new HostTypeCollection("mscorlib", "System","System.Core"));
 			engine.AddHostObject("host", new HostFunctions());
 
-			engine.AddHostType("ARRAY",typeof(Array));
-			engine.AddHostTypes(new Type[]
-			{
-				typeof(Enumerable),
-				typeof(int),
-				typeof(Int32),
-				typeof(double),
-				typeof(float),
-				typeof(String),
-				typeof(bool),
-				typeof(DateTime),
-				typeof(Point),
-				typeof(Color),
-				typeof(Size),
-				typeof(Rectangle),
-				typeof(Padding),
-				typeof(UiForm),
-				typeof(UiControl),
-				typeof(UiLayout),
-				typeof(UiSpace),
-				typeof(UiBtn),
-				typeof(UiLabel),
-				typeof(UiListBox),
-				typeof(UiTextBox),
-				typeof(SizePolicy),
-				typeof(LayoutOrientation),
-				typeof(StringAlignment),
 
-			});
+			foreach(InstallType k in InstallTypes)
+			{
+				if (k.Name =="")
+				{
+					engine.AddHostType(k.TypeName);
+				}
+				else
+				{
+					engine.AddHostType(k.Name,k.TypeName);
+				}
+			}
+
 			engine.AddHostObject("App", HostItemFlags.GlobalMembers, this);
 			engine.AddHostObject("File", HostItemFlags.PrivateAccess, m_File);
 			engine.AddHostObject("Dir", HostItemFlags.PrivateAccess, m_Folder);
 			engine.AddHostObject("FastCopy", HostItemFlags.PrivateAccess, m_FastCopy);
-
 			if(m_UiForm != null)
 			{
 				engine.AddHostObject("UI", HostItemFlags.PrivateAccess, m_UiForm);
 			}
+			
 		}
 		public object toTest()
 		{
@@ -356,14 +371,23 @@ namespace bry
 		}
 		public SInfo[] GetSInfo()
 		{
+			int len = 0;
 			SInfo[] list = ScriptInfo.Gets(this.GetType(), "");
+			len += list.Length;
 			SInfo[] list2 = ScriptInfo.Gets(m_File.GetType(), "File");
+			len += list2.Length;
 			SInfo[] list3 = ScriptInfo.Gets(m_Folder.GetType(), "Dir");
+			len += list3.Length;
 			SInfo[] list4 = ScriptInfo.Gets(m_FastCopy.GetType(), "FastCopy");
+			len += list4.Length;
 			SInfo[] list5 = ScriptInfo.Gets(typeof(UiForm), "UI");
+			len += list5.Length;
+			SInfo[] list6 = ScriptInfo.GetsEnum(typeof(SizePolicy));
+			len += list6.Length;
+			SInfo[] list7 = ScriptInfo.GetsEnum(typeof(LayoutOrientation));
+			len += list7.Length;
 
-			SInfo[] ret = new SInfo[
-				list.Length+ list2.Length + list3.Length+ list4.Length + list5.Length];
+			SInfo[] ret = new SInfo[len];
 
 			int idx = 0;
 			foreach(SInfo s in list)
@@ -391,6 +415,16 @@ namespace bry
 				ret[idx] = s;
 				idx++;
 			}
+			foreach (SInfo s in list6)
+			{
+				ret[idx] = s;
+				idx++;
+			}
+			foreach (SInfo s in list7)
+			{
+				ret[idx] = s;
+				idx++;
+			}
 			return ret;
 		}
 		public string GetSInfoToString()
@@ -404,4 +438,16 @@ namespace bry
 			return ret;
 		}
 	}
+	
+	public class InstallType
+	{
+		public string Name { get; set; } = "";
+		public Type TypeName { get; set; } = null;
+		public InstallType(Type ty,string name ="") 
+		{
+			Name = name;
+			TypeName = ty;
+		}
+	}
+	
 }

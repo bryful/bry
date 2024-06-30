@@ -11,7 +11,6 @@ using WeifenLuo.WinFormsUI.Docking;
 using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;
 using Microsoft.ClearScript.V8;
-using System.Windows;
 
 namespace bry
 {

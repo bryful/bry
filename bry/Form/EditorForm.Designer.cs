@@ -38,10 +38,6 @@
 			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.uIScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.createScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.openScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.saveScripToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -73,8 +69,7 @@
 			// menuStrip1
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.uIScriptToolStripMenuItem});
+            this.fileToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(735, 24);
@@ -109,34 +104,6 @@
 			this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.closeToolStripMenuItem.Text = "Close";
 			// 
-			// uIScriptToolStripMenuItem
-			// 
-			this.uIScriptToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createScriptToolStripMenuItem,
-            this.openScriptToolStripMenuItem,
-            this.saveScripToolStripMenuItem});
-			this.uIScriptToolStripMenuItem.Name = "uIScriptToolStripMenuItem";
-			this.uIScriptToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
-			this.uIScriptToolStripMenuItem.Text = "UIScripts";
-			// 
-			// createScriptToolStripMenuItem
-			// 
-			this.createScriptToolStripMenuItem.Name = "createScriptToolStripMenuItem";
-			this.createScriptToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.createScriptToolStripMenuItem.Text = "createScript";
-			// 
-			// openScriptToolStripMenuItem
-			// 
-			this.openScriptToolStripMenuItem.Name = "openScriptToolStripMenuItem";
-			this.openScriptToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.openScriptToolStripMenuItem.Text = "openScript";
-			// 
-			// saveScripToolStripMenuItem
-			// 
-			this.saveScripToolStripMenuItem.Name = "saveScripToolStripMenuItem";
-			this.saveScripToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.saveScripToolStripMenuItem.Text = "saveScrip";
-			// 
 			// EditorForm
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -162,9 +129,5 @@
 		private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem uIScriptToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem createScriptToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem openScriptToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem saveScripToolStripMenuItem;
 	}
 }

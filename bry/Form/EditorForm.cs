@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.CodeCompletion;
 
 namespace bry
 {
@@ -21,6 +22,14 @@ namespace bry
 		public TextEditor editor
 		{
 			get { return aEdit1.editor; }
+		}
+		public void SetText(string s)
+		{
+			aEdit1.SetText(s);
+		}
+		public void SetSInfo(SInfo[] a)
+		{
+			aEdit1.SetSInfo(a);
 		}
 		public string FontFamily
 		{
