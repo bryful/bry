@@ -27,6 +27,7 @@ namespace bry
 {
 	public class AEdit : System.Windows.Forms.Control
 	{
+		#region props
 		private TextEditor m_editor = new TextEditor();
 		[Category("Editor"),Browsable(false)]
 		public TextEditor editor
@@ -144,12 +145,21 @@ namespace bry
 				m_editor.Document = value;
 			}
 		}
+		[Category("Editor"), Browsable(false)]
+		public TextArea TextArea
+		{
+			get { return m_editor.TextArea; }
+		}
 		public new string Text
 		{
 			get { return m_editor.Text; }
 			set {
 				m_editor.Text = value;
 			}	
+		}
+		public void AppendText(string s)
+		{
+			m_editor.AppendText(s);
 		}
 		private Font m_font = new Font("System",9);
 		public new Font Font
@@ -163,6 +173,7 @@ namespace bry
 
 			}
 		}
+		#endregion
 		private CompletionWindow completionWindow;
 		public AEdit()
 		{
@@ -183,40 +194,96 @@ namespace bry
 
 			m_editor.TextArea.TextEntering += textEditor_TextArea_TextEntering;
 			m_editor.TextArea.TextEntered += textEditor_TextArea_TextEntered;
+			m_editor.KeyDown += M_editor_KeyDown;
 
 		}
+
+
+
+		private string GetWord(string s, int pos)
+		{
+			string ret = "";
+
+			if (pos > s.Length) pos = s.Length;
+			for (int i = pos - 1; i >= 0; i--)
+			{
+				if(i<0) break;
+				string c = s.Substring(i,1);
+				if((c ==" ")|| (c == "\t") || (c == "\n") || (c == "\r")
+					|| (c == "\"") || (c == "\'") || (c == ")"))
+				{
+					break;
+				}
+				ret = c + ret;
+			}
+			return ret;
+		}
+		// ***********************************************************
 		private void textEditor_TextArea_TextEntered(object sender, TextCompositionEventArgs e)
 		{
-			MyCompletionData[] Items = FindChar(e.Text);
-			if(Items.Length>0)
-			{
-				completionWindow = new CompletionWindow(m_editor.TextArea);
-				IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
-                foreach (var item in Items)
-                {
-					data.Add(item);
-				}
-				completionWindow.Show();
-
-				// ウインドウを閉じたときの処理
-				completionWindow.Closed += delegate { completionWindow = null; };
-			}
-			/*
 			if (e.Text == ".") // ピリオドを入力したとき
 			{
-				// CodeCompletion 用ウインドウを開く
+				int offset = m_editor.TextArea.Caret.Offset;
+				string wd = GetWord(m_editor.Document.Text, offset-1);
+				if (IsCategory(wd))
+				{
+					completionWindow = new CompletionWindow(m_editor.TextArea);
+					SetCompData(completionWindow, wd);
+					completionWindow.Show();
+					completionWindow.Closed += delegate { completionWindow = null; };
+				}
+			}
+		}
+		private void M_editor_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+		{
+			if (((e.Key & Key.Space) == Key.Space)&&((System.Windows.Forms.Control.ModifierKeys & Keys.Control) == Keys.Control))
+			{ 
+				e.Handled = true;
 				completionWindow = new CompletionWindow(m_editor.TextArea);
-				IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
-				data.Add(new MyCompletionData("aaB"));
-				data.Add(new MyCompletionData("aBB"));
-				data.Add(new MyCompletionData("aaaB"));
+				SetCompDataNoDot(completionWindow);
 				completionWindow.Show();
-
-				// ウインドウを閉じたときの処理
 				completionWindow.Closed += delegate { completionWindow = null; };
-			*/
+			}
 		}
 
+		// //////
+		private void SetCompData(CompletionWindow cw,string cat)
+		{
+			if (cat == "") return;
+            IList<ICompletionData> data = cw.CompletionList.CompletionData;
+
+			foreach(SInfo sInfo in SInfoList)
+			{
+				if (string.Compare(sInfo.Category, cat, true) == 0)
+				{
+					string cd = sInfo.Name;
+					if (sInfo.Kind == SInfoKind.Method) cd += "()";
+					data.Add(new MyCompletionData(cd));
+				}
+			}
+
+		}
+		private void SetCompDataNoDot(CompletionWindow cw)
+		{
+			IList<ICompletionData> data = cw.CompletionList.CompletionData;
+
+			foreach (SInfo sInfo in SInfoList)
+			{
+				if (sInfo.Category=="")
+				{
+					string cd = sInfo.Name;
+					if (sInfo.Kind == SInfoKind.Method) cd += "()";
+					data.Add(new MyCompletionData(cd));
+				}
+			}
+			if (SInfoCategorys.Length > 0)
+			{
+				foreach (string cat in SInfoCategorys)
+				{
+					data.Add(new MyCompletionData(cat));
+				}
+			}
+		}
 		//---------------------------------------------------------------------------------------
 		private void textEditor_TextArea_TextEntering(object sender, TextCompositionEventArgs e)
 		{
@@ -231,6 +298,7 @@ namespace bry
 
 			// e.Handled = true; を設定してはならない
 		}
+		// ***********************************************************
 		private void ChkSize()
 		{
 			host.SetBounds(0, 0, this.Width, this.Height);
@@ -252,26 +320,55 @@ namespace bry
 				m_editor.TextArea.Selection.ReplaceSelectionWithText(s);
 			}
 		}
-		private MyCompletionData[] myCompletionDatas = new MyCompletionData[0];
+		private SInfo[] SInfoList = new SInfo[0];
+		private string[] SInfoCategorys = new string[0];
 
-		public void SetSInfo(SInfo[] a)
+		private List<string> AppendList(List<string>lst, string s)
 		{
-			myCompletionDatas = new MyCompletionData[0];
-			List<MyCompletionData> ds = new List<MyCompletionData> ();
+			if (s=="") return lst;
 
-			if(a.Length > 0)
+			bool isIn=false;
+			foreach(var ss in lst)
 			{
-				string[] sa = ScriptInfo.SInfoToList(a);
-				foreach (string s in sa)
+				if (String.Compare(ss,s,true)==0)
 				{
-					ds.Add(new MyCompletionData(s));
+					isIn = true; break; 
 				}
 			}
-			myCompletionDatas = ds.ToArray();
+			if (isIn == false) lst.Add(s);
+			return lst;
+		}
+		private bool IsCategory(string cat)
+		{
+			bool ret = false;
+			if (cat == "") return ret;
+			if(SInfoCategorys.Length>0)
+			{
+				foreach(var s in SInfoCategorys)
+				{
+					if (String.Compare(s,cat,true)==0)
+					{
+						ret = true; break;
+					}
+				}
+			}
+			return ret;
+		}
+		public void SetSInfo(SInfo[] a)
+		{
+			SInfoList = a;
+			List<string> list = new List<string>();
+			foreach (SInfo s in SInfoList)
+			{
+				list =AppendList(list,s.Category);
+			}
+			list.Sort();
+			SInfoCategorys = list.ToArray();
 		}
 		private MyCompletionData[] FindChar(string s)
 		{
 			List<MyCompletionData> ret = new List<MyCompletionData>();
+			/*
 			if (myCompletionDatas.Length == 0) return ret.ToArray();
 			if (s=="") return ret.ToArray();
 			foreach(var dat in myCompletionDatas)
@@ -280,7 +377,7 @@ namespace bry
 				{
 					ret.Add(dat);
 				}
-			}
+			}*/
 			return ret.ToArray();
 		}
 	}

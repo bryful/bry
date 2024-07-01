@@ -16,7 +16,15 @@ namespace bry
 {
 	public class UiListBox : UiControl
 	{
-		private ListBox m_ListBox = new ListBox();
+		public event EventHandler SelectedIndexChanged;
+		protected virtual void OnSelectedIndexChanged(EventArgs e)
+		{
+			if (SelectedIndexChanged != null)
+			{
+				SelectedIndexChanged(this, e);
+			}
+		}
+		protected ListBox m_ListBox = new ListBox();
 		public ListBox ListBox
 		{
 			get { return m_ListBox;}
@@ -166,6 +174,10 @@ namespace bry
 				m_ListBox.Height + Margin.Top + Margin.Bottom
 				);
 			this.Controls.Add(m_ListBox);
+			m_ListBox.SelectedIndexChanged+=(sender,e)=>
+			{
+				OnSelectedIndexChanged(e);
+			};
 			ChkSize();
 		}
 		private void ChkSize()

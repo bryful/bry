@@ -256,6 +256,10 @@
       <DependentUpon>RefForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Script\ScriptInfo.cs" />
+    <Compile Include="Avalon\TextEditorUtility.cs" />
+    <Compile Include="UiEditor.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\UiListBox.cs">
       <SubType>Component</SubType>
     </Compile>

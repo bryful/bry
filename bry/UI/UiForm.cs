@@ -257,6 +257,23 @@ namespace bry
 			ctrl.SizePolicyVer = vp;
 			return ctrl;
 		}
+		[BryScript]
+		public UiEditor newEditor(
+string tx = "",
+int w = 150,
+int h = 200,
+SizePolicy hp = SizePolicy.Expanding,
+SizePolicy vp = SizePolicy.Expanding)
+		{
+			UiEditor ctrl = new UiEditor();
+			ctrl.Name = CanUseName("editor");
+			if (tx == "") tx = ctrl.Name;
+			ctrl.Text = tx;
+			ctrl.Size = new Size(w, h);
+			ctrl.SizePolicyHor = hp;
+			ctrl.SizePolicyVer = vp;
+			return ctrl;
+		}
 		// ********************************************************
 		public string CanUseName(string key)
 		{

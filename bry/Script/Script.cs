@@ -43,6 +43,7 @@ namespace bry
 			new InstallType(typeof(UiLabel)),
 			new InstallType(typeof(UiListBox)),
 			new InstallType(typeof(UiTextBox)),
+			new InstallType(typeof(UiEditor)),
 			new InstallType(typeof(SizePolicy)),
 			new InstallType(typeof(LayoutOrientation)),
 		};
