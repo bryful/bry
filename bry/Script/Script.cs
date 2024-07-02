@@ -195,14 +195,40 @@ namespace bry
 		[BryScript]
 		public bool child(string cmd, string arg)
 		{
-			return WIN.ProcessStart(cmd, arg);
+			System.Diagnostics.ProcessStartInfo psi =
+				new System.Diagnostics.ProcessStartInfo();
+			psi.FileName = cmd;
+			psi.Arguments = arg;
+			Process p =  System.Diagnostics.Process.Start(psi);
+			return (p != null);
+			//return WIN.ProcessStart(cmd, arg);
 			//Process.Start("EXPLORER.EXE", m_FullName);
 		}
+		public bool child(string cmd)
+		{
+			return child(cmd,"");
+		}
+
 		// **************************************************
 		[BryScript]
+		public bool childWait(string cmd, string arg,int ms=10000)
+		{
+			System.Diagnostics.ProcessStartInfo psi =
+				new System.Diagnostics.ProcessStartInfo();
+			psi.FileName = cmd;
+			psi.Arguments = arg;
+			Process p = System.Diagnostics.Process.Start(psi);
+			if(p == null) return false;
+			p.WaitForExit(ms);
+			return (p != null);
+		}
 		public bool childWait(string cmd, string arg)
 		{
-			return WIN.ProcessStartWait(cmd, arg);
+			return childWait(cmd, arg,10000);
+		}
+		public bool childWait(string cmd)
+		{
+			return childWait(cmd, "",10000);
 		}
 		[BryScript]
 		public void executeFile(string p)
@@ -402,16 +428,6 @@ namespace bry
 			}
 			list.AddRange(listOther);
 			return list.ToArray();
-		}
-		public string GetSInfoToString()
-		{
-			SInfo[] list = GetSInfo();
-			string ret = string.Empty;
-			foreach( SInfo s in list )
-			{
-				ret += s.ToString()+"\r\n";
-			}
-			return ret;
 		}
 	}
 	

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using Microsoft.VisualBasic.FileIO;
+
 namespace bry
 {
 	public class ScriptFile
@@ -183,7 +184,64 @@ namespace bry
 			}
 			return ret;
 		}
+		[BryScript]
+		public string openDialog(string s="",string cap= "")
+		{
+			string ret = null;
 
+			using (OpenFileDialog dlg = new OpenFileDialog())
+			{
+				if (cap!="") dlg.Title = cap;
+				dlg.Filter = "*.txt|*.txt|*json|*json|*.*|*.*";
+				if(s!="")
+				{
+					dlg.InitialDirectory = Path.GetDirectoryName(s);
+					dlg.FileName = Path.GetFileName(s);
+				}
+				if (dlg.ShowDialog() == DialogResult.OK)
+				{
+					ret=dlg.FileName;
+				}
+			}
+			return ret;
+		}
+		public string openDialog(string s = "")
+		{
+			return openDialog(s,"");
+		}
+		public string openDialog()
+		{
+			return openDialog("", "");
+		}
+		[BryScript]
+		public string saveDialog(string s = "", string cap = "")
+		{
+			string ret = null;
+
+			using (SaveFileDialog dlg = new SaveFileDialog())
+			{
+				if (cap != "") dlg.Title = cap;
+				dlg.Filter = "*.txt|*.txt|*json|*json|*.*|*.*";
+				if (s != "")
+				{
+					dlg.InitialDirectory = Path.GetDirectoryName(s);
+					dlg.FileName = Path.GetFileName(s);
+				}
+				if (dlg.ShowDialog() == DialogResult.OK)
+				{
+					ret = dlg.FileName;
+				}
+			}
+			return ret;
+		}
+		public string saveDialog(string s = "")
+		{
+			return saveDialog(s, "");
+		}
+		public string saveDialog()
+		{
+			return saveDialog("", "");
+		}
 		public ScriptFile() 
 		{
 		}

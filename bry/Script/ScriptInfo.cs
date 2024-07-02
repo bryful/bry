@@ -19,7 +19,7 @@ namespace bry
 {
 	static public class ScriptInfo
 	{
-		static public List<SInfo> GetsList(Type ct, string cat = "")
+		static public List<SInfo> GetsList(Type ct, string cat = "",bool IsGlobal=false)
 		{
 			List<SInfo> ret = new List<SInfo>();
 			MemberInfo[] m = ct.GetMembers();
@@ -38,6 +38,7 @@ namespace bry
 				if (MyAttribute == null) continue;
 
 				SInfo si = new SInfo(mi, cat);
+				si.IsGlobal = IsGlobal;
 				if ((si.Name != "") && (si.Kind != SInfoKind.None))
 				{
 					ret.Add(si);
@@ -46,9 +47,9 @@ namespace bry
 			ret.Sort((a, b) => string.Compare(a.Name, b.Name));
 			return ret;
 		}
-		static public SInfo[] Gets(Type ct, string cat = "")
+		static public SInfo[] Gets(Type ct, string cat = "", bool IsGlobal = false)
 		{
-			return GetsList(ct, cat).ToArray();
+			return GetsList(ct, cat,IsGlobal).ToArray();
 		}
 		static public List<SInfo> GetsEnumList(Type ct)
 		{
@@ -56,43 +57,15 @@ namespace bry
 			List<SInfo> ret = new List<SInfo>();
 			for (var i = 0; i < sa.Length; i++)
 			{
-				ret.Add ( new SInfo(sa[i], SInfoKind.Enum, ct.Name));
+				SInfo si = new SInfo(sa[i], SInfoKind.Enum, ct.Name);
+				si.IsGlobal = true;
+				ret.Add (si);
 			}
 			return ret;
 		}
 		static public SInfo[] GetsEnum(Type ct)
 		{
-			string[] sa = Enum.GetNames(ct);
-			SInfo[] ret = new SInfo[sa.Length];
-			for(var i=0; i<sa.Length;i++)
-			{
-				ret[i] = new SInfo(sa[i],SInfoKind.Enum,ct.Name);
-			}
-			return ret;
-		}
-		static public String[] SInfoToList(SInfo[] sis)
-		{
-			List<string> ret = new List<string>();
-			for (int i=0; i< sis.Length; i++)
-			{
-				string s = sis[i].Category;
-				if (s !="")
-				{
-					ret.Add(sis[i].Name);
-					s += ".";
-				}
-				s += sis[i].Name;
-				ret.Add(s);
-			}
-			ret.Sort();
-			for(int i=ret.Count-1; i>=1; i--)
-			{
-				if (ret[i - 1] == ret[i])
-				{
-					ret.RemoveAt(i);
-				}
-			}
-			return ret.ToArray();
+			return GetsEnumList(ct).ToArray();
 		}
 	}
 
@@ -101,14 +74,15 @@ namespace bry
 		public string Category = "";
 		public string Name = "";
 		public SInfoKind Kind = SInfoKind.None;
-		public bool isAtr = false;
+		public bool IsAtr = false;
+		public bool IsGlobal = false;
 		public override string ToString()
 		{
 			string ret = "";
 
 			string[] r = Enum.GetNames(typeof(SInfoKind));
 			string ca = "";
-			if(Category!="") ca = Category+".";
+			if((Category!="")&&(Category!="____")) ca = Category+".";
 			ret = $"{r[(int)Kind]} {ca}{Name}";
 			return ret;
 		}
@@ -138,7 +112,7 @@ namespace bry
 		   (BryScriptAttribute)Attribute.GetCustomAttribute(mi, typeof(BryScriptAttribute));
 			if (MyAttribute != null) 
 			{
-				isAtr = true;
+				IsAtr = true;
 			}
 			Name = mi.Name;
 			Category = cat;

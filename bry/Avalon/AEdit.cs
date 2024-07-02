@@ -262,14 +262,18 @@ namespace bry
 		}
 		private void M_editor_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
 		{
-			if (((e.Key & Key.Space) == Key.Space)&&((System.Windows.Forms.Control.ModifierKeys & Keys.Control) == Keys.Control))
-			{ 
-				e.Handled = true;
-				completionWindow = new CompletionWindow(m_editor.TextArea);
-				SetCompDataNoDot(completionWindow);
-				completionWindow.Show();
-				completionWindow.Closed += delegate { completionWindow = null; };
+			if ((System.Windows.Forms.Control.ModifierKeys & Keys.Control) == Keys.Control)
+			{
+				if (e.Key  == Key.Space)
+				{
+					e.Handled = true;
+					completionWindow = new CompletionWindow(m_editor.TextArea);
+					SetCompDataNoDot(completionWindow);
+					completionWindow.Show();
+					completionWindow.Closed += delegate { completionWindow = null; };
+				}
 			}
+
 		}
 
 		// //////

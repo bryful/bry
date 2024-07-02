@@ -6,9 +6,11 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Microsoft.ClearScript;
 using Microsoft.ClearScript.JavaScript;
 using Microsoft.VisualBasic.FileIO;
+
 namespace bry
 {
 	public class ScriptFolder
@@ -174,21 +176,12 @@ namespace bry
 
 		}
 		[BryScript]
-		public ItemsInfo getFiles(string p)
+		public void setCurrent(string p)
 		{
-			List<string> ret = new List<string>();
-			if (p == "") p = ".\\";
-			var di = new DirectoryInfo(p);
-			var files =di.EnumerateFiles("*", System.IO.SearchOption.TopDirectoryOnly);
-			foreach ( var file in files)
-			{
-				ret.Add(file.Name);
-			}
-			ItemsInfo result = new ItemsInfo(ret.ToArray());
-			return result;
+			Directory.SetCurrentDirectory(p);
 		}
 		[BryScript]
-		public object getFilesJ(string p)
+		public object getFiles(string p)
 		{
 			List<object> ret = new List<object>();
 			if (p == "") p = ".\\";
@@ -201,38 +194,50 @@ namespace bry
 			return ScriptEngine.Current.Script.Array.from(ret.ToArray());
 		}
 		[BryScript]
-		public ItemsInfo getDirectories(string p)
+		public object getDirectories(string p)
 		{
-			List<string> ret = new List<string>();
+			List<object> ret = new List<object>();
 
 			var di = new DirectoryInfo(p);
 			var files = di.EnumerateDirectories("*", System.IO.SearchOption.TopDirectoryOnly);
 			foreach (var file in files)
 			{
-				ret.Add(file.Name);
+				ret.Add((object)file.Name);
 			}
-			ItemsInfo result = new ItemsInfo(ret.ToArray());
-			return result;
+			return ScriptEngine.Current.Script.Array.from(ret.ToArray());
 		}
 		[BryScript]
 		public bool exists(string path)
 		{
 			return Directory.Exists(path);
 		}
-	}
-	public class ItemsInfo
-	{
-		public string [] names;
-		public int count;
-		public ItemsInfo(string[] files)
+		// ***************************************************
+		[BryScript]
+		public string folderSelectDialog(string s)
 		{
-			this.names = files;
-			this.count = files.Length;
+			string ret = null;
+			using (OpenFileDialog ofd = new OpenFileDialog() 
+			{ FileName = "SelectFolder", Filter = "Folder|.", CheckFileExists = false })
+			{
+				ofd.Title = "Select Folder";
+				if(s!="")
+				{
+					if (Directory.Exists(s))
+					{
+						ofd.InitialDirectory = s;
+					}
+				}
+				if (ofd.ShowDialog() == DialogResult.OK)
+				{
+					ret = Path.GetDirectoryName(ofd.FileName);
+				}
+			}
+			return ret;
 		}
-		public string[] keys = new string[] { "names", "count" };
-		public int keyCount = 2;
-		public int Test(int a,int b) { return a + b; }
-
+		public string folderSelectDialog()
+		{
+			return folderSelectDialog("");
+		}
 	}
 
 }
