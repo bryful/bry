@@ -19,7 +19,7 @@ namespace bry
 {
 	static public class ScriptInfo
 	{
-		static public SInfo[] Gets(Type ct, string cat = "")
+		static public List<SInfo> GetsList(Type ct, string cat = "")
 		{
 			List<SInfo> ret = new List<SInfo>();
 			MemberInfo[] m = ct.GetMembers();
@@ -37,13 +37,28 @@ namespace bry
 			   (BryScriptAttribute)Attribute.GetCustomAttribute(mi, typeof(BryScriptAttribute));
 				if (MyAttribute == null) continue;
 
-				SInfo si = new SInfo(mi,cat);
-				if ((si.Name != "")&&(si.Kind != SInfoKind.None))
+				SInfo si = new SInfo(mi, cat);
+				if ((si.Name != "") && (si.Kind != SInfoKind.None))
 				{
 					ret.Add(si);
 				}
 			}
-			return ret.ToArray();
+			ret.Sort((a, b) => string.Compare(a.Name, b.Name));
+			return ret;
+		}
+		static public SInfo[] Gets(Type ct, string cat = "")
+		{
+			return GetsList(ct, cat).ToArray();
+		}
+		static public List<SInfo> GetsEnumList(Type ct)
+		{
+			string[] sa = Enum.GetNames(ct);
+			List<SInfo> ret = new List<SInfo>();
+			for (var i = 0; i < sa.Length; i++)
+			{
+				ret.Add ( new SInfo(sa[i], SInfoKind.Enum, ct.Name));
+			}
+			return ret;
 		}
 		static public SInfo[] GetsEnum(Type ct)
 		{

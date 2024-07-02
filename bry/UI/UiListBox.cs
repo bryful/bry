@@ -25,14 +25,17 @@ namespace bry
 			}
 		}
 		protected ListBox m_ListBox = new ListBox();
+		[BryScript]
 		public ListBox ListBox
 		{
 			get { return m_ListBox;}
 		}
+		[BryScript]
 		public ListBox.ObjectCollection Items
 		{
 			get { return m_ListBox.Items; }
 		}
+		[BryScript]
 		public int SelectedIndex
 		{
 			get { return (int)m_ListBox.SelectedIndex; }
@@ -41,10 +44,12 @@ namespace bry
 				m_ListBox.SelectedIndex = value;
 			}
 		}
+		[BryScript]
 		public ListBox.SelectedIndexCollection SelectedIndices
 		{
 			get { return m_ListBox.SelectedIndices; }
 		}
+		[BryScript]
 		public object SelectedItem
 		{
 			get { return m_ListBox.SelectedItem; }
@@ -53,10 +58,12 @@ namespace bry
 				m_ListBox.SelectedItem = value;
 			}
 		}
+		[BryScript]
 		public ListBox.SelectedObjectCollection SelectedItems
 		{
 			get { return m_ListBox.SelectedItems; }
 		}
+		[BryScript]
 		public System.Windows.Forms.SelectionMode SelectionMode
 		{
 			get { return m_ListBox.SelectionMode; }
@@ -65,6 +72,7 @@ namespace bry
 				m_ListBox.SelectionMode = value;
 			}
 		}
+		[BryScript]
 		public bool Sorted
 		{
 			get { return m_ListBox.Sorted; }
@@ -73,6 +81,7 @@ namespace bry
 				m_ListBox.Sorted = value;
 			}
 		}
+		[BryScript]
 		public int TopIndex
 		{
 			get { return m_ListBox.TopIndex; }
@@ -81,6 +90,7 @@ namespace bry
 				m_ListBox.TopIndex = value;
 			}
 		}
+		[BryScript]
 		public int ColumnWidth
 		{
 			get { return m_ListBox.ColumnWidth; }
@@ -89,10 +99,12 @@ namespace bry
 				m_ListBox.ColumnWidth = value;
 			}
 		}
+		[BryScript]
 		public ListBox.IntegerCollection CustomTabOffsets
 		{
 			get { return m_ListBox.CustomTabOffsets; }
 		}
+		[BryScript]
 		public int HorizontalExtent
 		{
 			get { return m_ListBox.HorizontalExtent; }
@@ -101,6 +113,7 @@ namespace bry
 				m_ListBox.HorizontalExtent = value;
 			}
 		}
+		[BryScript]
 		public bool HorizontalScrollbar
 		{
 			get { return m_ListBox.HorizontalScrollbar; }
@@ -109,6 +122,7 @@ namespace bry
 				m_ListBox.HorizontalScrollbar = value;
 			}
 		}
+		[BryScript]
 		public bool IntegralHeight
 		{
 			get { return m_ListBox.IntegralHeight; }
@@ -117,6 +131,7 @@ namespace bry
 				m_ListBox.IntegralHeight = value;
 			}
 		}
+		[BryScript]
 		public int ItemHeight
 		{
 			get { return m_ListBox.ItemHeight; }
@@ -125,6 +140,7 @@ namespace bry
 				m_ListBox.ItemHeight = value;
 			}
 		}
+		[BryScript]
 		public bool MultiColumn
 		{
 			get { return m_ListBox.MultiColumn; }
@@ -133,6 +149,7 @@ namespace bry
 				m_ListBox.MultiColumn = value;
 			}
 		}
+		[BryScript]
 		public bool ScrollAlwaysVisible
 		{
 			get { return m_ListBox.ScrollAlwaysVisible; }
@@ -141,6 +158,7 @@ namespace bry
 				m_ListBox.ScrollAlwaysVisible = value;
 			}
 		}
+		[BryScript]
 		[Browsable(true)]
 		public new System.Drawing.Font Font
 		{
@@ -153,6 +171,7 @@ namespace bry
 			}
 		}
 		// **************************************************************
+		[BryScript]
 		[Category("UI"), Browsable(true)]
 		public new float FontSize
 		{

@@ -16,9 +16,11 @@ namespace bry
 	public class UiTextBox :UiControl
 	{
 		private TextBox m_TextBox = new TextBox();
+		[BryScript]
 		public TextBox TextBox
 		{  get { return m_TextBox; } }
 
+		[BryScript]
 		public new string Text
 		{
 			get { return m_TextBox.Text; }
@@ -28,6 +30,7 @@ namespace bry
 				m_TextBox.Text = value;
 			}
 		}
+		[BryScript]
 		[Browsable(true)]
 		public new System.Drawing.Font Font
 		{
@@ -39,6 +42,7 @@ namespace bry
 				ChkSize();
 			}
 		}
+		[BryScript]
 		[Category("UI"), Browsable(true)]
 		public new SizePolicy SizePolicyVer
 		{
@@ -49,6 +53,7 @@ namespace bry
 			}
 		}
 		// **************************************************************
+		[BryScript]
 		[Category("UI"), Browsable(true)]
 		public new float FontSize
 		{

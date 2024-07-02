@@ -257,7 +257,7 @@
     </Compile>
     <Compile Include="Script\ScriptInfo.cs" />
     <Compile Include="Avalon\TextEditorUtility.cs" />
-    <Compile Include="UiEditor.cs">
+    <Compile Include="UI\UiEditor.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\UiListBox.cs">

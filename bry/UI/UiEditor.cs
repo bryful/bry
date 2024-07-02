@@ -19,7 +19,9 @@ namespace bry
 	public class UiEditor :UiControl
 	{
 		private AEdit m_Editor = new AEdit();
+		[BryScript]
 		public AEdit Editor { get { return m_Editor; } }
+		[BryScript]
 		public void SetText(string s)
 		{
 			m_Editor.SetText(s);
@@ -28,6 +30,7 @@ namespace bry
 		{
 			m_Editor.SetSInfo(a);
 		}
+		[BryScript]
 		public string FontFamily
 		{
 			get
@@ -40,6 +43,7 @@ namespace bry
 				m_Editor.editor.FontFamily = new System.Windows.Media.FontFamily(value);
 			}
 		}
+		[BryScript]
 		public new double FontSize
 		{
 			get { return m_Editor.editor.FontSize; }
@@ -48,11 +52,13 @@ namespace bry
 				m_Editor.editor.FontSize = value;
 			}
 		}
+		[BryScript]
 		public new string Text
 		{
 			get { return m_Editor.editor.Text; }
 			set { m_Editor.editor.Text = value; }
 		}
+		[BryScript]
 		[Category("Editor"), Browsable(false)]
 		public TextDocument Document
 		{
@@ -62,11 +68,13 @@ namespace bry
 				m_Editor.Document = value;
 			}
 		}
+		[BryScript]
 		[Category("Editor"), Browsable(false)]
 		public TextArea TextArea
 		{
 			get { return m_Editor.TextArea; }
 		}
+		[BryScript]
 		public void AppendText(string s)
 		{
 			m_Editor.AppendText(s);

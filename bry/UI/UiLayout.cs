@@ -17,6 +17,7 @@ namespace bry
 	public class UiLayout : UiControl
 	{
 		private bool m_IsDrawLayout = false;
+		[BryScript]
 		public bool IsDrawLayout
 		{
 			get { return m_IsDrawLayout; }
@@ -27,6 +28,7 @@ namespace bry
 			}
 		}
 		private LayoutOrientation m_LayoutOrientation = LayoutOrientation.Vertical;
+		[BryScript]
 		public LayoutOrientation LayoutOrientation
 		{
 			get { return (m_LayoutOrientation); }
@@ -70,6 +72,7 @@ namespace bry
 			ChkLayout();
 		}
 		// ***********************************************
+		[BryScript]
 		public void add(UiControl control)
 		{
 			this.Controls.Add(control);

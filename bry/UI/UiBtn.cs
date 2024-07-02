@@ -94,6 +94,7 @@ namespace bry
 		}
 		// **************************************************************
 		#region Prop1
+		/*
 		[Browsable(false)]
 		public new System.String AccessibleDefaultActionDescription
 		{
@@ -430,6 +431,7 @@ namespace bry
 			get { return base.ImeMode; }
 			set { base.ImeMode = value; }
 		}
+		*/
 		#endregion
 	}
 }

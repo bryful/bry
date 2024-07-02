@@ -78,6 +78,7 @@ namespace bry
 		}
 		// **************************************************************
 		private System.Drawing.Color m_MainColor = Color.LightGray;
+		[BryScript]
 		[Category("Color"), Browsable(true)]
 		public System.Drawing.Color MainColor
 		{
@@ -90,6 +91,7 @@ namespace bry
 		}
 
 		// **************************************************************
+		[BryScript]
 		public Color ColorMul(Color c,float per)
 		{
 			float r = (float)c.R * per/100;
@@ -290,6 +292,7 @@ true);
 			set { base.AccessibleRole = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Browsable(false)]
 		public new System.Boolean AllowDrop
 		{
@@ -318,6 +321,7 @@ true);
 			set { base.AutoScrollOffset = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Category("Color"),Browsable(true)]
 		public new System.Drawing.Color BackColor
 		{
@@ -367,6 +371,7 @@ true);
 			set { base.CausesValidation = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Browsable(false)]
 		public new System.Drawing.Size ClientSize
 		{
@@ -402,6 +407,7 @@ true);
 			set { base.Dock = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Browsable(false)]
 		public new System.Boolean Enabled
 		{
@@ -409,13 +415,15 @@ true);
 			set { base.Enabled = value; }
 		}
 		// **************************************************************
-		[ Browsable(true)]
+		[BryScript]
+		[Browsable(true)]
 		public new System.Drawing.Font Font
 		{
 			get { return base.Font; }
 			set { base.Font = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Category("Color"),Browsable(true)]
 		public new System.Drawing.Color ForeColor
 		{
@@ -423,6 +431,7 @@ true);
 			set { base.ForeColor = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Browsable(false)]
 		public new System.Int32 Height
 		{
@@ -437,6 +446,7 @@ true);
 			set { base.IsAccessible = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Browsable(false)]
 		public new System.Int32 Left
 		{
@@ -444,6 +454,7 @@ true);
 			set { base.Left = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Browsable(false)]
 		public new System.Drawing.Point Location
 		{
@@ -451,6 +462,7 @@ true);
 			set { base.Location = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Browsable(true)]
 		public new System.Windows.Forms.Padding Margin
 		{
@@ -458,6 +470,7 @@ true);
 			set { base.Margin = value; this.Invalidate(); }
 		}
 		// **************************************************************
+		[BryScript]
 		[Browsable(true)]
 		public new System.Drawing.Size MaximumSize
 		{
@@ -465,6 +478,7 @@ true);
 			set { base.MaximumSize = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Browsable(true)]
 		public new System.Drawing.Size MinimumSize
 		{
@@ -472,6 +486,7 @@ true);
 			set { base.MinimumSize = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Browsable(true)]
 		public new System.String Name
 		{
@@ -507,6 +522,7 @@ true);
 			set { base.Site = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Browsable(true)]
 		public new System.Drawing.Size Size
 		{
@@ -528,6 +544,7 @@ true);
 			set { base.TabStop = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Browsable(true)]
 		public new System.Object Tag
 		{
@@ -535,6 +552,7 @@ true);
 			set { base.Tag = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Browsable(true)]
 		public new System.String Text
 		{
@@ -542,6 +560,7 @@ true);
 			set { base.Text = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Browsable(false)]
 		public new System.Int32 Top
 		{
@@ -556,6 +575,7 @@ true);
 			set { base.UseWaitCursor = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Browsable(false)]
 		public new System.Boolean Visible
 		{
@@ -563,6 +583,7 @@ true);
 			set { base.Visible = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Browsable(false)]
 		public new System.Int32 Width
 		{
@@ -577,6 +598,7 @@ true);
 			set { base.WindowTarget = value; }
 		}
 		// **************************************************************
+		[BryScript]
 		[Browsable(true)]
 		public new System.Windows.Forms.Padding Padding
 		{

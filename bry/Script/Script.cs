@@ -372,61 +372,36 @@ namespace bry
 		}
 		public SInfo[] GetSInfo()
 		{
-			int len = 0;
-			SInfo[] list = ScriptInfo.Gets(this.GetType(), "");
-			len += list.Length;
-			SInfo[] list2 = ScriptInfo.Gets(m_File.GetType(), "File");
-			len += list2.Length;
-			SInfo[] list3 = ScriptInfo.Gets(m_Folder.GetType(), "Dir");
-			len += list3.Length;
-			SInfo[] list4 = ScriptInfo.Gets(m_FastCopy.GetType(), "FastCopy");
-			len += list4.Length;
-			SInfo[] list5 = ScriptInfo.Gets(typeof(UiForm), "UI");
-			len += list5.Length;
-			SInfo[] list6 = ScriptInfo.GetsEnum(typeof(SizePolicy));
-			len += list6.Length;
-			SInfo[] list7 = ScriptInfo.GetsEnum(typeof(LayoutOrientation));
-			len += list7.Length;
+			List<SInfo> list = new List<SInfo>();
+			list.AddRange(ScriptInfo.GetsList(this.GetType(), ""));
+			list.AddRange(ScriptInfo.GetsList(m_File.GetType(), "File"));
+			list.AddRange(ScriptInfo.GetsList(m_Folder.GetType(), "Dir"));
+			list.AddRange(ScriptInfo.GetsList(m_FastCopy.GetType(), "FastCopy"));
+			list.AddRange(ScriptInfo.GetsList(typeof(UiForm), "UI"));
+			list.AddRange(ScriptInfo.GetsEnum(typeof(SizePolicy)));
+			list.AddRange(ScriptInfo.GetsEnum(typeof(LayoutOrientation)));
 
-			SInfo[] ret = new SInfo[len];
+			List<SInfo> listOther = new List<SInfo>();
+			listOther.AddRange(ScriptInfo.GetsList(typeof(UiForm), "____"));
+			listOther.AddRange(ScriptInfo.GetsList(typeof(UiControl), "____"));
+			listOther.AddRange(ScriptInfo.GetsList(typeof(UiBtn), "____"));
+			listOther.AddRange(ScriptInfo.GetsList(typeof(UiEditor), "____"));
+			listOther.AddRange(ScriptInfo.GetsList(typeof(UiTextBox), "____"));
+			listOther.AddRange(ScriptInfo.GetsList(typeof(UiListBox), "____"));
 
-			int idx = 0;
-			foreach(SInfo s in list)
+			listOther.Sort((a, b) => string.Compare(a.Name, b.Name));
+			if (listOther.Count>0)
 			{
-				ret[idx] = s;
-				idx++;
+				for (int i = listOther.Count-1; i>=1;i--)
+				{
+					if (listOther[i-1].Name== listOther[i].Name)
+					{
+						listOther.RemoveAt(i);
+					}
+				}
 			}
-			foreach (SInfo s in list2)
-			{
-				ret[idx] = s;
-				idx++;
-			}
-			foreach (SInfo s in list3)
-			{
-				ret[idx] = s;
-				idx++;
-			}
-			foreach (SInfo s in list4)
-			{
-				ret[idx] = s;
-				idx++;
-			}
-			foreach (SInfo s in list5)
-			{
-				ret[idx] = s;
-				idx++;
-			}
-			foreach (SInfo s in list6)
-			{
-				ret[idx] = s;
-				idx++;
-			}
-			foreach (SInfo s in list7)
-			{
-				ret[idx] = s;
-				idx++;
-			}
-			return ret;
+			list.AddRange(listOther);
+			return list.ToArray();
 		}
 		public string GetSInfoToString()
 		{

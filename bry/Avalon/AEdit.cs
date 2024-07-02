@@ -29,6 +29,7 @@ namespace bry
 	{
 		#region props
 		private TextEditor m_editor = new TextEditor();
+		[BryScript]
 		[Category("Editor"),Browsable(false)]
 		public TextEditor editor
 		{
@@ -37,24 +38,28 @@ namespace bry
 
 		private ElementHost host = new ElementHost();
 
+		[BryScript]
 		[Category("Editor")]
 		public bool ShowLineNumbers
 		{
 			get { return m_editor.ShowLineNumbers; }
 			set { m_editor.ShowLineNumbers = value;}
 		}
+		[BryScript]
 		[Category("Editor")]
 		public ScrollBarVisibility HorizontalScrollBarVisibility
 		{
 			get { return m_editor.HorizontalScrollBarVisibility; }
 			set { m_editor.HorizontalScrollBarVisibility = value; }
 		}
+		[BryScript]
 		[Category("Editor")]
 		public ScrollBarVisibility VerticalScrollBarVisibility
 		{
 			get { return m_editor.VerticalScrollBarVisibility; }
 			set { m_editor.VerticalScrollBarVisibility = value; }
 		}
+		[BryScript]
 		[Category("Editor"), Browsable(false)]
 		public TextEditorOptions Options
 		{
@@ -64,6 +69,7 @@ namespace bry
 				m_editor.Options = value;
 			}
 		}
+		[BryScript]
 		[Category("EditorOptions")]
 		public bool ShowEndOfLine
 		{
@@ -73,6 +79,7 @@ namespace bry
 				m_editor.Options.ShowEndOfLine = value;
 			}
 		}
+		[BryScript]
 		[Category("EditorOptions")]
 		public bool ShowSpaces
 		{
@@ -82,6 +89,7 @@ namespace bry
 				m_editor.Options.ShowSpaces = value;
 			}
 		}
+		[BryScript]
 		[Category("EditorOptions")]
 		public bool ShowTabs
 		{
@@ -91,6 +99,7 @@ namespace bry
 				m_editor.Options.ShowTabs = value;
 			}
 		}
+		[BryScript]
 		[Category("EditorOptions")]
 		public bool ShowBoxForControlCharacters
 		{
@@ -100,6 +109,7 @@ namespace bry
 				m_editor.Options.ShowBoxForControlCharacters = value;
 			}
 		}
+		[BryScript]
 		[Category("EditorOptions")]
 		public bool HighlightCurrentLine
 		{
@@ -109,6 +119,7 @@ namespace bry
 				m_editor.Options.HighlightCurrentLine = value;
 			}
 		}
+		[BryScript]
 		[Category("EditorOptions")]
 		public int IndentationSize
 		{
@@ -118,6 +129,7 @@ namespace bry
 				m_editor.Options.IndentationSize = value;
 			}
 		}
+		[BryScript]
 		[Category("EditorOptions")]
 		public bool ShowColumnRuler
 		{
@@ -127,6 +139,7 @@ namespace bry
 				m_editor.Options.ShowColumnRuler = value;
 			}
 		}
+		[BryScript]
 		[Category("EditorOptions")]
 		public int ColumnRulerPosition
 		{
@@ -136,6 +149,7 @@ namespace bry
 				m_editor.Options.ColumnRulerPosition = value;
 			}
 		}
+		[BryScript]
 		[Category("Editor"), Browsable(false)]
 		public TextDocument Document
 		{
@@ -145,11 +159,13 @@ namespace bry
 				m_editor.Document = value;
 			}
 		}
+		[BryScript]
 		[Category("Editor"), Browsable(false)]
 		public TextArea TextArea
 		{
 			get { return m_editor.TextArea; }
 		}
+		[BryScript]
 		public new string Text
 		{
 			get { return m_editor.Text; }
@@ -157,11 +173,13 @@ namespace bry
 				m_editor.Text = value;
 			}	
 		}
+		[BryScript]
 		public void AppendText(string s)
 		{
 			m_editor.AppendText(s);
 		}
 		private Font m_font = new Font("System",9);
+		[BryScript]
 		public new Font Font
 		{
 			get { return m_font; }
@@ -210,7 +228,8 @@ namespace bry
 				if(i<0) break;
 				string c = s.Substring(i,1);
 				if((c ==" ")|| (c == "\t") || (c == "\n") || (c == "\r")
-					|| (c == "\"") || (c == "\'") || (c == ")"))
+					|| (c == "\"") || (c == "\'") || (c == ",")
+					|| (c == ")") || (c == "=") || (c == "."))
 				{
 					break;
 				}
@@ -225,10 +244,17 @@ namespace bry
 			{
 				int offset = m_editor.TextArea.Caret.Offset;
 				string wd = GetWord(m_editor.Document.Text, offset-1);
-				if (IsCategory(wd))
+				if (wd != "")
 				{
 					completionWindow = new CompletionWindow(m_editor.TextArea);
-					SetCompData(completionWindow, wd);
+					if (IsCategory(wd))
+					{
+						SetCompData(completionWindow, wd);
+					}
+					else
+					{
+						SetCompData(completionWindow, "____");
+					}
 					completionWindow.Show();
 					completionWindow.Closed += delegate { completionWindow = null; };
 				}
@@ -308,6 +334,7 @@ namespace bry
 			base.OnResize(e);
 			ChkSize();
 		}
+		[BryScript]
 		public void SetText(string s)
 		{
 			if (s == "") return;
@@ -360,7 +387,10 @@ namespace bry
 			List<string> list = new List<string>();
 			foreach (SInfo s in SInfoList)
 			{
-				list =AppendList(list,s.Category);
+				if (s.Category != "____")
+				{
+					list = AppendList(list, s.Category);
+				}
 			}
 			list.Sort();
 			SInfoCategorys = list.ToArray();
