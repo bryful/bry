@@ -153,7 +153,7 @@ namespace bry
 
 				if (s2.Code.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0)
 				{
-					m_ListBox.Items.Add(s2.ToString());
+					m_ListBox.Items.Add(s2);
 				}
 			}
 			m_ListBox.ResumeLayout();

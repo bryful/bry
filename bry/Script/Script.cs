@@ -399,6 +399,7 @@ namespace bry
 		public SInfo[] GetSInfo()
 		{
 			List<SInfo> list = new List<SInfo>();
+			list.AddRange(ScriptInfo.GetsJSList());
 			list.AddRange(ScriptInfo.GetsList(this.GetType(), ""));
 			list.AddRange(ScriptInfo.GetsList(m_File.GetType(), "File"));
 			list.AddRange(ScriptInfo.GetsList(m_Folder.GetType(), "Dir"));
@@ -406,27 +407,13 @@ namespace bry
 			list.AddRange(ScriptInfo.GetsList(typeof(UiForm), "UI"));
 			list.AddRange(ScriptInfo.GetsEnum(typeof(SizePolicy)));
 			list.AddRange(ScriptInfo.GetsEnum(typeof(LayoutOrientation)));
+			list.AddRange(ScriptInfo.GetsList(typeof(UiForm), "UiForm", true));
+			list.AddRange(ScriptInfo.GetsList(typeof(UiControl), "UiControl", true));
+			list.AddRange(ScriptInfo.GetsList(typeof(UiBtn), "UiBtn", true));
+			list.AddRange(ScriptInfo.GetsList(typeof(UiEditor), "UiEditor", true));
+			list.AddRange(ScriptInfo.GetsList(typeof(UiTextBox), "UiTextBox", true));
+			list.AddRange(ScriptInfo.GetsList(typeof(UiListBox), "UiListBox", true));
 
-			List<SInfo> listOther = new List<SInfo>();
-			listOther.AddRange(ScriptInfo.GetsList(typeof(UiForm), "____"));
-			listOther.AddRange(ScriptInfo.GetsList(typeof(UiControl), "____"));
-			listOther.AddRange(ScriptInfo.GetsList(typeof(UiBtn), "____"));
-			listOther.AddRange(ScriptInfo.GetsList(typeof(UiEditor), "____"));
-			listOther.AddRange(ScriptInfo.GetsList(typeof(UiTextBox), "____"));
-			listOther.AddRange(ScriptInfo.GetsList(typeof(UiListBox), "____"));
-
-			listOther.Sort((a, b) => string.Compare(a.Name, b.Name));
-			if (listOther.Count>0)
-			{
-				for (int i = listOther.Count-1; i>=1;i--)
-				{
-					if (listOther[i-1].Name== listOther[i].Name)
-					{
-						listOther.RemoveAt(i);
-					}
-				}
-			}
-			list.AddRange(listOther);
 			return list.ToArray();
 		}
 	}

@@ -40,22 +40,25 @@ namespace bry
 				{
 					if ((c is MenuStrip) || (c is StatusStrip) || (c is ToolStrip))
 					{
-						switch (c.Dock)
+						if (c.Visible == true)
 						{
-							case DockStyle.Top:
-								t += c.Height;
-								h -= c.Height;
-								break;
-							case DockStyle.Bottom:
-								h -= c.Height;
-								break;
-							case DockStyle.Left:
-								w -= c.Width;
-								l += c.Width;
-								break;
-							case DockStyle.Right:
-								w -= c.Width;
-								break;
+							switch (c.Dock)
+							{
+								case DockStyle.Top:
+									t += c.Height;
+									h -= c.Height;
+									break;
+								case DockStyle.Bottom:
+									h -= c.Height;
+									break;
+								case DockStyle.Left:
+									w -= c.Width;
+									l += c.Width;
+									break;
+								case DockStyle.Right:
+									w -= c.Width;
+									break;
+							}
 						}
 					}
 				}
@@ -385,18 +388,5 @@ SizePolicy vp = SizePolicy.Expanding)
 			}
 			return lst;
 		}
-		public object[] aryFrom(UiControl[] a)
-		{
-			var ret = new Object[a.Length];
-			if (a.Length > 0)
-			{
-				for (int i = 0; i < a.Length; i++)
-				{
-					ret[i] = a[i];
-				}
-			}
-			return ret;
-		}
-
 	}
 }

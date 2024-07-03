@@ -19,6 +19,100 @@ namespace bry
 {
 	static public class ScriptInfo
 	{
+		static private string[] JavaScriptKeyword = new string[]
+		{
+			"break",
+			"continue",
+			"delete",
+			"else",
+			"for",
+			"function",
+			"if",
+			"in",
+			"let",
+			"new",
+			"return",
+			"this",
+			"typeof",
+			"var",
+			"void",
+			"while",
+			"with",
+			"abstract",
+			"boolean",
+			"byte",
+			"case",
+			"catch",
+			"char",
+			"class",
+			"const",
+			"debugger",
+			"default",
+			"do",
+			"double",
+			"enum",
+			"export",
+			"extends",
+			"final",
+			"finally",
+			"float",
+			"goto",
+			"implements",
+			"import",
+			"instanceof",
+			"int",
+			"interface",
+			"long",
+			"native",
+			"package",
+			"private",
+			"protected",
+			"public",
+			"short",
+			"static",
+			"super",
+			"switch",
+			"synchronized",
+			"throw",
+			"throws",
+			"transient",
+			"try",
+			"volatile",
+			"Array",
+			"Boolean",
+			"Date",
+			"Function",
+			"Global",
+			"Math",
+			"Number",
+			"Object",
+			"RegExp",
+			"String",
+			"false",
+			"null",
+			"true",
+			"NaN",
+			"Infinity",
+			"eval",
+			"parseInt",
+			"parseFloat",
+			"escape",
+			"unescape",
+			"isNaN",
+			"isFinite"
+		};
+
+		static public List<SInfo> GetsJSList()
+		{
+			List<SInfo> ret = new List<SInfo>();
+			for (var i = 0; i < JavaScriptKeyword.Length; i++)
+			{
+				SInfo si = new SInfo(JavaScriptKeyword[i], SInfoKind.Keyword, "");
+				si.IsGlobal = true;
+				ret.Add(si);
+			}
+			return ret;
+		}
 		static public List<SInfo> GetsList(Type ct, string cat = "",bool IsGlobal=false)
 		{
 			List<SInfo> ret = new List<SInfo>();
@@ -58,7 +152,7 @@ namespace bry
 			for (var i = 0; i < sa.Length; i++)
 			{
 				SInfo si = new SInfo(sa[i], SInfoKind.Enum, ct.Name);
-				si.IsGlobal = true;
+				si.IsGlobal = false;
 				ret.Add (si);
 			}
 			return ret;
@@ -82,7 +176,7 @@ namespace bry
 
 			string[] r = Enum.GetNames(typeof(SInfoKind));
 			string ca = "";
-			if((Category!="")&&(Category!="____")) ca = Category+".";
+			if(Category!="") ca = Category+".";
 			ret = $"{r[(int)Kind]} {ca}{Name}";
 			return ret;
 		}
@@ -90,8 +184,12 @@ namespace bry
 		{
 			get
 			{
-				string s = Category;
-				if (s != "") s = s + ".";
+				string s = "";
+				if (IsGlobal == false)
+				{
+					s += Category;
+					if (s != "") s = s + ".";
+				}
 				s += Name;
 				if (Kind==SInfoKind.Method)
 				{
@@ -143,7 +241,8 @@ namespace bry
 		Method, 
 		Event,
 		Field,
-		Enum
+		Enum,
+		Keyword
 	}
 	[AttributeUsage(AttributeTargets.All)]
 	public class BryScriptAttribute : Attribute

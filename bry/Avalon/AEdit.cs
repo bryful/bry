@@ -1,26 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Windows.Controls;
-
-using System.Windows.Forms.Integration;
-using ICSharpCode.AvalonEdit;
-using ICSharpCode.AvalonEdit.Utils;
-
-using ICSharpCode.AvalonEdit.Highlighting; // ← 名前空間
-using ICSharpCode.AvalonEdit.Highlighting.Xshd; // ← 名前空間
 using System.IO;
 using System.Reflection;
+using System.Windows.Controls;
+using System.Windows.Forms;
+using System.Windows.Forms.Integration;
+using System.Windows.Input;
+using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Editing;
-using System.Windows.Input;
-using ICSharpCode.AvalonEdit.CodeCompletion;
+using ICSharpCode.AvalonEdit.Highlighting; // ← 名前空間
+using ICSharpCode.AvalonEdit.Highlighting.Xshd; // ← 名前空間
 
 
 namespace bry
@@ -249,11 +242,11 @@ namespace bry
 					completionWindow = new CompletionWindow(m_editor.TextArea);
 					if (IsCategory(wd))
 					{
-						SetCompData(completionWindow, wd);
+						SetCompDataDotCat(completionWindow, wd);
 					}
 					else
 					{
-						SetCompData(completionWindow, "____");
+						SetCompDataDotNoCat(completionWindow);
 					}
 					completionWindow.Show();
 					completionWindow.Closed += delegate { completionWindow = null; };
@@ -268,7 +261,7 @@ namespace bry
 				{
 					e.Handled = true;
 					completionWindow = new CompletionWindow(m_editor.TextArea);
-					SetCompDataNoDot(completionWindow);
+					SetCompDataOne(completionWindow);
 					completionWindow.Show();
 					completionWindow.Closed += delegate { completionWindow = null; };
 				}
@@ -277,12 +270,12 @@ namespace bry
 		}
 
 		// //////
-		private void SetCompData(CompletionWindow cw,string cat)
+		private void SetCompDataDotCat(CompletionWindow cw,string cat)
 		{
 			if (cat == "") return;
             IList<ICompletionData> data = cw.CompletionList.CompletionData;
 
-			foreach(SInfo sInfo in SInfoList)
+			foreach(SInfo sInfo in SInfoListDotCat)
 			{
 				if (string.Compare(sInfo.Category, cat, true) == 0)
 				{
@@ -293,18 +286,27 @@ namespace bry
 			}
 
 		}
-		private void SetCompDataNoDot(CompletionWindow cw)
+		private void SetCompDataDotNoCat(CompletionWindow cw)
 		{
 			IList<ICompletionData> data = cw.CompletionList.CompletionData;
 
-			foreach (SInfo sInfo in SInfoList)
+			foreach (SInfo sInfo in SInfoListDotNoCat)
 			{
-				if (sInfo.Category=="")
-				{
-					string cd = sInfo.Name;
-					if (sInfo.Kind == SInfoKind.Method) cd += "()";
-					data.Add(new MyCompletionData(cd));
-				}
+				string cd = sInfo.Name;
+				if (sInfo.Kind == SInfoKind.Method) cd += "()";
+				data.Add(new MyCompletionData(cd));
+			}
+
+		}
+		private void SetCompDataOne(CompletionWindow cw)
+		{
+			IList<ICompletionData> data = cw.CompletionList.CompletionData;
+
+			foreach (SInfo sInfo in SInfoListOne)
+			{
+				string cd = sInfo.Name;
+				if (sInfo.Kind == SInfoKind.Method) cd += "()";
+				data.Add(new MyCompletionData(cd));
 			}
 			if (SInfoCategorys.Length > 0)
 			{
@@ -351,8 +353,14 @@ namespace bry
 				m_editor.TextArea.Selection.ReplaceSelectionWithText(s);
 			}
 		}
-		private SInfo[] SInfoList = new SInfo[0];
+		
+		
 		private string[] SInfoCategorys = new string[0];
+
+		private SInfo[] SInfoListOne = new SInfo[0];
+		private SInfo[] SInfoListDotCat = new SInfo[0];
+		private SInfo[] SInfoListDotNoCat = new SInfo[0];
+
 
 		private List<string> AppendList(List<string>lst, string s)
 		{
@@ -368,6 +376,23 @@ namespace bry
 			}
 			if (isIn == false) lst.Add(s);
 			return lst;
+		}
+
+		private int IndexOgCategory(List<string>lst,string n)
+		{
+			int ret = -1;
+			if(lst.Count>0)
+			{
+				for(int i =lst.Count-1; i>=0;i--)
+				{
+					if(string.Compare(lst[i],n,true)==0)
+					{
+						ret = i;
+						break;
+					}
+				}
+			}
+			return ret;
 		}
 		private bool IsCategory(string cat)
 		{
@@ -385,34 +410,66 @@ namespace bry
 			}
 			return ret;
 		}
-		public void SetSInfo(SInfo[] a)
+		private List<SInfo> DupChk(List<SInfo> lst)
 		{
-			SInfoList = a;
-			List<string> list = new List<string>();
-			foreach (SInfo s in SInfoList)
+			List<SInfo> ret = new List<SInfo>();
+			if (lst.Count > 0)
 			{
-				if (s.Category != "____")
+				ret.Add(lst[0]);
+				for (int i = 1; i<lst.Count; i++)
 				{
-					list = AppendList(list, s.Category);
+					if ((lst[i - 1].Name == lst[i].Name))
+					{
+						//何もしない
+					}
+					else
+					{
+						ret.Add(lst[i]);
+					}
 				}
 			}
-			list.Sort();
-			SInfoCategorys = list.ToArray();
+			return ret;
 		}
-		private MyCompletionData[] FindChar(string s)
+		public void SetSInfo(SInfo[] ary)
 		{
-			List<MyCompletionData> ret = new List<MyCompletionData>();
-			/*
-			if (myCompletionDatas.Length == 0) return ret.ToArray();
-			if (s=="") return ret.ToArray();
-			foreach(var dat in myCompletionDatas)
+			List<SInfo> listOne = new List<SInfo>();
+			List<SInfo> listDotCat = new List<SInfo>();
+			List<SInfo> listDotNoCat = new List<SInfo>();
+			List<string> CatList = new List<string>();
+
+			foreach (SInfo s in ary)
 			{
-				if (String.Compare(dat.Text.Substring(0,1),s,true)==0)
+				if (s.Category == "")
 				{
-					ret.Add(dat);
+					listOne.Add(s);
 				}
-			}*/
-			return ret.ToArray();
+				else
+				{
+					int idx = IndexOgCategory(CatList, s.Category);
+					if (idx < 0) CatList.Add(s.Category);
+					if (s.IsGlobal)
+					{
+						listDotNoCat.Add(s);
+					}
+					else
+					{
+						listDotCat.Add(s);
+					}
+				}
+			}
+			CatList.Sort();
+			SInfoCategorys = CatList.ToArray();
+
+			listOne.Sort((a, b) => string.Compare(a.Name, b.Name));
+			SInfoListOne = listOne.ToArray();
+
+			listDotCat.Sort((a, b) => string.Compare(a.Name, b.Name));
+			SInfoListDotCat = listDotCat.ToArray();
+
+			listDotNoCat.Sort((a, b) => string.Compare(a.Name, b.Name));
+			listDotNoCat = DupChk(listDotNoCat);
+			SInfoListDotNoCat = listDotNoCat.ToArray();
+
 		}
 	}
 	public class MyCompletionData : ICompletionData
