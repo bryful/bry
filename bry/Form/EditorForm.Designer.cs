@@ -32,39 +32,14 @@
 			System.ComponentModel.Design.ServiceContainer serviceContainer1 = new System.ComponentModel.Design.ServiceContainer();
 			ICSharpCode.AvalonEdit.Document.UndoStack undoStack1 = new ICSharpCode.AvalonEdit.Document.UndoStack();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditorForm));
-			this.aEdit1 = new bry.AEdit();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.aEdit1 = new bry.AEdit();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// aEdit1
-			// 
-			this.aEdit1.ColumnRulerPosition = 80;
-			textDocument1.FileName = null;
-			textDocument1.ServiceProvider = serviceContainer1;
-			textDocument1.Text = "aEdit1";
-			undoStack1.SizeLimit = 2147483647;
-			textDocument1.UndoStack = undoStack1;
-			this.aEdit1.Document = textDocument1;
-			this.aEdit1.HighlightCurrentLine = false;
-			this.aEdit1.HorizontalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Visible;
-			this.aEdit1.IndentationSize = 4;
-			this.aEdit1.Location = new System.Drawing.Point(365, 77);
-			this.aEdit1.Name = "aEdit1";
-			this.aEdit1.Options = ((ICSharpCode.AvalonEdit.TextEditorOptions)(resources.GetObject("aEdit1.Options")));
-			this.aEdit1.ShowBoxForControlCharacters = true;
-			this.aEdit1.ShowColumnRuler = false;
-			this.aEdit1.ShowEndOfLine = false;
-			this.aEdit1.ShowLineNumbers = true;
-			this.aEdit1.ShowSpaces = false;
-			this.aEdit1.ShowTabs = true;
-			this.aEdit1.Size = new System.Drawing.Size(173, 123);
-			this.aEdit1.TabIndex = 0;
-			this.aEdit1.VerticalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Auto;
 			// 
 			// menuStrip1
 			// 
@@ -89,20 +64,45 @@
 			// openToolStripMenuItem
 			// 
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
 			this.openToolStripMenuItem.Text = "Import";
 			// 
 			// saveToolStripMenuItem
 			// 
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
 			this.saveToolStripMenuItem.Text = "Export";
 			// 
 			// closeToolStripMenuItem
 			// 
 			this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-			this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.closeToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
 			this.closeToolStripMenuItem.Text = "Close";
+			// 
+			// aEdit1
+			// 
+			this.aEdit1.ColumnRulerPosition = 80;
+			textDocument1.FileName = null;
+			textDocument1.ServiceProvider = serviceContainer1;
+			textDocument1.Text = "aEdit1";
+			undoStack1.SizeLimit = 2147483647;
+			textDocument1.UndoStack = undoStack1;
+			this.aEdit1.Document = textDocument1;
+			this.aEdit1.HighlightCurrentLine = true;
+			this.aEdit1.HorizontalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Visible;
+			this.aEdit1.IndentationSize = 4;
+			this.aEdit1.Location = new System.Drawing.Point(0, 27);
+			this.aEdit1.Name = "aEdit1";
+			this.aEdit1.Options = ((ICSharpCode.AvalonEdit.TextEditorOptions)(resources.GetObject("aEdit1.Options")));
+			this.aEdit1.ShowBoxForControlCharacters = true;
+			this.aEdit1.ShowColumnRuler = true;
+			this.aEdit1.ShowEndOfLine = true;
+			this.aEdit1.ShowLineNumbers = true;
+			this.aEdit1.ShowSpaces = true;
+			this.aEdit1.ShowTabs = true;
+			this.aEdit1.Size = new System.Drawing.Size(690, 326);
+			this.aEdit1.TabIndex = 0;
+			this.aEdit1.VerticalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Auto;
 			// 
 			// EditorForm
 			// 

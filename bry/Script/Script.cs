@@ -16,6 +16,12 @@ using System.IO;
 using System.Diagnostics;
 using System.Drawing.Printing;
 using System.Reflection;
+using PdfSharp;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using PdfSharp.Diagnostics;
+
+
 namespace bry
 {
 	public class Script
@@ -46,6 +52,21 @@ namespace bry
 			new InstallType(typeof(UiEditor)),
 			new InstallType(typeof(SizePolicy)),
 			new InstallType(typeof(LayoutOrientation)),
+			new InstallType(typeof(XPoint)),
+			new InstallType(typeof(PageSize)),
+			new InstallType(typeof(XPen)),
+			new InstallType(typeof(XPens)),
+			new InstallType(typeof(PdfDocument)),
+			new InstallType(typeof(PdfPage)),
+			new InstallType(typeof(XGraphics)),
+			new InstallType(typeof(XBrushes)),
+			new InstallType(typeof(XColor)),
+			new InstallType(typeof(XColors)),
+			new InstallType(typeof(XBrush)),
+			new InstallType(typeof(XBrushes)),//XDashStyle.Dash;
+			new InstallType(typeof(XDashStyle)),
+
+
 		};
 		
 		public V8ScriptEngine engine = null;
@@ -63,6 +84,7 @@ namespace bry
 		private ScriptFile m_File = new ScriptFile();
 		private ScriptFolder m_Folder = new ScriptFolder();
 		private ScriptFastCopy m_FastCopy = new ScriptFastCopy();
+		private ScriptPDF m_PDF = new ScriptPDF();
 		private UiForm m_UiForm = null;
 
 		[BryScript]
@@ -378,7 +400,8 @@ namespace bry
 			engine.AddHostObject("File", HostItemFlags.PrivateAccess, m_File);
 			engine.AddHostObject("Dir", HostItemFlags.PrivateAccess, m_Folder);
 			engine.AddHostObject("FastCopy", HostItemFlags.PrivateAccess, m_FastCopy);
-			if(m_UiForm != null)
+			engine.AddHostObject("PDF", HostItemFlags.PrivateAccess, m_PDF);
+			if (m_UiForm != null)
 			{
 				engine.AddHostObject("UI", HostItemFlags.PrivateAccess, m_UiForm);
 			}
@@ -404,6 +427,7 @@ namespace bry
 			list.AddRange(ScriptInfo.GetsList(m_File.GetType(), "File"));
 			list.AddRange(ScriptInfo.GetsList(m_Folder.GetType(), "Dir"));
 			list.AddRange(ScriptInfo.GetsList(m_FastCopy.GetType(), "FastCopy"));
+			list.AddRange(ScriptInfo.GetsList(m_PDF.GetType(), "PDF"));
 			list.AddRange(ScriptInfo.GetsList(typeof(UiForm), "UI"));
 			list.AddRange(ScriptInfo.GetsEnum(typeof(SizePolicy)));
 			list.AddRange(ScriptInfo.GetsEnum(typeof(LayoutOrientation)));

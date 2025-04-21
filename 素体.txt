@@ -1,0 +1,72 @@
+cls();
+PDF.Init();
+var p = new XPen(XColors.Red,0.5);
+
+var w =　48;
+var h =　38;
+var d = 27;
+
+
+var outline = [];
+outline.push([-w/2,-h/2]);
+outline.push([w/2,-h/2]);
+outline.push([w/2, h/2 +d]);
+outline.push([-w/2, h/2 +d]);
+PDF.DrawPolygon(p,outline)
+
+var line =[];
+line.push([-w/2,h/2]);
+line.push([w/2,h/2]);
+p.DashStyle = XDashStyle.Dash;
+PDF.DrawLines(p,line);
+
+var rd = 17;
+PDF.DrawEllipse(p,0,h/2+d/2,rd,rd)
+
+
+w =　48.4;
+h =　38.4;
+d = 27.4;
+
+p = new XPen(XColors.Blue,0.5);
+p.DashStyle = XDashStyle.Solid;
+
+outline = [];
+outline.push([-w/2,-h/2]);
+outline.push([-w/2,-h/2 -h -d]);
+outline.push([w/2,-h/2 -h -d]);
+outline.push([w/2,-h/2]);
+outline.push([w/2+d,-h/2]);
+outline.push([w/2+d,h/2]);
+outline.push([-w/2-d,h/2]);
+outline.push([-w/2-d,-h/2]);
+PDF.DrawPolygon(p,outline)
+
+
+var rctW = 3;
+var rctH = 5;
+
+PDF.DrawRectangle(p,-w/2-d/2+rctW/2, h/2 -27.7 - rctH/2,rctW,rctH);
+PDF.DrawRectangle(p,-w/2-d/2+rctW/2, h/2 -5.7  - rctH/2,rctW,rctH);
+
+PDF.DrawRectangle(p,w/2+d/2-rctW/2, h/2 -27.7 - rctH/2,rctW,rctH);
+PDF.DrawRectangle(p,w/2+d/2-rctW/2, h/2 -5.7  - rctH/2,rctW,rctH);
+
+PDF.DrawRectangle(p,0,-d-h/2-12.8-rctH/2 ,rctW,rctH);
+PDF.DrawRectangle(p,0,-d-h/2-27.8-rctH/2 ,rctW,rctH);
+
+
+p.DashStyle = XDashStyle.Dash;
+outline.push([-w/2,-h/2]);
+outline.push([w/2,-h/2]);
+outline.push([w/2,-h/2]);
+outline.push([-w/2,-h/2]);
+PDF.DrawPolygon(p,outline)
+
+line =[];
+line.push([-w/2,-h/2-d]);
+line.push([w/2,-h/2-d]);
+PDF.DrawLines(p,line);
+
+
+PDF.Save("head1.pdf");
